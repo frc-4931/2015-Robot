@@ -1,6 +1,7 @@
 package com.evilletech.robotframework.mockhardware;
 
 import com.evilletech.robotframework.api.Relay;
+import com.evilletech.robotframework.api.Switch;
 
 /**
  * The factory for all mock hardware devices. A mock hardware device allows an
@@ -40,5 +41,25 @@ public class MockFactory {
 	 */
 	public static Relay newUnknownRelay() {
 		return new MockRelay(MockRelay.UNKNOWN);
+	}
+
+	/**
+	 * Creates a {@link MockSwitch} that does not interface with any hardware
+	 * components, but still behaves as if it was.
+	 * 
+	 * @return a <code>Switch</code> that is initially triggered
+	 */
+	public static Switch newTriggeredSwitch() {
+		return new MockSwitch(true);
+	}
+
+	/**
+	 * Creates a {@link MockSwitch} that does not interface with any hardware
+	 * components, but still behaves as if it was.
+	 * 
+	 * @return a <code>Switch</code> that is initially untriggered
+	 */
+	public static Switch newUntriggeredSwitch() {
+		return new MockSwitch(false);
 	}
 }

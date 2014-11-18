@@ -1,6 +1,7 @@
 package com.evilletech.robotframework.hardware;
 
 import com.evilletech.robotframework.api.Relay;
+import com.evilletech.robotframework.api.Switch;
 
 /**
  * The factory for all devices that directly interface with robot hardware.
@@ -20,5 +21,27 @@ public class HardwareFactory {
 	 */
 	public static Relay newHardwareRelay(int channel) {
 		return new HardwareRelay(channel);
+	}
+
+	/**
+	 * Creates a generic normally closed switch on the specified channel.
+	 * 
+	 * @param channel
+	 *            the channel the switch is connected to
+	 * @return a switch on the specified channel
+	 */
+	public static Switch newNCSwitch(int channel) {
+		return new HardwareNCSwitch(channel);
+	}
+
+	/**
+	 * Creates a generic normally open switch on the specified channel.
+	 * 
+	 * @param channel
+	 *            the channel the switch is connected to
+	 * @return a switch on the specified channel
+	 */
+	public static Switch newNOSwitch(int channel) {
+		return new HardwareNOSwitch(channel);
 	}
 }
