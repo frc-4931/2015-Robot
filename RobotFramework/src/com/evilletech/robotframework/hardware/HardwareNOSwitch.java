@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @see HardwareFactory
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
-public class HardwareNOSwitch implements Switch {
+class HardwareNOSwitch implements Switch {
 	private final DigitalInput input;
 
 	HardwareNOSwitch(int channel) {

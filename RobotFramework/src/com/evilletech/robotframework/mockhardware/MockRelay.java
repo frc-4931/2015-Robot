@@ -11,14 +11,14 @@ import com.evilletech.robotframework.api.Relay;
  * @see Relay
  * @see MockFactory
  */
-public class MockRelay implements Relay {
+class MockRelay implements Relay {
 	static final int ON = 1;
 	static final int OFF = 0;
 	static final int UNKNOWN = -1;
 
 	int state;
 
-	public MockRelay(int initalState) {
+	MockRelay(int initalState) {
 		state = initalState;
 	}
 

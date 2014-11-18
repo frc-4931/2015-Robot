@@ -12,7 +12,7 @@ import com.evilletech.robotframework.api.Switch;
  * @see Switch
  * @see MockFactory
  */
-public class MockSwitch implements Switch {
+class MockSwitch implements Switch {
 	private boolean triggered;
 
 	MockSwitch(boolean initialState) {

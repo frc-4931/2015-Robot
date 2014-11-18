@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Relay.Value;
  * @see HardwareFactory
  * @see edu.wpi.first.wpilibj.Relay
  */
-public class HardwareRelay implements Relay {
+class HardwareRelay implements Relay {
 	private static final int ON = 1;
 	private static final int OFF = 0;
 
