@@ -1,6 +1,7 @@
 package com.evilletech.robotframework.hardware;
 
 import com.evilletech.robotframework.api.Relay;
+import com.evilletech.robotframework.api.Solenoid;
 import com.evilletech.robotframework.api.Switch;
 
 /**
@@ -43,5 +44,19 @@ public class HardwareFactory {
 	 */
 	public static Switch newNOSwitch(int channel) {
 		return new HardwareNOSwitch(channel);
+	}
+
+	/**
+	 * Creates a <code>Solenoid</code> on the specified channels
+	 * 
+	 * @param extendChannel
+	 *            the channel that extends the solenoid
+	 * @param retractChannel
+	 *            the channel that retracts the solenoid
+	 * @return a <code>Solenoid</code> on the specified channels
+	 */
+	public static Solenoid newDoubleSolenoid(int extendChannel,
+			int retractChannel) {
+		return new HardwareDoubleSolenoid(extendChannel, retractChannel);
 	}
 }

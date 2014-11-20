@@ -1,6 +1,7 @@
 package com.evilletech.robotframework.mockhardware;
 
 import com.evilletech.robotframework.api.Relay;
+import com.evilletech.robotframework.api.Solenoid;
 import com.evilletech.robotframework.api.Switch;
 
 /**
@@ -61,5 +62,36 @@ public class MockFactory {
 	 */
 	public static Switch newUntriggeredSwitch() {
 		return new MockSwitch(false);
+	}
+
+	/**
+	 * Creates a {@link Solenoid} that does not interface with any hardware
+	 * components, but still behaves as if it did.
+	 * 
+	 * @return a <code>Relay</code> that is initially extended
+	 */
+	public static Solenoid newExtendedSolenoid() {
+		return new MockSolenoid(MockSolenoid.EXTENDED);
+	}
+
+	/**
+	 * Creates a {@link Solenoid} that does not interface with any hardware
+	 * components, but still behaves as if it was.
+	 * 
+	 * @return a <code>Solenoid</code> that is initially retracted
+	 */
+	public static Solenoid newRetractedSolenoid() {
+		return new MockSolenoid(MockSolenoid.RETRACTED);
+	}
+
+	/**
+	 * Creates a {@link Solenoid} that does not interface with any hardware
+	 * components, but still behaves as if it was.
+	 * 
+	 * @return a <code>Solenoid</code> that is initially neither extended or
+	 *         retracted
+	 */
+	public static Solenoid newUnknownSolenoid() {
+		return new MockSolenoid(MockSolenoid.UNKNOWN);
 	}
 }
