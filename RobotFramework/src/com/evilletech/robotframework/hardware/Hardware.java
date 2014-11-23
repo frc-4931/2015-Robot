@@ -10,6 +10,7 @@ import com.evilletech.robotframework.api.Relay;
 import com.evilletech.robotframework.api.Solenoid;
 import com.evilletech.robotframework.api.Switch;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -28,7 +29,8 @@ public class Hardware {
      * @return a relay on the specified channel
      */
     public static Relay relay(int channel) {
-        return new HardwareRelay(channel);
+        edu.wpi.first.wpilibj.Relay relay = new edu.wpi.first.wpilibj.Relay(channel);
+        return new HardwareRelay(relay);
     }
 
     /**
@@ -38,7 +40,8 @@ public class Hardware {
      * @return a switch on the specified channel
      */
     public static Switch normallyClosedSwitch(int channel) {
-        return new HardwareNormallyClosedSwitch(channel);
+        DigitalInput input = new DigitalInput(channel);
+        return new HardwareNormallyClosedSwitch(input);
     }
 
     /**
@@ -48,7 +51,8 @@ public class Hardware {
      * @return a switch on the specified channel
      */
     public static Switch normallyOpenSwitch(int channel) {
-        return new HardwareNormallyOpenSwitch(channel);
+        DigitalInput input = new DigitalInput(channel);
+        return new HardwareNormallyOpenSwitch(input);
     }
 
     /**

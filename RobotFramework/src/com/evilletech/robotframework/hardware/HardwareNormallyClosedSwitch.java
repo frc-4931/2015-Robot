@@ -20,11 +20,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @see Hardware
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
-class HardwareNormallyClosedSwitch implements Switch {
+final class HardwareNormallyClosedSwitch implements Switch {
 	private final DigitalInput input;
 
-	HardwareNormallyClosedSwitch(int channel) {
-		input = new DigitalInput(channel);
+	HardwareNormallyClosedSwitch(DigitalInput input) {
+		this.input = input;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
  * @see Hardware
  * @see edu.wpi.first.wpilibj.DoubleSolenoid
  */
-class HardwareDoubleSolenoid implements Solenoid {
+final class HardwareDoubleSolenoid implements Solenoid {
 	private final DoubleSolenoid solenoid;
 
     private Action action = Action.OFF;

@@ -20,14 +20,14 @@ import edu.wpi.first.wpilibj.Relay.Value;
  * @see Hardware
  * @see edu.wpi.first.wpilibj.Relay
  */
-class HardwareRelay implements Relay {
+final class HardwareRelay implements Relay {
 
     private final edu.wpi.first.wpilibj.Relay relay;
 
     private State state;
 
-    HardwareRelay(int channel) {
-        relay = new edu.wpi.first.wpilibj.Relay(channel);
+    HardwareRelay(edu.wpi.first.wpilibj.Relay relay) {
+        this.relay = relay;
     }
 
     @Override

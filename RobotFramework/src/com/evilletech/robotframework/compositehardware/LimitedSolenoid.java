@@ -15,7 +15,7 @@ import com.evilletech.robotframework.api.Switch;
  * 
  * @author Zach Anderson
  */
-public class LimitedSolenoid implements Solenoid {
+public final class LimitedSolenoid implements Solenoid {
 
     private final Solenoid solenoid;
     private final Switch retractSwitch;
