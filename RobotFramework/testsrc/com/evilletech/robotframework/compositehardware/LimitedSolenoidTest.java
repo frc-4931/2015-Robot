@@ -33,7 +33,7 @@ public class LimitedSolenoidTest {
     }
 
     @Test
-    public void shouldBeInitializedAsUnknown() {
+    public void shouldBeInitializedAsOffAtUnknownPosition() {
         assertOffAtUnknownPosition();
     }
 
