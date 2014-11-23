@@ -32,7 +32,7 @@ public class HardwareFactory {
 	 * @return a switch on the specified channel
 	 */
 	public static Switch newNCSwitch(int channel) {
-		return new HardwareNCSwitch(channel);
+		return new HardwareNormallyClosedSwitch(channel);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class HardwareFactory {
 	 * @return a switch on the specified channel
 	 */
 	public static Switch newNOSwitch(int channel) {
-		return new HardwareNOSwitch(channel);
+		return new HardwareNormallyOpenSwitch(channel);
 	}
 
 	/**

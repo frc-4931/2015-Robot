@@ -1,6 +1,6 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- *
+ * 
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
@@ -17,20 +17,20 @@ import com.evilletech.robotframework.mockhardware.MockSwitch;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class LimitedSolenoidTest {
-	
-	private MockSolenoid solenoid;
-	private MockSwitch retract;
-	private MockSwitch extend;
-	private LimitedSolenoid limitedSolenoid;
-	
-	@Before
-	public void beforeEach() {
-	    // Start out stopped in an unknown position ...
-		solenoid = MockSolenoid.unknown();
-		retract = MockSwitch.notTriggered();
-		extend = MockSwitch.notTriggered();
-		limitedSolenoid = new LimitedSolenoid(solenoid,retract,extend);
-	}
+
+    private MockSolenoid solenoid;
+    private MockSwitch retract;
+    private MockSwitch extend;
+    private LimitedSolenoid limitedSolenoid;
+
+    @Before
+    public void beforeEach() {
+        // Start out stopped in an unknown position ...
+        solenoid = MockSolenoid.unknown();
+        retract = MockSwitch.notTriggered();
+        extend = MockSwitch.notTriggered();
+        limitedSolenoid = new LimitedSolenoid(solenoid, retract, extend);
+    }
 
     @Test
     public void shouldBeInitializedAsUnknown() {
@@ -124,7 +124,7 @@ public class LimitedSolenoidTest {
         retract.setTriggered();
         assertRetracted();
     }
-    
+
     protected void assertExtending() {
         assertThat(limitedSolenoid.action()).isEqualTo(Action.EXTENDING);
         assertThat(limitedSolenoid.position()).isEqualTo(Position.UNKNOWN);
@@ -133,7 +133,7 @@ public class LimitedSolenoidTest {
         assertThat(limitedSolenoid.isRetracted()).isFalse();
         assertThat(limitedSolenoid.isRetracting()).isFalse();
     }
-    
+
     protected void assertExtended() {
         assertThat(limitedSolenoid.action()).isEqualTo(Action.OFF);
         assertThat(limitedSolenoid.position()).isEqualTo(Position.EXTENDED);
@@ -142,7 +142,7 @@ public class LimitedSolenoidTest {
         assertThat(limitedSolenoid.isRetracted()).isFalse();
         assertThat(limitedSolenoid.isRetracting()).isFalse();
     }
-    
+
     protected void assertRetracting() {
         assertThat(limitedSolenoid.action()).isEqualTo(Action.RETRACTING);
         assertThat(limitedSolenoid.position()).isEqualTo(Position.UNKNOWN);
@@ -151,7 +151,7 @@ public class LimitedSolenoidTest {
         assertThat(limitedSolenoid.isRetracted()).isFalse();
         assertThat(limitedSolenoid.isRetracting()).isTrue();
     }
-    
+
     protected void assertRetracted() {
         assertThat(limitedSolenoid.action()).isEqualTo(Action.OFF);
         assertThat(limitedSolenoid.position()).isEqualTo(Position.RETRACTED);
@@ -160,7 +160,7 @@ public class LimitedSolenoidTest {
         assertThat(limitedSolenoid.isRetracted()).isTrue();
         assertThat(limitedSolenoid.isRetracting()).isFalse();
     }
-    
+
     protected void assertOffAtUnknownPosition() {
         assertThat(limitedSolenoid.action()).isEqualTo(Action.OFF);
         assertThat(limitedSolenoid.position()).isEqualTo(Position.UNKNOWN);

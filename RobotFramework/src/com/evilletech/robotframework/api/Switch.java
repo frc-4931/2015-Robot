@@ -9,10 +9,9 @@ package com.evilletech.robotframework.api;
  */
 public interface Switch {
 	/**
-	 * Tests if this <code>Switch</code> is triggered.
+	 * Checks if this switch is triggered.
 	 * 
-	 * @return <b>true</b> if this <code>Switch</code> is not in its resting
-	 *         state; <b>false</b> otherwise
+	 * @return {@code true} if this switch is not in its resting state, or {@code false} otherwise
 	 */
-	public boolean isTriggered();
+	boolean isTriggered();
 }

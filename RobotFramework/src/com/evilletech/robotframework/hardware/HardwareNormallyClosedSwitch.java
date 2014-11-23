@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Wrapper for <code>DigitalInput</code> in WPILib. This class is used for
- * switches that are normally open. This class must be constructed through
+ * switches that are normally closed. This class must be constructed through
  * <code>HardwareFactory</code>.
  * 
  * @author Zach Anderson
@@ -14,14 +14,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @see HardwareFactory
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
-class HardwareNOSwitch implements Switch {
+class HardwareNormallyClosedSwitch implements Switch {
 	private final DigitalInput input;
 
-	HardwareNOSwitch(int channel) {
+	HardwareNormallyClosedSwitch(int channel) {
 		input = new DigitalInput(channel);
 	}
 
-	public boolean isTriggered() {
-		return input.get();
+	@Override
+    public boolean isTriggered() {
+		return !input.get();
 	}
 }

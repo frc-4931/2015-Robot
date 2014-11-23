@@ -8,7 +8,6 @@ import com.evilletech.robotframework.api.Solenoid;
  * 
  * @author Zach Anderson
  * @see Solenoid
- * @see MockFactory
  */
 public class MockSolenoid implements Solenoid {
 

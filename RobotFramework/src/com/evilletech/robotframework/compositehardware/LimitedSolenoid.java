@@ -4,11 +4,10 @@ import com.evilletech.robotframework.api.Solenoid;
 import com.evilletech.robotframework.api.Switch;
 
 /**
- * A <code>Solenoid</code> with physical sensors for position awareness. This
- * class is a composition of one <code>Solenoid</code> and two <code>Switch</code>es.
+ * A {@link Solenoid} with physical sensors for position awareness. This
+ * class is a composition of one {@link Solenoid} and two {@link Switch}es.
  * 
  * @author Zach Anderson
- * 
  */
 public class LimitedSolenoid implements Solenoid {
 
@@ -19,8 +18,7 @@ public class LimitedSolenoid implements Solenoid {
     private Action action = Action.OFF;
     private Position position = Position.UNKNOWN;
 
-    public LimitedSolenoid(Solenoid solenoid, Switch retractSwitch,
-            Switch extendSwitch) {
+    public LimitedSolenoid(Solenoid solenoid, Switch retractSwitch, Switch extendSwitch) {
         this.solenoid = solenoid;
         this.retractSwitch = retractSwitch;
         this.extendSwitch = extendSwitch;
@@ -32,13 +30,13 @@ public class LimitedSolenoid implements Solenoid {
         checkState();
         return position;
     }
-    
+
     @Override
     public Action action() {
         checkState();
         return action;
     }
-    
+
     @Override
     public void extend() {
         solenoid.extend();
@@ -52,18 +50,18 @@ public class LimitedSolenoid implements Solenoid {
         action = Action.RETRACTING;
         checkState();
     }
-    
+
     protected void checkState() {
-        switch( action ) {
+        switch (action) {
             case EXTENDING:
                 // Extend until the extended switch is triggered ...
-                if ( extendSwitch.isTriggered() ) {
+                if (extendSwitch.isTriggered()) {
                     action = Action.OFF;
                     position = Position.EXTENDED;
-                } else if ( !solenoid.isExtending() ) {
+                } else if (!solenoid.isExtending()) {
                     // The solenoid is no longer extending ...
-                    action = Action.OFF;
-                    if ( retractSwitch.isTriggered() ) {
+                    action = solenoid.action();
+                    if (retractSwitch.isTriggered()) {
                         // Somehow it became retracted ...
                         position = Position.RETRACTED;
                     } else {
@@ -73,13 +71,13 @@ public class LimitedSolenoid implements Solenoid {
                 break;
             case RETRACTING:
                 // Retract until the extended switch is triggered ...
-                if ( retractSwitch.isTriggered() ) {
+                if (retractSwitch.isTriggered()) {
                     action = Action.OFF;
                     position = Position.RETRACTED;
-                } else if ( !solenoid.isRetracting() ) {
+                } else if (!solenoid.isRetracting()) {
                     // The solenoid is no longer retracting ...
-                    action = Action.OFF;
-                    if ( extendSwitch.isTriggered() ) {
+                    action = solenoid.action();
+                    if (extendSwitch.isTriggered()) {
                         // Somehow it became extended ...
                         position = Position.EXTENDED;
                     } else {
@@ -88,11 +86,10 @@ public class LimitedSolenoid implements Solenoid {
                 }
                 break;
             case OFF:
-                action = Action.OFF;
-                if ( position == Position.UNKNOWN ) {
-                    if ( extendSwitch.isTriggered() ) {
+                if (position == Position.UNKNOWN) {
+                    if (extendSwitch.isTriggered()) {
                         position = Position.EXTENDED;
-                    } else if ( retractSwitch.isTriggered() ) {
+                    } else if (retractSwitch.isTriggered()) {
                         position = Position.RETRACTED;
                     } else {
                         position = solenoid.position();

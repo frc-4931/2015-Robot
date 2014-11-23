@@ -5,8 +5,9 @@ import com.evilletech.robotframework.api.Relay;
 import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
- * Wrapper for the WPILib <code>Relay</code>. This class cannot be constructed
- * directly, use <code>HardwareFactory</code> to get instances of it.
+ * Wrapper for the WPILib <code>Relay</code>, and which has no delay and thus is only
+ * {@link com.evilletech.robotframework.api.Relay.State#ON} or {@link com.evilletech.robotframework.api.Relay.State#OFF}.
+ * This class cannot be constructed directly, use <code>HardwareFactory</code> to get instances of it.
  * 
  * @author Zach Anderson
  * @see Relay
@@ -14,43 +15,37 @@ import edu.wpi.first.wpilibj.Relay.Value;
  * @see edu.wpi.first.wpilibj.Relay
  */
 class HardwareRelay implements Relay {
-	private static final int ON = 1;
-	private static final int OFF = 0;
 
-	private final edu.wpi.first.wpilibj.Relay relay;
+    private final edu.wpi.first.wpilibj.Relay relay;
 
-	private int logicalState;
+    private State state;
 
-	HardwareRelay(int channel) {
-		relay = new edu.wpi.first.wpilibj.Relay(channel);
-	}
+    HardwareRelay(int channel) {
+        relay = new edu.wpi.first.wpilibj.Relay(channel);
+    }
 
-	public void on() {
-		relay.set(Value.kOn);
-		logicalState = ON;
-	}
+    @Override
+    public void on() {
+        relay.set(Value.kOn);
+        state = State.ON;
+    }
 
-	public void off() {
-		relay.set(Value.kOff);
-		logicalState = OFF;
-	}
+    @Override
+    public void off() {
+        relay.set(Value.kOff);
+        state = State.OFF;
+    }
 
-	public boolean isOn() {
-		return relay.get() == Value.kOn;
-	}
-
-	public boolean isOff() {
-		return relay.get() == Value.kOn;
-	}
-
-	public boolean isSwitchingOn() {
-		// If we have been set to on and we are not on yet
-		return logicalState == ON && !isOn();
-	}
-
-	public boolean isSwitchingOff() {
-		// If we have been set to off and we are not off yet
-		return logicalState == OFF && !isOff();
-	}
-
+    @Override
+    public State state() {
+        Value value = relay.get();
+        if (value == Value.kForward || value == Value.kOn) {
+            state = State.ON;
+        } else if (value == Value.kReverse || value == Value.kOff) {
+            state = State.OFF;
+        } else {
+            state = State.UNKOWN;
+        }
+        return state;
+    }
 }

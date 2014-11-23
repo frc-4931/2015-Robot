@@ -10,12 +10,11 @@ import com.evilletech.robotframework.api.Switch;
  * 
  * @author Zach Anderson
  * @see Switch
- * @see MockFactory
  */
 public class MockSwitch implements Switch {
 
 	/**
-	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() untriggered} that does not interface 
+	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() untriggered} that does not interface
 	 * with any hardware components, but still behaves as if it was.
 	 * 
 	 * @return the mock switch
@@ -25,7 +24,7 @@ public class MockSwitch implements Switch {
 	}
 
 	/**
-	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() triggered} that does not interface 
+	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() triggered} that does not interface
 	 * with any hardware components, but still behaves as if it was.
 	 * 
 	 * @return the mock switch
@@ -41,7 +40,8 @@ public class MockSwitch implements Switch {
 		triggered = initialState;
 	}
 
-	public boolean isTriggered() {
+	@Override
+    public boolean isTriggered() {
 		return triggered;
 	}
 

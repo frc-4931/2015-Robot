@@ -4,50 +4,70 @@ import com.evilletech.robotframework.api.Relay;
 
 /**
  * A test implementation of <code>Relay</code> that does not require any
- * hardware to use. This class cannot be constructed directly, use
- * <code>MockFactory</code> to get instances of it.
+ * hardware to use.
  * 
  * @author Zach Anderson
  * @see Relay
- * @see MockFactory
  */
 public class MockRelay implements Relay {
-	static final int ON = 1;
-	static final int OFF = 0;
-	static final int UNKNOWN = -1;
+    
+    /**
+     * Create a mock relay that is in the ON state.
+     * 
+     * @return the mock relay; never null
+     */
+    public static MockRelay withOn() {
+        return new MockRelay(State.ON);
+    }
+    
+    /**
+     * Create a mock relay that is in the ON state.
+     * 
+     * @return the mock relay; never null
+     */
+    public static MockRelay withOff() {
+        return new MockRelay(State.ON);
+    }
+    
+    /**
+     * Create a mock relay that is in the ON state.
+     * 
+     * @return the mock relay; never null
+     */
+    public static MockRelay withUnknown() {
+        return new MockRelay(State.UNKOWN);
+    }
 
-	int state;
+    private State state;
 
-	MockRelay(int initalState) {
+	MockRelay(State initalState) {
 		state = initalState;
 	}
-
-	public void on() {
-		state = ON;
+	
+	@Override
+	public State state() {
+	    return state;
 	}
 
-	public void off() {
-		state = OFF;
+	@Override
+    public void on() {
+		state = State.ON;
 	}
 
-	public boolean isOn() {
-		return state == ON;
+	@Override
+    public void off() {
+		state = State.OFF;
 	}
-
-	public boolean isOff() {
-		return state == OFF;
-	}
-
-	// TODO implement a delay
-	public boolean isSwitchingOn() {
-		// Mock state changes are instant
-		return false;
-	}
-
-	// TODO implement a delay
-	public boolean isSwitchingOff() {
-		// Mock state changes are instant
-		return false;
-	}
-
+    
+    public void switchOn() {
+        state = State.SWITCHING_ON;
+    }
+    
+    public void switchOff() {
+        state = State.SWITCHING_OFF;
+    }
+    
+    public void unknown() {
+        state = State.UNKOWN;
+    }
 }
