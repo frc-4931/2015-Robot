@@ -15,40 +15,86 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
  * @see edu.wpi.first.wpilibj.DoubleSolenoid
  */
 class HardwareDoubleSolenoid implements Solenoid {
-	private static final int RETRACTED = 0;
-	private static final int EXTENDED = 1;
 	private final DoubleSolenoid solenoid;
 
-	private int logicalState = RETRACTED;
+    private Action action = Action.OFF;
+    private Position position = Position.UNKNOWN;
 
 	HardwareDoubleSolenoid(int extendChannel, int retractChannel) {
 		solenoid = new DoubleSolenoid(extendChannel, retractChannel);
 	}
+	
+	protected void checkState() {
+	    switch ( action ) {
+	        case EXTENDING:
+	            if ( solenoid.get().equals(Value.kOff) ) {
+	                // We're done extending ...
+	                position = Position.EXTENDED;
+	                action = Action.OFF;
+	            } else if ( solenoid.get().equals(Value.kForward) ) {
+	                // Still extending ....
+                    position = Position.UNKNOWN;
+	                action = Action.EXTENDING;
+	            } else if ( solenoid.get().equals(Value.kReverse)) {
+	                // We've stopped extending and are now retracting ...
+                    position = Position.UNKNOWN;
+	                action = Action.RETRACTING;
+	            }
+	            break;
+	        case RETRACTING:
+                if ( solenoid.get().equals(Value.kOff) ) {
+                    // We're done retracting ...
+                    position = Position.RETRACTED;
+                    action = Action.OFF;
+                } else if ( solenoid.get().equals(Value.kForward) ) {
+                    // We've stopped retracting and are now extending ...
+                    position = Position.UNKNOWN;
+                    action = Action.EXTENDING;
+                } else if ( solenoid.get().equals(Value.kReverse)) {
+                    // Still retracting ....
+                    position = Position.UNKNOWN;
+                    action = Action.RETRACTING;
+                }
+                break;
+	        case OFF:
+                if ( solenoid.get().equals(Value.kOff) ) {
+                    // We're still done, so don't change the position ...
+                    action = Action.OFF;
+                } else if ( solenoid.get().equals(Value.kForward) ) {
+                    // We're now extending ...
+                    position = Position.UNKNOWN;
+                    action = Action.EXTENDING;
+                } else if ( solenoid.get().equals(Value.kReverse)) {
+                    // We're now retracting ...
+                    position = Position.UNKNOWN;
+                    action = Action.RETRACTING;
+                }
+	    }
+	}
 
-	public void extend() {
+    @Override
+    public Position position() {
+        checkState();
+        return position;
+    }
+    
+    @Override
+    public Action action() {
+        checkState();
+        return action;
+    }
+
+    @Override
+    public void extend() {
 		solenoid.set(Value.kForward);
-		logicalState = EXTENDED;
+		action = Action.EXTENDING;
+		checkState();
 	}
 
-	public void retract() {
+	@Override
+    public void retract() {
 		solenoid.set(Value.kReverse);
-		logicalState = RETRACTED;
+        action = Action.RETRACTING;
+        checkState();
 	}
-
-	public boolean isExtended() {
-		return solenoid.get().equals(Value.kForward);
-	}
-
-	public boolean isRetracted() {
-		return solenoid.get().equals(Value.kReverse);
-	}
-
-	public boolean isExtending() {
-		return logicalState == EXTENDED && !isExtended();
-	}
-
-	public boolean isRetracting() {
-		return logicalState == RETRACTED && !isRetracted();
-	}
-
 }
