@@ -1,9 +1,16 @@
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ * 
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package com.evilletech.robotframework;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
-	public void robotInit() {
+	@Override
+    public void robotInit() {
 
 	}
 }
