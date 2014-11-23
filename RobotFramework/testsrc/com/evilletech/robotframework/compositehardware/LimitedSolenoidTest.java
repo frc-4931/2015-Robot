@@ -115,7 +115,7 @@ public class LimitedSolenoidTest {
         // Neither switch should be triggered ...
         assertThat(extend.isTriggered()).isFalse();
         assertThat(retract.isTriggered()).isFalse();
-        // Telling the solenoid to extend should change it to 'extending' ...
+        // Telling the solenoid to retract should change it to 'retracting' ...
         limitedSolenoid.retract();
         assertRetracting();
         extend.setTriggered();
@@ -123,6 +123,34 @@ public class LimitedSolenoidTest {
         // Once the retract switch is triggered, the solenoid should be retracted ...
         retract.setTriggered();
         assertRetracted();
+    }
+    
+    @Test
+    public void shouldRecoverFromFailedExtending() {
+        // Neither switch should be triggered ...
+        assertThat(extend.isTriggered()).isFalse();
+        assertThat(retract.isTriggered()).isFalse();
+        // Telling the solenoid to extend should change it to 'extending' ...
+        limitedSolenoid.extend();
+        assertExtending();
+        // Fail the underlying solenoid, which should no longer be extending ...
+        solenoid.stop(Position.UNKNOWN);
+        // Verify that the limited solenoid reflects the new state of the wrapped solenoid ...
+        assertOffAtUnknownPosition();
+    }
+    
+    @Test
+    public void shouldRecoverFromFailedRetracting() {
+        // Neither switch should be triggered ...
+        assertThat(extend.isTriggered()).isFalse();
+        assertThat(retract.isTriggered()).isFalse();
+        // Telling the solenoid to retract should change it to 'retracting' ...
+        limitedSolenoid.retract();
+        assertRetracting();
+        // Fail the underlying solenoid, which should no longer be retracting ...
+        solenoid.stop(Position.UNKNOWN);
+        // Verify that the limited solenoid reflects the new state of the wrapped solenoid ...
+        assertOffAtUnknownPosition();
     }
 
     protected void assertExtending() {
@@ -169,5 +197,4 @@ public class LimitedSolenoidTest {
         assertThat(limitedSolenoid.isRetracted()).isFalse();
         assertThat(limitedSolenoid.isRetracting()).isFalse();
     }
-
 }

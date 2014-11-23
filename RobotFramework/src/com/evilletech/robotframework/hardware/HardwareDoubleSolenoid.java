@@ -33,44 +33,44 @@ final class HardwareDoubleSolenoid implements Solenoid {
 	protected void checkState() {
 	    switch ( action ) {
 	        case EXTENDING:
-	            if ( solenoid.get().equals(Value.kOff) ) {
+	            if ( solenoid.get() == Value.kOff ) {
 	                // We're done extending ...
 	                position = Position.EXTENDED;
 	                action = Action.OFF;
-	            } else if ( solenoid.get().equals(Value.kForward) ) {
+	            } else if ( solenoid.get() == Value.kForward ) {
 	                // Still extending ....
                     position = Position.UNKNOWN;
 	                action = Action.EXTENDING;
-	            } else if ( solenoid.get().equals(Value.kReverse)) {
+	            } else if ( solenoid.get() == Value.kReverse) {
 	                // We've stopped extending and are now retracting ...
                     position = Position.UNKNOWN;
 	                action = Action.RETRACTING;
 	            }
 	            break;
 	        case RETRACTING:
-                if ( solenoid.get().equals(Value.kOff) ) {
+                if ( solenoid.get() == Value.kOff ) {
                     // We're done retracting ...
                     position = Position.RETRACTED;
                     action = Action.OFF;
-                } else if ( solenoid.get().equals(Value.kForward) ) {
+                } else if ( solenoid.get() == Value.kForward ) {
                     // We've stopped retracting and are now extending ...
                     position = Position.UNKNOWN;
                     action = Action.EXTENDING;
-                } else if ( solenoid.get().equals(Value.kReverse)) {
+                } else if ( solenoid.get() == Value.kReverse ) {
                     // Still retracting ....
                     position = Position.UNKNOWN;
                     action = Action.RETRACTING;
                 }
                 break;
 	        case OFF:
-                if ( solenoid.get().equals(Value.kOff) ) {
+                if ( solenoid.get() == Value.kOff ) {
                     // We're still done, so don't change the position ...
                     action = Action.OFF;
-                } else if ( solenoid.get().equals(Value.kForward) ) {
+                } else if ( solenoid.get() == Value.kForward ) {
                     // We're now extending ...
                     position = Position.UNKNOWN;
                     action = Action.EXTENDING;
-                } else if ( solenoid.get().equals(Value.kReverse)) {
+                } else if ( solenoid.get() == Value.kReverse) {
                     // We're now retracting ...
                     position = Position.UNKNOWN;
                     action = Action.RETRACTING;
