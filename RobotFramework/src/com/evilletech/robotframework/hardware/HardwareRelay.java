@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.Relay.Value;
  * 
  * @author Zach Anderson
  * @see Relay
- * @see HardwareFactory
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.Relay
  */
 class HardwareRelay implements Relay {

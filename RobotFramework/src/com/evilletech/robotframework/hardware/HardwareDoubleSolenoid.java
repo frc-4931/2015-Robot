@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
  * 
  * @author Zach Anderson
  * @see Solenoid
- * @see HardwareFactory
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.DoubleSolenoid
  */
 class HardwareDoubleSolenoid implements Solenoid {
@@ -26,10 +26,10 @@ class HardwareDoubleSolenoid implements Solenoid {
     private Action action = Action.OFF;
     private Position position = Position.UNKNOWN;
 
-	HardwareDoubleSolenoid(int extendChannel, int retractChannel) {
-		solenoid = new DoubleSolenoid(extendChannel, retractChannel);
-	}
-	
+    HardwareDoubleSolenoid(DoubleSolenoid solenoid ) {
+        this.solenoid = solenoid;
+    }
+    
 	protected void checkState() {
 	    switch ( action ) {
 	        case EXTENDING:

@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * 
  * @author Zach Anderson
  * @see Switch
- * @see HardwareFactory
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
 class HardwareNormallyOpenSwitch implements Switch {
