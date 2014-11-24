@@ -4,15 +4,15 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.hardware;
+package org.frc4931.robot.hardware;
 
-import com.evilletech.robotframework.api.Switch;
+import org.frc4931.robot.component.Switch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Wrapper for <code>DigitalInput</code> in WPILib. This class is used for
- * switches that are normally closed. This class must be constructed through
+ * switches that are normally open. This class must be constructed through
  * <code>HardwareFactory</code>.
  * 
  * @author Zach Anderson
@@ -20,15 +20,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @see Hardware
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
-final class HardwareNormallyClosedSwitch implements Switch {
+final class HardwareNormallyOpenSwitch implements Switch {
 	private final DigitalInput input;
 
-	HardwareNormallyClosedSwitch(DigitalInput input) {
-		this.input = input;
+	HardwareNormallyOpenSwitch(DigitalInput input) {
+	    this.input = input;
 	}
 
 	@Override
     public boolean isTriggered() {
-		return !input.get();
+		return input.get();
 	}
 }

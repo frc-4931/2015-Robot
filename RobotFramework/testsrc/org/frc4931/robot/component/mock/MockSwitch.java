@@ -4,9 +4,9 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.mockhardware;
+package org.frc4931.robot.component.mock;
 
-import com.evilletech.robotframework.api.Switch;
+import org.frc4931.robot.component.Switch;
 
 /**
  * A test implementation of <code>Switch</code> that can be used without any
@@ -42,7 +42,7 @@ public class MockSwitch implements Switch {
 	
 	private boolean triggered;
 
-	MockSwitch(boolean initialState) {
+	private MockSwitch(boolean initialState) {
 		triggered = initialState;
 	}
 
@@ -51,11 +51,22 @@ public class MockSwitch implements Switch {
 		return triggered;
 	}
 
+	/**
+	 * Set this switch as being triggered.
+	 */
 	public void setTriggered() {
 		triggered = true;
 	}
 
+    /**
+     * Set this switch as being not triggered.
+     */
 	public void setNotTriggered() {
 		triggered = false;
+	}
+	
+	@Override
+	public String toString() {
+	    return triggered ? "closed" : "open";
 	}
 }

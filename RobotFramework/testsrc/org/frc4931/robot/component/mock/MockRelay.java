@@ -4,13 +4,12 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.mockhardware;
+package org.frc4931.robot.component.mock;
 
-import com.evilletech.robotframework.api.Relay;
+import org.frc4931.robot.component.Relay;
 
 /**
- * A test implementation of <code>Relay</code> that does not require any
- * hardware to use.
+ * A test implementation of {@link Relay} that does not require any hardware to use.
  * 
  * @author Zach Anderson
  * @see Relay
@@ -46,7 +45,7 @@ public class MockRelay implements Relay {
 
     private State state;
 
-	MockRelay(State initalState) {
+	private MockRelay(State initalState) {
 		state = initalState;
 	}
 	
@@ -65,14 +64,23 @@ public class MockRelay implements Relay {
 		state = State.OFF;
 	}
     
+	/**
+	 * Set this switch to {@link org.frc4931.robot.component.Relay.State#SWITCHING_ON}.
+	 */
     public void switchOn() {
         state = State.SWITCHING_ON;
     }
     
+    /**
+     * Set this switch to {@link org.frc4931.robot.component.Relay.State#SWITCHING_OFF}.
+     */
     public void switchOff() {
         state = State.SWITCHING_OFF;
     }
     
+    /**
+     * Set this switch to {@link org.frc4931.robot.component.Relay.State#UNKOWN}.
+     */
     public void unknown() {
         state = State.UNKOWN;
     }

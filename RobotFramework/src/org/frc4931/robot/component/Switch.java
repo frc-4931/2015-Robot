@@ -4,7 +4,7 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.api;
+package org.frc4931.robot.component;
 
 /**
  * A switch is any readable device that has am active state when it is triggered

@@ -4,7 +4,7 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.api;
+package org.frc4931.robot.component;
 
 /**
  * A relay is a device that can be turned on and off. Note that a switch has one of 5 possible states:

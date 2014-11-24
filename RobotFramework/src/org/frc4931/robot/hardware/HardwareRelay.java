@@ -4,15 +4,15 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.hardware;
+package org.frc4931.robot.hardware;
 
-import com.evilletech.robotframework.api.Relay;
+import org.frc4931.robot.component.Relay;
 
 import edu.wpi.first.wpilibj.Relay.Value;
 
 /**
  * Wrapper for the WPILib <code>Relay</code>, and which has no delay and thus is only
- * {@link com.evilletech.robotframework.api.Relay.State#ON} or {@link com.evilletech.robotframework.api.Relay.State#OFF}.
+ * {@link org.frc4931.robot.component.Relay.State#ON} or {@link org.frc4931.robot.component.Relay.State#OFF}.
  * This class cannot be constructed directly, use <code>HardwareFactory</code> to get instances of it.
  * 
  * @author Zach Anderson

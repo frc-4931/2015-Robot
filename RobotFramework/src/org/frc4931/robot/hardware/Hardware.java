@@ -4,11 +4,11 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package com.evilletech.robotframework.hardware;
+package org.frc4931.robot.hardware;
 
-import com.evilletech.robotframework.api.Relay;
-import com.evilletech.robotframework.api.Solenoid;
-import com.evilletech.robotframework.api.Switch;
+import org.frc4931.robot.component.Relay;
+import org.frc4931.robot.component.Solenoid;
+import org.frc4931.robot.component.Switch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -60,12 +60,13 @@ public class Hardware {
      * 
      * @param extendChannel the channel that extends the solenoid
      * @param retractChannel the channel that retracts the solenoid
+     * @param initialDirection the initial direction for the solenoid; may not be null
      * @return a solenoid on the specified channels
      */
     public static Solenoid doubleSolenoid(int extendChannel,
-                                          int retractChannel) {
+                                          int retractChannel, Solenoid.Direction initialDirection ) {
         DoubleSolenoid solenoid = new DoubleSolenoid(extendChannel, retractChannel);
-        return new HardwareDoubleSolenoid(solenoid);
+        return new HardwareDoubleSolenoid(solenoid,initialDirection);
     }
 
     /**
@@ -74,11 +75,12 @@ public class Hardware {
      * @param module the module for the channels
      * @param extendChannel the channel that extends the solenoid
      * @param retractChannel the channel that retracts the solenoid
+     * @param initialDirection the initial direction for the solenoid; may not be null
      * @return a solenoid on the specified channels
      */
     public static Solenoid doubleSolenoid(int module, int extendChannel,
-                                          int retractChannel) {
+                                          int retractChannel, Solenoid.Direction initialDirection) {
         DoubleSolenoid solenoid = new DoubleSolenoid(module, extendChannel, retractChannel);
-        return new HardwareDoubleSolenoid(solenoid);
+        return new HardwareDoubleSolenoid(solenoid,initialDirection);
     }
 }
