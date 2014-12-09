@@ -18,18 +18,18 @@ import edu.wpi.first.wpilibj.Victor;
  * 
  * @author Zach Anderson
  * @see Motor
- * @see HardwareFactory
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.SpeedController
  */
-public class HardwareMotor implements Motor {
+public final class HardwareMotor implements Motor {
 	// TODO Make this an enum?
-	private static final int TALON = 1;
-	private static final int JAGUAR = 2;
-	private static final int VICTOR = 3;
+	static final int TALON = 1;
+	static final int JAGUAR = 2;
+	static final int VICTOR = 3;
 
 	private final SpeedController controller;
 
-	private HardwareMotor(int port, int type) {
+	HardwareMotor(int port, int type) {
 		if (type == TALON)
 			controller = new Talon(port);
 		else if (type == JAGUAR)
@@ -48,17 +48,5 @@ public class HardwareMotor implements Motor {
 
 	public double getSpeed() {
 		return controller.get();
-	}
-
-	public static Motor talonMotor(int channel) {
-		return new HardwareMotor(channel, TALON);
-	}
-
-	public static Motor jaguarMotor(int channel) {
-		return new HardwareMotor(channel, JAGUAR);
-	}
-
-	public static Motor victorMotor(int channel) {
-		return new HardwareMotor(channel, VICTOR);
 	}
 }
