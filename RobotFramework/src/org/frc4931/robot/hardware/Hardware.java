@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.hardware;
 
+import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
@@ -59,6 +60,35 @@ public class Hardware {
 			public static Switch normallyOpen(int channel) {
 				DigitalInput input = new DigitalInput(channel);
 				return new HardwareNormallyOpenSwitch(input);
+			}
+		}
+
+		public static final class Distance {
+			/**
+			 * Create a {@link HardwareDigitalUltrasonic} using the specified
+			 * channels. See {@link HardwareDigitalUltrasonic} for explanation
+			 * why.
+			 * 
+			 * @param ping
+			 *            the digital output to ping on
+			 * @param echo
+			 *            the digital input to listen to
+			 * @return a {@link DistanceSensor} linked to the specified channels
+			 */
+			public static DistanceSensor digitalUltrasonic(int ping, int echo) {
+				return new HardwareDigitalUltrasonic(ping, echo);
+			}
+
+			/**
+			 * Create a {@link HardwareAnalogUltrasonic} using the specified
+			 * channel.
+			 * 
+			 * @param channel
+			 *            the channel the sensor is connected to
+			 * @return a {@link DistanceSensor} linked to the specified channel
+			 */
+			public static DistanceSensor analogUltrasonic(int channel) {
+				return new HardwareAnalogUltrasonic(channel);
 			}
 		}
 	}
