@@ -38,12 +38,12 @@ final class HardwareGyroscope implements Gyroscope {
 	}
 
 	@Override
-	public double getTrueDisplacement() {
+	public double getRawAngle() {
 		return gyroscope.getAngle();
 	}
 
 	@Override
-	public double getVelocity() {
+	public double getRate() {
 		return gyroscope.getRate();
 	}
 }

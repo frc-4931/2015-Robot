@@ -40,12 +40,12 @@ public final class MockGyroscope implements Gyroscope {
 	}
 
 	@Override
-	public double getTrueDisplacement() {
+	public double getRawAngle() {
 		return angle;
 	}
 
 	@Override
-	public double getVelocity() {
+	public double getRate() {
 		return velocity;
 	}
 

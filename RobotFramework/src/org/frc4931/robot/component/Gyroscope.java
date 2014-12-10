@@ -17,12 +17,12 @@ package org.frc4931.robot.component;
  */
 public interface Gyroscope {
 	/**
-	 * Gets the angular velocity of this {@link Gyroscope} in degrees per
-	 * second.
+	 * Gets the rate of change in {@link #getAngle()} of this {@link Gyroscope}
+	 * in degrees per second.
 	 * 
 	 * @return the angular velocity of this {@link Gyroscope}
 	 */
-	public double getVelocity();
+	public double getRate();
 
 	/**
 	 * Gets the angular displacement of this {@link Gyroscope} since the last
@@ -43,23 +43,27 @@ public interface Gyroscope {
 	}
 
 	/**
-	 * Resets this {@link Gyroscope} so the current position is zero.
+	 * Resets this {@link Gyroscope} so that {@link #getAngle()} and
+	 * {@link #getHeading()} will return 0 at the current orientation. Does not
+	 * affect {@link #getRawAngle()} or {@link #getRawHeading()}.
 	 */
 	public void reset();
 
 	/**
-	 * Gets the true angular displacement of this {@link Gyroscope}.
+	 * Gets the raw angular displacement of this {@link Gyroscope} since it was
+	 * initialized. Unaffected by {@link #reset()}.
 	 * 
-	 * @return the true angular displacement of this {@link Gyroscope}
+	 * @return the raw angular displacement of this {@link Gyroscope}
 	 */
-	public double getTrueDisplacement();
+	public double getRawAngle();
 
 	/**
-	 * Gets the true heading of this {@link Gyroscope}.
+	 * Gets the raw angular displacement of this {@link Gyroscope} since it was
+	 * initialized in the range [0,359). Unaffected by {@link #reset()}.
 	 * 
-	 * @return the true heading of this {@link Gyroscope}
+	 * @return the raw heading of this {@link Gyroscope}
 	 */
-	public default double getTrueHeading() {
-		return getTrueDisplacement() % 360;
+	public default double getRawHeading() {
+		return getRawAngle() % 360;
 	}
 }
