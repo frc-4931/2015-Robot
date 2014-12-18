@@ -41,9 +41,22 @@ public final class HardwareMotor implements Motor {
 	}
 
 	public void setSpeed(double speed) {
+		controller.set(validateSpeed(speed));
+	}
+
+	/**
+	 * Tests if the specified speed is within the motor range. If not clamps the
+	 * specified value to [-1.0, 1.0].
+	 * 
+	 * @param speed
+	 *            the value to clamp
+	 * @return the clamped value
+	 */
+	// TODO Implement error logging
+	private double validateSpeed(double speed) {
 		speed = Math.min(1.0, speed);
 		speed = Math.max(-1.0, speed);
-		controller.set(speed);
+		return speed;
 	}
 
 	public double getSpeed() {
