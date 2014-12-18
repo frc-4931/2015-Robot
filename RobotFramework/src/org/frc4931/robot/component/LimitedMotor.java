@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot.component;
 
+import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
+
 /**
  * A {@link Motor} that is bounded by two {@link Switches} at the extremes of
  * it's range of motion.
@@ -30,7 +32,7 @@ package org.frc4931.robot.component;
  * @see Motor
  * @see Switch
  */
-public class LimitedMotor {
+public final class LimitedMotor {
 	public enum Position {
 		HIGH, LOW, UNKNOWN
 	}
@@ -63,15 +65,10 @@ public class LimitedMotor {
 	 * @param speed
 	 *            the speed to move the underlying {@link Motor} at
 	 */
-	public void setHigh(double speed) {
-		// Disregard sign and clamp
-		speed = Math.abs(speed);
-		speed = Math.min(1.0, speed);
-		speed = Math.max(0.0, speed);
-
+	public void moveTowardsHigh(double speed) {
 		// Motor protection
 		if (!isHigh())
-			motor.setSpeed(1.0);
+			motor.setSpeed(Math.abs(speed));
 		else
 			motor.stop();
 	}
@@ -84,15 +81,10 @@ public class LimitedMotor {
 	 * @param speed
 	 *            the speed to move the underlying {@link Motor} at
 	 */
-	public void setLow(double speed) {
-		// Disregard sign and clamp
-		speed = Math.abs(speed);
-		speed = Math.min(1.0, speed);
-		speed = Math.max(0.0, speed);
-
+	public void moveTowardsLow(double speed) {
 		// Motor protection
 		if (!isLow())
-			motor.setSpeed(-1.0);
+			motor.setSpeed(-Math.abs(speed));
 		else
 			motor.stop();
 	}
@@ -135,9 +127,12 @@ public class LimitedMotor {
 	 *         {@link LimitedMotor}
 	 */
 	public Position getPosition() {
-		if (isHigh() && !isLow())
+		boolean high = isHigh();
+		boolean low = isLow();
+
+		if (high && !low)
 			return Position.HIGH;
-		else if (isLow() && !isHigh())
+		else if (low && !high)
 			return Position.LOW;
 		else
 			return Position.UNKNOWN;
