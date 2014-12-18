@@ -93,101 +93,97 @@ public class Hardware {
 		}
 	}
 
-	public static final class Actuators {
+	/**
+	 * Create a relay on the specified channel.
+	 * 
+	 * @param channel
+	 *            the channel the relay is connected to
+	 * @return a relay on the specified channel
+	 */
+	public static Relay relay(int channel) {
+		edu.wpi.first.wpilibj.Relay relay = new edu.wpi.first.wpilibj.Relay(
+				channel);
+		return new HardwareRelay(relay);
+	}
+
+	public static final class Motors {
 		/**
-		 * Create a relay on the specified channel.
+		 * Create a motor driven by a Talon speed controller on the specified
+		 * channel.
 		 * 
 		 * @param channel
-		 *            the channel the relay is connected to
-		 * @return a relay on the specified channel
+		 *            the channel the controller is connected to
+		 * @return a motor on the specified channel
 		 */
-		public static Relay relay(int channel) {
-			edu.wpi.first.wpilibj.Relay relay = new edu.wpi.first.wpilibj.Relay(
-					channel);
-			return new HardwareRelay(relay);
+		public static Motor talon(int channel) {
+			return new HardwareMotor(channel, HardwareMotor.TALON);
 		}
 
-		public static final class Motors {
-			/**
-			 * Create a motor driven by a Talon speed controller on the
-			 * specified channel.
-			 * 
-			 * @param channel
-			 *            the channel the controller is connected to
-			 * @return a motor on the specified channel
-			 */
-			public static Motor talon(int channel) {
-				return new HardwareMotor(channel, HardwareMotor.TALON);
-			}
-
-			/**
-			 * Create a motor driven by a Jaguar speed controller on the
-			 * specified channel.
-			 * 
-			 * @param channel
-			 *            the channel the controller is connected to
-			 * @return a motor on the specified channel
-			 */
-			public static Motor jaguar(int channel) {
-				return new HardwareMotor(channel, HardwareMotor.JAGUAR);
-			}
-
-			/**
-			 * Create a motor driven by a Victor speed controller on the
-			 * specified channel.
-			 * 
-			 * @param channel
-			 *            the channel the controller is connected to
-			 * @return a motor on the specified channel
-			 */
-			public static Motor victor(int channel) {
-				return new HardwareMotor(channel, HardwareMotor.VICTOR);
-			}
+		/**
+		 * Create a motor driven by a Jaguar speed controller on the specified
+		 * channel.
+		 * 
+		 * @param channel
+		 *            the channel the controller is connected to
+		 * @return a motor on the specified channel
+		 */
+		public static Motor jaguar(int channel) {
+			return new HardwareMotor(channel, HardwareMotor.JAGUAR);
 		}
 
-		public static final class Solenoids {
-			/**
-			 * Create a solenoid that uses the specified channels on the default
-			 * module.
-			 * 
-			 * @param extendChannel
-			 *            the channel that extends the solenoid
-			 * @param retractChannel
-			 *            the channel that retracts the solenoid
-			 * @param initialDirection
-			 *            the initial direction for the solenoid; may not be
-			 *            null
-			 * @return a solenoid on the specified channels
-			 */
-			public static Solenoid doubleSolenoid(int extendChannel,
-					int retractChannel, Solenoid.Direction initialDirection) {
-				DoubleSolenoid solenoid = new DoubleSolenoid(extendChannel,
-						retractChannel);
-				return new HardwareDoubleSolenoid(solenoid, initialDirection);
-			}
+		/**
+		 * Create a motor driven by a Victor speed controller on the specified
+		 * channel.
+		 * 
+		 * @param channel
+		 *            the channel the controller is connected to
+		 * @return a motor on the specified channel
+		 */
+		public static Motor victor(int channel) {
+			return new HardwareMotor(channel, HardwareMotor.VICTOR);
+		}
+	}
 
-			/**
-			 * Create a solenoid that uses the specified channels on the given
-			 * module.
-			 * 
-			 * @param module
-			 *            the module for the channels
-			 * @param extendChannel
-			 *            the channel that extends the solenoid
-			 * @param retractChannel
-			 *            the channel that retracts the solenoid
-			 * @param initialDirection
-			 *            the initial direction for the solenoid; may not be
-			 *            null
-			 * @return a solenoid on the specified channels
-			 */
-			public static Solenoid doubleSolenoid(int module,
-					int extendChannel, int retractChannel,
-					Solenoid.Direction initialDirection) {
-				DoubleSolenoid solenoid = new DoubleSolenoid(module,
-						extendChannel, retractChannel);
-				return new HardwareDoubleSolenoid(solenoid, initialDirection);
-			}
+	public static final class Solenoids {
+		/**
+		 * Create a solenoid that uses the specified channels on the default
+		 * module.
+		 * 
+		 * @param extendChannel
+		 *            the channel that extends the solenoid
+		 * @param retractChannel
+		 *            the channel that retracts the solenoid
+		 * @param initialDirection
+		 *            the initial direction for the solenoid; may not be null
+		 * @return a solenoid on the specified channels
+		 */
+		public static Solenoid doubleSolenoid(int extendChannel,
+				int retractChannel, Solenoid.Direction initialDirection) {
+			DoubleSolenoid solenoid = new DoubleSolenoid(extendChannel,
+					retractChannel);
+			return new HardwareDoubleSolenoid(solenoid, initialDirection);
+		}
+
+		/**
+		 * Create a solenoid that uses the specified channels on the given
+		 * module.
+		 * 
+		 * @param module
+		 *            the module for the channels
+		 * @param extendChannel
+		 *            the channel that extends the solenoid
+		 * @param retractChannel
+		 *            the channel that retracts the solenoid
+		 * @param initialDirection
+		 *            the initial direction for the solenoid; may not be null
+		 * @return a solenoid on the specified channels
+		 */
+		public static Solenoid doubleSolenoid(int module,
+				int extendChannel, int retractChannel,
+				Solenoid.Direction initialDirection) {
+			DoubleSolenoid solenoid = new DoubleSolenoid(module,
+					extendChannel, retractChannel);
+			return new HardwareDoubleSolenoid(solenoid, initialDirection);
 		}
 	}
 }
