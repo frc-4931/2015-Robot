@@ -8,10 +8,7 @@ package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.Motor;
 
-import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Victor;
 
 /**
  * Wrapper for WPILib {@link SpeedController}.
@@ -22,22 +19,10 @@ import edu.wpi.first.wpilibj.Victor;
  * @see edu.wpi.first.wpilibj.SpeedController
  */
 public final class HardwareMotor implements Motor {
-	// TODO Make this an enum?
-	static final int TALON = 1;
-	static final int JAGUAR = 2;
-	static final int VICTOR = 3;
-
 	private final SpeedController controller;
 
-	HardwareMotor(int port, int type) {
-		if (type == TALON)
-			controller = new Talon(port);
-		else if (type == JAGUAR)
-			controller = new Jaguar(port);
-		else if (type == VICTOR)
-			controller = new Victor(port);
-		else
-			controller = null;
+	HardwareMotor(SpeedController controller) {
+		this.controller = controller;
 	}
 
 	public void setSpeed(double speed) {

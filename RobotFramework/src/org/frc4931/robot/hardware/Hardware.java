@@ -15,6 +15,9 @@ import org.frc4931.robot.component.Switch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * The factory for all devices that directly interface with robot hardware.
@@ -116,7 +119,7 @@ public class Hardware {
 		 * @return a motor on the specified channel
 		 */
 		public static Motor talon(int channel) {
-			return new HardwareMotor(channel, HardwareMotor.TALON);
+			return new HardwareMotor(new Talon(channel));
 		}
 
 		/**
@@ -128,7 +131,7 @@ public class Hardware {
 		 * @return a motor on the specified channel
 		 */
 		public static Motor jaguar(int channel) {
-			return new HardwareMotor(channel, HardwareMotor.JAGUAR);
+			return new HardwareMotor(new Jaguar(channel));
 		}
 
 		/**
@@ -140,7 +143,7 @@ public class Hardware {
 		 * @return a motor on the specified channel
 		 */
 		public static Motor victor(int channel) {
-			return new HardwareMotor(channel, HardwareMotor.VICTOR);
+			return new HardwareMotor(new Victor(channel));
 		}
 	}
 
