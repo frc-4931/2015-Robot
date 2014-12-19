@@ -33,115 +33,115 @@ import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
  * @see Switch
  */
 public final class LimitedMotor {
-	public enum Position {
-		HIGH, LOW, UNKNOWN
-	}
+    public enum Position {
+        HIGH, LOW, UNKNOWN
+    }
 
-	private final Motor motor;
-	private final Switch highSwitch;
-	private final Switch lowSwitch;
+    private final Motor motor;
+    private final Switch highSwitch;
+    private final Switch lowSwitch;
 
-	/**
-	 * Constructs a {@link LimitedMotor} with the specified parameters.
-	 * 
-	 * @param motor
-	 *            the {@link Motor} being limited
-	 * @param highSwitch
-	 *            the {@link Switch} at the highest extreme of motion
-	 * @param lowSwitch
-	 *            the {@link Switch} at the lowest extreme of motion
-	 */
-	public LimitedMotor(Motor motor, Switch highSwitch, Switch lowSwitch) {
-		this.motor = motor;
-		this.highSwitch = highSwitch;
-		this.lowSwitch = lowSwitch;
-	}
+    /**
+     * Constructs a {@link LimitedMotor} with the specified parameters.
+     * 
+     * @param motor
+     *            the {@link Motor} being limited
+     * @param highSwitch
+     *            the {@link Switch} at the highest extreme of motion
+     * @param lowSwitch
+     *            the {@link Switch} at the lowest extreme of motion
+     */
+    public LimitedMotor(Motor motor, Switch highSwitch, Switch lowSwitch) {
+        this.motor = motor;
+        this.highSwitch = highSwitch;
+        this.lowSwitch = lowSwitch;
+    }
 
-	/**
-	 * Moves this {@link LimitedMotor} towards the high limit. This method
-	 * should be called once per loop until the movement is completed, otherwise
-	 * the watchdog will stop the movement.
-	 * 
-	 * @param speed
-	 *            the speed to move the underlying {@link Motor} at
-	 */
-	public void moveTowardsHigh(double speed) {
-		// Motor protection
-		if (!isHigh())
-			motor.setSpeed(Math.abs(speed));
-		else
-			motor.stop();
-	}
+    /**
+     * Moves this {@link LimitedMotor} towards the high limit. This method
+     * should be called once per loop until the movement is completed, otherwise
+     * the watchdog will stop the movement.
+     * 
+     * @param speed
+     *            the speed to move the underlying {@link Motor} at
+     */
+    public void moveTowardsHigh(double speed) {
+        // Motor protection
+        if (!isHigh())
+            motor.setSpeed(Math.abs(speed));
+        else
+            motor.stop();
+    }
 
-	/**
-	 * Moves this {@link LimitedMotor} towards the low limit. This method should
-	 * be called once per loop until the movement is completed, otherwise the
-	 * watchdog will stop the movement.
-	 * 
-	 * @param speed
-	 *            the speed to move the underlying {@link Motor} at
-	 */
-	public void moveTowardsLow(double speed) {
-		// Motor protection
-		if (!isLow())
-			motor.setSpeed(-Math.abs(speed));
-		else
-			motor.stop();
-	}
+    /**
+     * Moves this {@link LimitedMotor} towards the low limit. This method should
+     * be called once per loop until the movement is completed, otherwise the
+     * watchdog will stop the movement.
+     * 
+     * @param speed
+     *            the speed to move the underlying {@link Motor} at
+     */
+    public void moveTowardsLow(double speed) {
+        // Motor protection
+        if (!isLow())
+            motor.setSpeed(-Math.abs(speed));
+        else
+            motor.stop();
+    }
 
-	/**
-	 * Tests if this {@link LimitedMotor} is at the high limit.
-	 * 
-	 * @return {@code true} if this {@link LimitedMotor} is at the high limit;
-	 *         {@code false} otherwise
-	 */
-	public boolean isHigh() {
-		return highSwitch.isTriggered();
-	}
+    /**
+     * Tests if this {@link LimitedMotor} is at the high limit.
+     * 
+     * @return {@code true} if this {@link LimitedMotor} is at the high limit;
+     *         {@code false} otherwise
+     */
+    public boolean isHigh() {
+        return highSwitch.isTriggered();
+    }
 
-	/**
-	 * Tests if this {@link LimitedMotor} is at the low limit.
-	 * 
-	 * @return {@code true} if this {@link LimitedMotor} is at the low limit;
-	 *         {@code false} otherwise
-	 */
-	public boolean isLow() {
-		return lowSwitch.isTriggered();
-	}
+    /**
+     * Tests if this {@link LimitedMotor} is at the low limit.
+     * 
+     * @return {@code true} if this {@link LimitedMotor} is at the low limit;
+     *         {@code false} otherwise
+     */
+    public boolean isLow() {
+        return lowSwitch.isTriggered();
+    }
 
-	/**
-	 * Gets the direction the underlying {@link Motor} is turning. Can be
-	 * {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
-	 * 
-	 * @return
-	 */
-	public Motor.Direction getDirection() {
-		return motor.getDirection();
-	}
+    /**
+     * Gets the direction the underlying {@link Motor} is turning. Can be
+     * {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
+     * 
+     * @return
+     */
+    public Motor.Direction getDirection() {
+        return motor.getDirection();
+    }
 
-	/**
-	 * Gets the current position of this {@link LimitedMotor}. Can be
-	 * {@code HIGH}, {@code LOW}, or {@code UNKNOWN}.
-	 * 
-	 * @return a {@link Position} representing the current position of this
-	 *         {@link LimitedMotor}
-	 */
-	public Position getPosition() {
-		boolean high = isHigh();
-		boolean low = isLow();
+    /**
+     * Gets the current position of this {@link LimitedMotor}. Can be
+     * {@code HIGH}, {@code LOW}, or {@code UNKNOWN}.
+     * 
+     * @return a {@link Position} representing the current position of this
+     *         {@link LimitedMotor}
+     */
+    public Position getPosition() {
+        boolean high = isHigh();
+        boolean low = isLow();
 
-		if (high && !low)
-			return Position.HIGH;
-		else if (low && !high)
-			return Position.LOW;
-		else
-			return Position.UNKNOWN;
-	}
+        if (high && !low)
+            return Position.HIGH;
+        else if (low && !high)
+            return Position.LOW;
+        else
+            return Position.UNKNOWN;
+    }
 
-	/**
-	 * Stops the underlying {@link Motor}.
-	 */
-	public void stop() {
-		motor.stop();
-	}
+    /**
+     * Stops the underlying {@link Motor}.
+     */
+    public void stop() {
+        motor.stop();
+    }
 }

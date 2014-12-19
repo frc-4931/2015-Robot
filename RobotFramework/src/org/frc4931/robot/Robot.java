@@ -9,8 +9,8 @@ package org.frc4931.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
-	@Override
+    @Override
     public void robotInit() {
 
-	}
+    }
 }

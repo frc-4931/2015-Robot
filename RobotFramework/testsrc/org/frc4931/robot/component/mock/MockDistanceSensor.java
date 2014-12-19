@@ -16,18 +16,18 @@ import org.frc4931.robot.component.DistanceSensor;
  * @see DistanceSensor
  */
 public final class MockDistanceSensor implements DistanceSensor {
-	private double distance;
+    private double distance;
 
-	public MockDistanceSensor(double initialDistance) {
-		distance = initialDistance;
-	}
+    public MockDistanceSensor(double initialDistance) {
+        distance = initialDistance;
+    }
 
-	@Override
-	public double getDistance() {
-		return distance;
-	}
+    @Override
+    public double getDistance() {
+        return distance;
+    }
 
-	public void setDistance(double d) {
-		distance = d;
-	}
+    public void setDistance(double d) {
+        distance = d;
+    }
 }

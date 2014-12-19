@@ -16,45 +16,44 @@ import org.frc4931.robot.component.Gyroscope;
  * @see Gyroscope
  */
 public final class MockGyroscope implements Gyroscope {
-	private double angle = 0;
-	private double velocity = 0;
-	private double zeroPoint = 0;
+    private double angle = 0;
+    private double velocity = 0;
+    private double zeroPoint = 0;
 
-	// XXX I don't see the benefit of this over a public constructor, other than
-	// constancy with the other classes.
-	public static MockGyroscope getNew() {
-		return new MockGyroscope();
-	}
+    // XXX I don't see the benefit of this over a public constructor, other than
+    // constancy with the other classes.
+    public static MockGyroscope getNew() {
+        return new MockGyroscope();
+    }
 
-	private MockGyroscope() {
-	}
+    private MockGyroscope() {}
 
-	@Override
-	public double getAngle() {
-		return angle - zeroPoint;
-	}
+    @Override
+    public double getAngle() {
+        return angle - zeroPoint;
+    }
 
-	@Override
-	public void reset() {
-		zeroPoint = angle;
-	}
+    @Override
+    public void reset() {
+        zeroPoint = angle;
+    }
 
-	@Override
-	public double getRawAngle() {
-		return angle;
-	}
+    @Override
+    public double getRawAngle() {
+        return angle;
+    }
 
-	@Override
-	public double getRate() {
-		return velocity;
-	}
+    @Override
+    public double getRate() {
+        return velocity;
+    }
 
-	public void setVelocity(double v) {
-		velocity = v;
-	}
+    public void setVelocity(double v) {
+        velocity = v;
+    }
 
-	public void setDisplacement(double d) {
-		angle = d;
-	}
+    public void setDisplacement(double d) {
+        angle = d;
+    }
 
 }

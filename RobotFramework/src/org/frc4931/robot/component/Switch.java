@@ -14,10 +14,11 @@ package org.frc4931.robot.component;
  * 
  */
 public interface Switch {
-	/**
-	 * Checks if this switch is triggered.
-	 * 
-	 * @return {@code true} if this switch is not in its resting state, or {@code false} otherwise
-	 */
-	boolean isTriggered();
+    /**
+     * Checks if this switch is triggered.
+     * 
+     * @return {@code true} if this switch is not in its resting state, or
+     *         {@code false} otherwise
+     */
+    boolean isTriggered();
 }

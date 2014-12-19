@@ -19,15 +19,15 @@ import edu.wpi.first.wpilibj.AnalogChannel;
  */
 // TODO Update class name to reflect name of specific sensor
 final class HardwareAnalogUltrasonic implements DistanceSensor {
-	private static final double VOLTS_TO_INCHES = 1000.0 / 9.8;
-	private final AnalogChannel sensor;
+    private static final double VOLTS_TO_INCHES = 1000.0 / 9.8;
+    private final AnalogChannel sensor;
 
-	HardwareAnalogUltrasonic(int channel) {
-		sensor = new AnalogChannel(channel);
-	}
+    HardwareAnalogUltrasonic(int channel) {
+        sensor = new AnalogChannel(channel);
+    }
 
-	@Override
-	public double getDistance() {
-		return sensor.getVoltage() * VOLTS_TO_INCHES;
-	}
+    @Override
+    public double getDistance() {
+        return sensor.getVoltage() * VOLTS_TO_INCHES;
+    }
 }

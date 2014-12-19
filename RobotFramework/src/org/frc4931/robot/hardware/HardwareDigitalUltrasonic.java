@@ -28,15 +28,15 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  * @see edu.wpi.first.wpilibj.Ultrasonic
  */
 final class HardwareDigitalUltrasonic implements DistanceSensor {
-	private final Ultrasonic ultrasonic;
+    private final Ultrasonic ultrasonic;
 
-	HardwareDigitalUltrasonic(int pingChannel, int echoChannel) {
-		ultrasonic = new Ultrasonic(pingChannel, echoChannel);
-		ultrasonic.setAutomaticMode(true);
-	}
+    HardwareDigitalUltrasonic(int pingChannel, int echoChannel) {
+        ultrasonic = new Ultrasonic(pingChannel, echoChannel);
+        ultrasonic.setAutomaticMode(true);
+    }
 
-	@Override
-	public double getDistance() {
-		return ultrasonic.getRangeInches();
-	}
+    @Override
+    public double getDistance() {
+        return ultrasonic.getRangeInches();
+    }
 }

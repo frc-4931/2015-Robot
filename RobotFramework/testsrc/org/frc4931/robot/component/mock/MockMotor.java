@@ -17,40 +17,40 @@ import org.frc4931.robot.component.Motor;
  * @see Motor
  */
 public class MockMotor implements Motor {
-	/**
-	 * Constructs a new {@link MockMotor} that is initially stopped. Same as
-	 * calling {@code running(0.0)}.
-	 * 
-	 * @return a {@link MockMotor} with 0 speed
-	 */
-	public static MockMotor stopped() {
-		return new MockMotor(0.0);
-	}
+    /**
+     * Constructs a new {@link MockMotor} that is initially stopped. Same as
+     * calling {@code running(0.0)}.
+     * 
+     * @return a {@link MockMotor} with 0 speed
+     */
+    public static MockMotor stopped() {
+        return new MockMotor(0.0);
+    }
 
-	/**
-	 * Constructs a new {@link MockMotor} with some initial speed.
-	 * 
-	 * @param speed
-	 *            the initial speed of the new {@link MockMotor}
-	 * @return a {@link MockMotor} with speed {@code speed}
-	 */
-	public static MockMotor running(double speed) {
-		return new MockMotor(speed);
-	}
+    /**
+     * Constructs a new {@link MockMotor} with some initial speed.
+     * 
+     * @param speed
+     *            the initial speed of the new {@link MockMotor}
+     * @return a {@link MockMotor} with speed {@code speed}
+     */
+    public static MockMotor running(double speed) {
+        return new MockMotor(speed);
+    }
 
-	double speed = 0;
+    double speed = 0;
 
-	private MockMotor(double speed) {
-		this.speed = speed;
-	}
+    private MockMotor(double speed) {
+        this.speed = speed;
+    }
 
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
 
-	@Override
-	public double getSpeed() {
-		return speed;
-	}
+    @Override
+    public double getSpeed() {
+        return speed;
+    }
 
 }

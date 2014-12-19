@@ -20,30 +20,30 @@ import edu.wpi.first.wpilibj.Gyro;
  * @see edu.wpi.first.wpilibj.Gyro
  */
 final class HardwareGyroscope implements Gyroscope {
-	private final Gyro gyroscope;
-	private double zeroPoint = 0;
+    private final Gyro gyroscope;
+    private double zeroPoint = 0;
 
-	HardwareGyroscope(int channel) {
-		gyroscope = new Gyro(channel);
-	}
+    HardwareGyroscope(int channel) {
+        gyroscope = new Gyro(channel);
+    }
 
-	@Override
-	public double getAngle() {
-		return gyroscope.getAngle() - zeroPoint;
-	}
+    @Override
+    public double getAngle() {
+        return gyroscope.getAngle() - zeroPoint;
+    }
 
-	@Override
-	public void reset() {
-		zeroPoint = gyroscope.getAngle();
-	}
+    @Override
+    public void reset() {
+        zeroPoint = gyroscope.getAngle();
+    }
 
-	@Override
-	public double getRawAngle() {
-		return gyroscope.getAngle();
-	}
+    @Override
+    public double getRawAngle() {
+        return gyroscope.getAngle();
+    }
 
-	@Override
-	public double getRate() {
-		return gyroscope.getRate();
-	}
+    @Override
+    public double getRate() {
+        return gyroscope.getRate();
+    }
 }

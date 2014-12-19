@@ -14,10 +14,10 @@ package org.frc4931.robot.component;
  *
  */
 public interface DistanceSensor {
-	/**
-	 * Gets the current value of this {@link DistanceSensor} in inches.
-	 * 
-	 * @return the value of this {@link DistanceSensor}
-	 */
-	public double getDistance();
+    /**
+     * Gets the current value of this {@link DistanceSensor} in inches.
+     * 
+     * @return the value of this {@link DistanceSensor}
+     */
+    public double getDistance();
 }
