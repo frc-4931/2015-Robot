@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot.component;
 
+import org.frc4931.utils.Operations;
+
 /**
  * A motor is a device that can be set to operate at a speed.
  * 
@@ -48,10 +50,11 @@ public interface Motor {
 	 * @return the {@link Direction} of this {@link Motor}
 	 */
 	default public Direction getDirection() {
-		if (getSpeed() > 0.0)
-			return Direction.FORWARD;
-		else if (getSpeed() < 0.0)
+		int direction = Operations.fuzzyCompare(getSpeed(), 0.0);
+		if (direction < 0)
 			return Direction.REVERSE;
+		else if (direction > 0)
+			return Direction.FORWARD;
 		else
 			return Direction.STOPPED;
 	}
