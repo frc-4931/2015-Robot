@@ -12,6 +12,7 @@ import org.frc4931.robot.component.LimitedMotor.Position;
 import org.frc4931.robot.component.Motor.Direction;
 import org.frc4931.robot.component.mock.MockMotor;
 import org.frc4931.robot.component.mock.MockSwitch;
+import org.frc4931.utils.Operations;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,9 +39,11 @@ public class LimitedMotorTest {
 
 	@Test
 	public void shouldRunInReverseUntilLow() {
-		limitedMotor.setLow(0.5);
+		assertStopped();
 
+		limitedMotor.moveTowardsLow(0.5);
 		assertMovingLow();
+		assertPositionUnknown();
 
 		lowSwitch.setTriggered();
 		// A command will be responsible for stopping the motor
@@ -52,8 +55,9 @@ public class LimitedMotorTest {
 
 	@Test
 	public void shouldRunForwardUntilHigh() {
-		limitedMotor.setHigh(0.5);
+		assertStopped();
 
+		limitedMotor.moveTowardsHigh(0.5);
 		assertMovingHigh();
 		assertPositionUnknown();
 
@@ -72,7 +76,7 @@ public class LimitedMotorTest {
 		assertLow();
 		assertStopped();
 
-		limitedMotor.setHigh(0.5);
+		limitedMotor.moveTowardsHigh(0.5);
 		lowSwitch.setNotTriggered();
 
 		assertPositionUnknown();
@@ -93,7 +97,7 @@ public class LimitedMotorTest {
 		assertHigh();
 		assertStopped();
 
-		limitedMotor.setLow(0.5);
+		limitedMotor.moveTowardsLow(0.5);
 		highSwitch.setNotTriggered();
 
 		assertPositionUnknown();
@@ -105,6 +109,33 @@ public class LimitedMotorTest {
 
 		assertLow();
 		assertStopped();
+	}
+
+	@Test
+	public void shouldReportUnknownPositionWhenNeitherSwitchTriggered() {
+		lowSwitch.setNotTriggered();
+		highSwitch.setNotTriggered();
+		assertPositionUnknown();
+	}
+
+	@Test
+	public void shouldReportUnknownPositionWhenBothSwitchesTriggered() {
+		lowSwitch.setTriggered();
+		highSwitch.setTriggered();
+		assertPositionUnknown();
+	}
+
+	@Test
+	public void shouldForceCorrectSignWhenRunningHigh() {
+		limitedMotor.moveTowardsHigh(-0.5);
+		assertThat(Operations.fuzzyCompare(motor.getSpeed(), 0.5)).isEqualTo(0);
+	}
+
+	@Test
+	public void shouldForceCorrectSignWhenRunningLow() {
+		limitedMotor.moveTowardsLow(0.5);
+		assertThat(Operations.fuzzyCompare(motor.getSpeed(), -0.5))
+				.isEqualTo(0);
 	}
 
 	private void assertLow() {
@@ -135,6 +166,6 @@ public class LimitedMotorTest {
 
 	private void assertStopped() {
 		assertThat(limitedMotor.getDirection()).isEqualTo(Direction.STOPPED);
-		assertThat(motor.getSpeed()).isEqualTo(0.0);
+		assertThat(Operations.fuzzyCompare(motor.getSpeed(), 0.0)).isEqualTo(0);
 	}
 }
