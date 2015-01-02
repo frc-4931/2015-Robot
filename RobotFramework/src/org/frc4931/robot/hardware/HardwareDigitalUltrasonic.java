@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
  * 
  * @author Zach Anderson
  * @see DistanceSensor
- * @see Hardwear
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.Ultrasonic
  */
 final class HardwareDigitalUltrasonic implements DistanceSensor {

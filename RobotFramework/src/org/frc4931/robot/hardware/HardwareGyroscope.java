@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.Gyro;
 
 /**
  * Wrapper for WPILib {@link Gyro}. Should be constructed by
- * {@link Hardware#gyroscope(int)}.
+ * {@link Hardware.Sensors#gyroscope(int)}.
  * 
  * @author Zach Anderson
  * @see Gyroscope
- * @see Hardwear
+ * @see Hardware
  * @see edu.wpi.first.wpilibj.Gyro
  */
 final class HardwareGyroscope implements Gyroscope {

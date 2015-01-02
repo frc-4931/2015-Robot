@@ -25,6 +25,7 @@ public final class HardwareMotor implements Motor {
         this.controller = controller;
     }
 
+    @Override
     public void setSpeed(double speed) {
         controller.set(validateSpeed(speed));
     }
@@ -44,6 +45,7 @@ public final class HardwareMotor implements Motor {
         return speed;
     }
 
+    @Override
     public double getSpeed() {
         return controller.get();
     }
