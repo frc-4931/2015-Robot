@@ -19,54 +19,55 @@ import org.frc4931.robot.component.Switch;
  */
 public class MockSwitch implements Switch {
 
-	/**
-	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() untriggered} that does not interface
-	 * with any hardware components, but still behaves as if it was.
-	 * 
-	 * @return the mock switch
-	 */
-	public static MockSwitch notTriggered() {
-		return new MockSwitch(false);
-	}
+    /**
+     * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered()
+     * untriggered} that does not interface with any hardware components, but
+     * still behaves as if it was.
+     * 
+     * @return the mock switch
+     */
+    public static MockSwitch notTriggered() {
+        return new MockSwitch(false);
+    }
 
-	/**
-	 * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered() triggered} that does not interface
-	 * with any hardware components, but still behaves as if it was.
-	 * 
-	 * @return the mock switch
-	 */
-	public static MockSwitch triggered() {
-		return new MockSwitch(true);
-	}
+    /**
+     * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered()
+     * triggered} that does not interface with any hardware components, but
+     * still behaves as if it was.
+     * 
+     * @return the mock switch
+     */
+    public static MockSwitch triggered() {
+        return new MockSwitch(true);
+    }
 
-	
-	private boolean triggered;
+    private boolean triggered;
 
-	private MockSwitch(boolean initialState) {
-		triggered = initialState;
-	}
+    private MockSwitch(boolean initialState) {
+        triggered = initialState;
+    }
 
-	@Override
+    @Override
     public boolean isTriggered() {
-		return triggered;
-	}
+        return triggered;
+    }
 
-	/**
-	 * Set this switch as being triggered.
-	 */
-	public void setTriggered() {
-		triggered = true;
-	}
+    /**
+     * Set this switch as being triggered.
+     */
+    public void setTriggered() {
+        triggered = true;
+    }
 
     /**
      * Set this switch as being not triggered.
      */
-	public void setNotTriggered() {
-		triggered = false;
-	}
-	
-	@Override
-	public String toString() {
-	    return triggered ? "closed" : "open";
-	}
+    public void setNotTriggered() {
+        triggered = false;
+    }
+
+    @Override
+    public String toString() {
+        return triggered ? "closed" : "open";
+    }
 }

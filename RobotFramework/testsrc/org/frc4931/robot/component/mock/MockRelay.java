@@ -9,13 +9,14 @@ package org.frc4931.robot.component.mock;
 import org.frc4931.robot.component.Relay;
 
 /**
- * A test implementation of {@link Relay} that does not require any hardware to use.
+ * A test implementation of {@link Relay} that does not require any hardware to
+ * use.
  * 
  * @author Zach Anderson
  * @see Relay
  */
 public class MockRelay implements Relay {
-    
+
     /**
      * Create a mock relay that is in the ON state.
      * 
@@ -24,7 +25,7 @@ public class MockRelay implements Relay {
     public static MockRelay withOn() {
         return new MockRelay(State.ON);
     }
-    
+
     /**
      * Create a mock relay that is in the ON state.
      * 
@@ -33,7 +34,7 @@ public class MockRelay implements Relay {
     public static MockRelay withOff() {
         return new MockRelay(State.ON);
     }
-    
+
     /**
      * Create a mock relay that is in the ON state.
      * 
@@ -45,41 +46,44 @@ public class MockRelay implements Relay {
 
     private State state;
 
-	private MockRelay(State initalState) {
-		state = initalState;
-	}
-	
-	@Override
-	public State state() {
-	    return state;
-	}
+    private MockRelay(State initalState) {
+        state = initalState;
+    }
 
-	@Override
+    @Override
+    public State state() {
+        return state;
+    }
+
+    @Override
     public void on() {
-		state = State.ON;
-	}
+        state = State.ON;
+    }
 
-	@Override
+    @Override
     public void off() {
-		state = State.OFF;
-	}
-    
-	/**
-	 * Set this switch to {@link org.frc4931.robot.component.Relay.State#SWITCHING_ON}.
-	 */
+        state = State.OFF;
+    }
+
+    /**
+     * Set this switch to
+     * {@link org.frc4931.robot.component.Relay.State#SWITCHING_ON}.
+     */
     public void switchOn() {
         state = State.SWITCHING_ON;
     }
-    
+
     /**
-     * Set this switch to {@link org.frc4931.robot.component.Relay.State#SWITCHING_OFF}.
+     * Set this switch to
+     * {@link org.frc4931.robot.component.Relay.State#SWITCHING_OFF}.
      */
     public void switchOff() {
         state = State.SWITCHING_OFF;
     }
-    
+
     /**
-     * Set this switch to {@link org.frc4931.robot.component.Relay.State#UNKOWN}.
+     * Set this switch to {@link org.frc4931.robot.component.Relay.State#UNKOWN}
+     * .
      */
     public void unknown() {
         state = State.UNKOWN;

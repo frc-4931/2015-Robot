@@ -21,14 +21,14 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * @see edu.wpi.first.wpilibj.DigitalInput
  */
 final class HardwareNormallyClosedSwitch implements Switch {
-	private final DigitalInput input;
+    private final DigitalInput input;
 
-	HardwareNormallyClosedSwitch(DigitalInput input) {
-		this.input = input;
-	}
+    HardwareNormallyClosedSwitch(DigitalInput input) {
+        this.input = input;
+    }
 
-	@Override
+    @Override
     public boolean isTriggered() {
-		return !input.get();
-	}
+        return !input.get();
+    }
 }
