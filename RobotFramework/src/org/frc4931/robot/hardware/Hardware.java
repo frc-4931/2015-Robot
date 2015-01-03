@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.hardware;
 
+import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
@@ -39,7 +40,41 @@ public class Hardware {
         public static Gyroscope gyroscope(int channel) {
             return new HardwareGyroscope(channel);
         }
-
+        
+        public static final class Accelerometers {
+            /**
+             * Create a new {@link Accelerometer} with a range of +-2g's
+             * @return an {@link Accelerometer}
+             */
+            public static Accelerometer accelerometer2G() {
+                return new HardwareAccelerometer(2);
+            }
+            
+            /**
+             * Create a new {@link Accelerometer} with a range of +-4g's
+             * @return an {@link Accelerometer}
+             */
+            public static Accelerometer accelerometer4G() {
+                return new HardwareAccelerometer(4);
+            }
+            
+            /**
+             * Create a new {@link Accelerometer} with a range of +-8g's
+             * @return an {@link Accelerometer}
+             */
+            public static Accelerometer accelerometer8G() {
+                return new HardwareAccelerometer(8);
+            }
+        
+            /**
+            * Create a new {@link Accelerometer} with a range of +-16g's
+            * @return an {@link Accelerometer}
+            */
+            public static Accelerometer accelerometer16G() {
+                return new HardwareAccelerometer(16);
+            }
+        }
+        
         public static final class Switches {
             /**
              * Create a generic normally closed switch on the specified channel.

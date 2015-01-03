@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.component;
 
+import org.frc4931.robot.component.Motor.Direction;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 
 /**
@@ -113,7 +114,8 @@ public final class LimitedMotor {
      * Gets the direction the underlying {@link Motor} is turning. Can be
      * {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
      * 
-     * @return
+     * @return a {@link Direction} representing the current direction of this
+     * {@link LimitedMotor}.
      */
     public Motor.Direction getDirection() {
         return motor.getDirection();

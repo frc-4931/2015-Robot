@@ -44,6 +44,7 @@ public class MockMotor implements Motor {
         this.speed = speed;
     }
 
+    @Override
     public void setSpeed(double speed) {
         this.speed = speed;
     }
