@@ -13,6 +13,7 @@ package org.frc4931.robot.component;
  * @author Zach Anderson
  * 
  */
+@FunctionalInterface
 public interface Switch {
     /**
      * Checks if this switch is triggered.

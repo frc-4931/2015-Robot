@@ -15,6 +15,7 @@ import org.frc4931.utils.Operations;
  * 
  */
 public interface Motor {
+
     public enum Direction {
         FORWARD, REVERSE, STOPPED
     }
@@ -44,8 +45,7 @@ public interface Motor {
     }
 
     /**
-     * Gets the current {@link Direction} of this {@link Motor}, can be
-     * {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
+     * Gets the current {@link Direction} of this {@link Motor}, can be {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
      * 
      * @return the {@link Direction} of this {@link Motor}
      */
@@ -57,5 +57,53 @@ public interface Motor {
             return Direction.FORWARD;
         else
             return Direction.STOPPED;
+    }
+
+    /**
+     * Create a new Motor instance that is composed of two other motors that will be controlled identically. This is useful
+     * when multiple motors are controlled in the same way, such as on a {@link DriveTrain}.
+     * 
+     * @param motor1 the first motor, and the motor from which the speed is read; may not be null
+     * @param motor2 the second motor; may not be null
+     * @return the composite motor; never null
+     */
+    static Motor compose(Motor motor1, Motor motor2) {
+        return new Motor() {
+            @Override
+            public double getSpeed() {
+                return motor1.getSpeed();
+            }
+
+            @Override
+            public void setSpeed(double speed) {
+                motor1.setSpeed(speed);
+                motor2.setSpeed(speed);
+            }
+        };
+    }
+
+    /**
+     * Create a new Motor instance that is composed of three other motors that will be controlled identically. This is useful when
+     * multiple motors are controlled in the same way, such as on a {@link DriveTrain}.
+     * 
+     * @param motor1 the first motor, and the motor from which the speed is read; may not be null
+     * @param motor2 the second motor; may not be null
+     * @param motor3 the third motor; may not be null
+     * @return the composite motor; never null
+     */
+    static Motor compose(Motor motor1, Motor motor2, Motor motor3) {
+        return new Motor() {
+            @Override
+            public double getSpeed() {
+                return motor1.getSpeed();
+            }
+
+            @Override
+            public void setSpeed(double speed) {
+                motor1.setSpeed(speed);
+                motor2.setSpeed(speed);
+                motor3.setSpeed(speed);
+            }
+        };
     }
 }
