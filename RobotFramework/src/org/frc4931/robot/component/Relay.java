@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.component;
 
+
 /**
  * A relay is a device that can be turned on and off. Note that a switch has one of 5 possible states:
  * <ol>
@@ -75,5 +76,26 @@ public interface Relay {
     default boolean isSwitchingOff() {
         return state() == State.SWITCHING_OFF;
     }
-
+    
+    /**
+     * Obtain a relay that remains in one state, regardless of any calls to {@link #on()} or {@link #off()}.
+     * @param state the fixed state; may not be null
+     * @return the constant relay; never null
+     */
+    static Relay fixed( State state ) {
+        return new Relay() {
+            @Override
+            public State state() {
+                return state;
+            }
+            @Override
+            public void on() {
+                // do nothing
+            }
+            @Override
+            public void off() {
+                // do nothing
+            }
+        };
+    }
 }
