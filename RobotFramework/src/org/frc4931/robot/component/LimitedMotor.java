@@ -115,7 +115,7 @@ public final class LimitedMotor {
      * {@code FORWARD}, {@code REVERSE}, or {@code STOPPED}.
      * 
      * @return a {@link Direction} representing the current direction of this
-     * {@link LimitedMotor}.
+     * {@link LimitedMotor}; never null
      */
     public Motor.Direction getDirection() {
         return motor.getDirection();
