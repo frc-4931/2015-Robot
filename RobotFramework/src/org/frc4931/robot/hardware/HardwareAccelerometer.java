@@ -11,6 +11,7 @@ import org.frc4931.utils.Triple;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
+import edu.wpi.first.wpilibj.I2C;
 
 /**
  * Wrapper for the WPILib {@link ADXL345_I2C}.
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
  * @author Zach Anderson
  */
 final class HardwareAccelerometer implements Accelerometer{
-    private final ADXL345_I2C accel;
+    private ADXL345_I2C accel;
     
     private long lastUpdate = 0;
     
@@ -36,14 +37,14 @@ final class HardwareAccelerometer implements Accelerometer{
     
     public HardwareAccelerometer(int range) {
         if(range==2)
-            accel = new ADXL345_I2C(0, ADXL345_I2C.DataFormat_Range.k2G);
+            accel = new ADXL345_I2C(I2C.Port.kOnboard, edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k2G);
         else if(range==4)
-            accel = new ADXL345_I2C(0, ADXL345_I2C.DataFormat_Range.k4G);
+            accel = new ADXL345_I2C(I2C.Port.kOnboard, edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k4G);
         else if(range==8)
-            accel = new ADXL345_I2C(0, ADXL345_I2C.DataFormat_Range.k8G);
+            accel = new ADXL345_I2C(I2C.Port.kOnboard, edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k8G);
         else{
             assert range == 16;
-            accel = new ADXL345_I2C(0, ADXL345_I2C.DataFormat_Range.k16G);
+            accel = new ADXL345_I2C(I2C.Port.kOnboard, edu.wpi.first.wpilibj.interfaces.Accelerometer.Range.k16G);
         }
     }
     
