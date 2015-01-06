@@ -8,10 +8,10 @@ package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.DistanceSensor;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
- * Wraps an {@link AnalogChannel} and provides the conversion to convert voltage
+ * Wraps an  and provides the conversion to convert voltage
  * to distance for the NAME_OF_ULTRASONIC_SENSOR_FROM_2014.
  * 
  * @author Zach Anderson
@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 // TODO Update class name to reflect name of specific sensor
 final class HardwareAnalogUltrasonic implements DistanceSensor {
     private static final double VOLTS_TO_INCHES = 1000.0 / 9.8;
-    private final AnalogChannel sensor;
+    private final AnalogInput sensor;
 
     HardwareAnalogUltrasonic(int channel) {
-        sensor = new AnalogChannel(channel);
+        sensor = new AnalogInput(channel);
     }
 
     @Override
