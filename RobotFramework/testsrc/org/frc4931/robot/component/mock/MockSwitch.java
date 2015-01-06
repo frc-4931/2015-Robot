@@ -17,7 +17,7 @@ import org.frc4931.robot.component.Switch;
  * @author Zach Anderson
  * @see Switch
  */
-public class MockSwitch implements Switch {
+public final class MockSwitch implements Switch {
 
     /**
      * Creates a {@link MockSwitch} initialized as {@link Switch#isTriggered()
