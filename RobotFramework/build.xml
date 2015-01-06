@@ -32,11 +32,16 @@
   <property name="test.target.dir" value="${test.output.dir}/classes"/>
 
   <!-- Deletes the directories used by the tests-->
-  <target name="clean" description="Clean up all generated files">
-    <echo>[custom-clean] Cleaning up test and local sim directories</echo>
+  <target name="clean-tests" description="Clean up all generated test files">
+    <echo>[custom-clean] Cleaning up test classes and results</echo>
     <delete dir="${test.output.dir}" />
   </target>
-  	
+	    
+  <!-- Deletes the directories used by the tests-->
+  <target name="clean" depends="clean-tests" description="Clean up all generated files">
+    <ant antfile="${wpilib.ant.dir}/build.xml" target="jar"/>
+  </target>
+	    
   <!-- 
   Override the 'compile' target to first call standard target and then copy our extra library JARs into the 
   '${build.jars}' folder. This is only needed if there are extra library JARs. This is a bit of a hack, but doing this
@@ -51,24 +56,34 @@
     </copy>
   </target>
 
+  <!-- Check if there are any JUnit Tests -->
+  <target name="if-tests">
+	<condition property="tests-exists">
+	  <available file="${test.source.dir}" type="dir"/>
+	</condition>
+  </target>
+	
+  <!-- Define a classpath for unit testing -->
+  <path id="junit.class.path">
+    <fileset dir="${test.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
+    <pathelement location="${build.dir}" />
+  </path>
+
   <!-- Run the JUnit Tests -->
-  <target name="test" depends="clean, compile" description="Run the unit tests">
-    <!-- Could break each group of commands into separate targets, but this is cleaner for something so simple -->
-    <!-- Creates the directories used in the tests -->
-    <mkdir dir="${test.output.dir}" />
+  <target name="compile-tests" depends="compile, if-tests" if="tests-exists" description="Compile the unit tests">
+    <echo>[compile-tests] Compiling unit tests...</echo>
     <mkdir dir="${test.target.dir}" />
-    <mkdir dir="${test.report.dir}" />
-  	<!-- Define a classpath for unit testing -->
-    <path id="junit.class.path">
-        <fileset dir="${test.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
-    	<pathelement location="${build.dir}" />
-    </path>
-    <!-- Compiles the java test code --> 
-    <echo>Compiling unit tests...</echo>
     <javac srcdir="${test.source.dir}" destdir="${test.target.dir}" includeantruntime="false">
       <classpath refid="junit.class.path" />
     </javac> 
-    <echo>Running all unit tests...</echo>
+  </target>
+
+  <!-- Run the JUnit Tests -->
+  <target name="test" depends="compile-tests, if-tests" if="tests-exists" description="Run the unit tests">
+    <!-- Creates the directories used in the tests -->
+    <mkdir dir="${test.output.dir}" />
+    <mkdir dir="${test.report.dir}" />
+    <echo>[run-tests] Running all unit tests...</echo>
     <junit printsummary="off" showOutput="false" fork="true" haltonfailure="false">
       <classpath refid="junit.class.path" />
       <classpath> 
@@ -89,7 +104,7 @@
     <echo>[custom-jar] Copying deployable library jars to ${build.jars}.</echo>
     <!-- Add one 'copy' task for each file JAR want to add to the robot -->
     <copy todir="${build.jars}" preservelastmodified="true" quiet="true">
-      <fileset dir="${extra.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
+      <fileset dir="${extra.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar" erroronmissingdir="false"/>
     </copy>
     <ant antfile="${wpilib.ant.dir}/build.xml" target="jar"/>
   </target>
@@ -106,7 +121,7 @@
       <zipgroupfileset dir="${wpilib.sim.lib}">
         <include name="**/*.jar" />
       </zipgroupfileset>
-      <zipgroupfileset dir="${extra.libs.dir}">
+      <zipgroupfileset dir="${extra.libs.dir}" erroronmissingdir="false">
         <exclude name="**/*-sources.jar" />
         <include name="**/*.jar" />
       </zipgroupfileset>
