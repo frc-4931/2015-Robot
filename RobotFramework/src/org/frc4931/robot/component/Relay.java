@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot.component;
 
+import java.util.function.BooleanSupplier;
+
 /**
  * A relay is a device that can be turned on and off. Note that a switch has one of 5 possible states:
  * <ol>
@@ -74,6 +76,55 @@ public interface Relay {
      */
     default boolean isSwitchingOff() {
         return state() == State.SWITCHING_OFF;
+    }
+    
+    /**
+     * Obtain a relay that remains in one state, regardless of any calls to {@link #on()} or {@link #off()}.
+     * @param state the fixed state; may not be null
+     * @return the constant relay; never null
+     */
+    static Relay fixed( State state ) {
+        return new Relay() {
+            @Override
+            public State state() {
+                return state;
+            }
+            @Override
+            public void on() {
+                // do nothing
+            }
+            @Override
+            public void off() {
+                // do nothing
+            }
+        };
+    }
+    
+    /**
+     * Wrap an existing relay so that it is {@link Relay#on() activated} only when the suppplied function determines it's acceptable.
+     * @param relay the relay to be used; may not be null
+     * @param onPermissible the function that determines if the relay can be activated; may be null
+     * @param offPermissible the function that determines if the relay can be de-activated; may be null
+     * @return the new contingent relay, or {@code relay} if {@code highGearAcceptable} is null
+     */
+    static Relay contingent( Relay relay, BooleanSupplier onPermissible, BooleanSupplier offPermissible ) {
+        if ( onPermissible == null && offPermissible == null ) return relay;
+        return new Relay() {
+            @Override
+            public State state() {
+                return relay.state();
+            }
+            @Override
+            public void on() {
+                if ( onPermissible != null && !onPermissible.getAsBoolean() ) return;
+                relay.on();
+            }
+            @Override
+            public void off() {
+                if ( offPermissible != null && !offPermissible.getAsBoolean() ) return;
+                relay.off();
+            }
+        };
     }
 
 }

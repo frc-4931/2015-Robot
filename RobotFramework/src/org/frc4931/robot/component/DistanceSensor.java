@@ -13,6 +13,7 @@ package org.frc4931.robot.component;
  * @author Zach Anderson
  *
  */
+@FunctionalInterface
 public interface DistanceSensor {
     /**
      * Gets the current value of this {@link DistanceSensor} in inches.
