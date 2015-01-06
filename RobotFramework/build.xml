@@ -27,4 +27,91 @@
   
   <import file="${wpilib.ant.dir}/build.xml"/>
 
+  <!-- ************ START FRC4931 MODIFICATION ************ -->
+  <property name="test.report.dir" value="${test.output.dir}/report"/>
+  <property name="test.target.dir" value="${test.output.dir}/classes"/>
+
+  <!-- Deletes the directories used by the tests-->
+  <target name="clean" description="Clean up all generated files">
+    <echo>[custom-clean] Cleaning up test and local sim directories</echo>
+    <delete dir="${test.output.dir}" />
+  </target>
+  	
+  <!-- 
+  Override the 'compile' target to first call standard target and then copy our extra library JARs into the 
+  '${build.jars}' folder. This is only needed if there are extra library JARs. This is a bit of a hack, but doing this
+  here means that all other non-simulation targets will work as-is.
+  -->
+  <target name="compile" description="Compile the source code.">
+    <ant antfile="${wpilib.ant.dir}/build.xml" target="compile"/>
+    <echo>[custom-compile] Copying deployable library jars to ${build.jars}.</echo>
+    <!-- Add one 'copy' task for each file JAR want to add to the robot -->
+    <copy todir="${build.jars}" preservelastmodified="true">
+      <fileset dir="${extra.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
+    </copy>
+  </target>
+
+  <!-- Run the JUnit Tests -->
+  <target name="test" depends="clean, compile" description="Run the unit tests">
+    <!-- Could break each group of commands into separate targets, but this is cleaner for something so simple -->
+    <!-- Creates the directories used in the tests -->
+    <mkdir dir="${test.output.dir}" />
+    <mkdir dir="${test.target.dir}" />
+    <mkdir dir="${test.report.dir}" />
+  	<!-- Define a classpath for unit testing -->
+    <path id="junit.class.path">
+        <fileset dir="${test.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
+    	<pathelement location="${build.dir}" />
+    </path>
+    <!-- Compiles the java test code --> 
+    <echo>Compiling unit tests...</echo>
+    <javac srcdir="${test.source.dir}" destdir="${test.target.dir}" includeantruntime="false">
+      <classpath refid="junit.class.path" />
+    </javac> 
+    <echo>Running all unit tests...</echo>
+    <junit printsummary="off" showOutput="false" fork="true" haltonfailure="false">
+      <classpath refid="junit.class.path" />
+      <classpath> 
+        <pathelement location="${test.target.dir}"/>
+      </classpath>
+      <formatter type="plain" usefile="false" /> <!-- to screen -->
+      <batchtest todir="${test.report.dir}">
+        <fileset dir="${test.source.dir}">
+          <include name="**/*Test*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+	
+  <!-- Override the several targets that will need to use the extra library JARs. -->
+  <target name="jar" depends="compile" description="Build and collect the JARs necessary for the robot">
+    <mkdir dir="${build.jars}" />
+    <echo>[custom-jar] Copying deployable library jars to ${build.jars}.</echo>
+    <!-- Add one 'copy' task for each file JAR want to add to the robot -->
+    <copy todir="${build.jars}" preservelastmodified="true" quiet="true">
+      <fileset dir="${extra.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
+    </copy>
+    <ant antfile="${wpilib.ant.dir}/build.xml" target="jar"/>
+  </target>
+
+  <target name="jar-for-simulation" depends="compile" description="Build and collect the JARs necessary for the robot">
+    <echo>[custom-jar-for-simulation] Building jar for simulation.</echo>
+    <jar destfile="${simulation.dist.jar}">
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <attribute name="Robot-Class" value="${robot.class}"/>
+        <attribute name="Main-Class" value="edu.wpi.first.wpilibj.RobotBase"/>
+      </manifest>
+      <fileset dir="${build.dir}" />
+      <zipgroupfileset dir="${wpilib.sim.lib}">
+        <include name="**/*.jar" />
+      </zipgroupfileset>
+      <zipgroupfileset dir="${extra.libs.dir}">
+        <exclude name="**/*-sources.jar" />
+        <include name="**/*.jar" />
+      </zipgroupfileset>
+    </jar>
+  </target>
+  <!-- ************ END FRC4931 MODIFICATION ************ -->
+	
 </project> 
