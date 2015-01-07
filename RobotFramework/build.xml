@@ -51,7 +51,7 @@
     <ant antfile="${wpilib.ant.dir}/build.xml" target="compile"/>
     <echo>[custom-compile] Copying deployable library jars to ${build.jars}.</echo>
     <!-- Add one 'copy' task for each file JAR want to add to the robot -->
-    <copy todir="${build.jars}" preservelastmodified="true">
+    <copy todir="${build.jars}" preservelastmodified="true" failonerror="false" quiet="true">
       <fileset dir="${extra.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
     </copy>
   </target>
