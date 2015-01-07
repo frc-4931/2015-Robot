@@ -15,7 +15,7 @@ import org.frc4931.robot.component.Relay;
  * @author Zach Anderson
  * @see Relay
  */
-public class MockRelay implements Relay {
+public final class MockRelay implements Relay {
 
     /**
      * Create a mock relay that is in the ON state.

@@ -15,7 +15,7 @@ import org.frc4931.utils.Triple;
  * 
  * @author Zach Anderson
  */
-public class MockAccelerometer implements Accelerometer{
+public final class MockAccelerometer implements Accelerometer{
     private double xAccel;
     private double yAccel;
     private double zAccel;

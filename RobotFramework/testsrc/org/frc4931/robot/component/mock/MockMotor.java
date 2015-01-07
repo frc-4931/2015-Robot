@@ -16,7 +16,7 @@ import org.frc4931.robot.component.Motor;
  * @author Zach Anderson
  * @see Motor
  */
-public class MockMotor implements Motor {
+public final class MockMotor implements Motor {
     /**
      * Constructs a new {@link MockMotor} that is initially stopped. Same as
      * calling {@code running(0.0)}.
