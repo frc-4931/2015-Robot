@@ -20,19 +20,22 @@ import java.util.function.Supplier;
 public final class Ramp extends Subsystem {
     public static final double RAIL_MOVE_SPEED = 0.0d;
 
-    private final Solenoid lifter;
+    private final Solenoid rampLifter;
+    private final Solenoid stackLifter;
     private final LimitedMotor guardRail; // Debatable - solenoid vs motor?
     private final Supplier<Command> defaultCommandSupplier;
 
     /**
      * Creates a new Ramp subsystem using a Solenoid for the lifting mechanism and a LimitedMotor for the guardrails.
      *
-     * @param lifter The lifting mechanism; may not be null.
+     * @param rampLifter The lifting mechanism for the ramp; may not be null.
+     * @param stackLifter The lifting mechanism for the stack; may not be null.
      * @param guardRail The guard rail control mechanism; may not be null.
      * @param defaultCommandSupplier The supplier for this subsystem's default command; may be null if there is no default command.
      */
-    public Ramp(Solenoid lifter, LimitedMotor guardRail, Supplier<Command> defaultCommandSupplier) {
-        this.lifter = lifter;
+    public Ramp(Solenoid rampLifter, Solenoid stackLifter, LimitedMotor guardRail, Supplier<Command> defaultCommandSupplier) {
+        this.rampLifter = rampLifter;
+        this.stackLifter = stackLifter;
         this.guardRail = guardRail;
         this.defaultCommandSupplier = defaultCommandSupplier;
     }
@@ -40,15 +43,29 @@ public final class Ramp extends Subsystem {
     /**
      * Raises the ramp using the lifting mechanism.
      */
-    public void raise() {
-        lifter.extend();
+    public void raiseRamp() {
+        rampLifter.extend();
     }
 
     /**
      * Lowers the ramp using the lifting mechanism.
      */
-    public void lower() {
-        lifter.retract();
+    public void lowerRamp() {
+        rampLifter.retract();
+    }
+
+    /**
+     * Use the stack lifter to raise the loaded stack.
+     */
+    public void raiseStack() {
+        stackLifter.extend();
+    }
+
+    /**
+     * Use the stack lifter to lower the loaded stack.
+     */
+    public void lowerStack() {
+        stackLifter.retract();
     }
 
     /**
