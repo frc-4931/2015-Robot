@@ -5,10 +5,16 @@
  * root directory of this project's Git repository.
  */
 
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
+
 package org.frc4931.robot.subsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc4931.robot.component.Solenoid;
 
 import java.util.function.Supplier;
@@ -16,10 +22,9 @@ import java.util.function.Supplier;
 /**
  * A subsystem used to control the grabbing arms that load totes onto the Ramp.
  */
-public final class LoaderArm extends Subsystem {
+public final class LoaderArm extends SubsystemBase {
     private final Solenoid lifter;
     private final Solenoid grabber;
-    private final Supplier<Command> defaultCommandSupplier;
 
     /**
      * Creates a new LoaderArm subsystem using the lifting & grabbing Solenoids and the default command.
@@ -28,9 +33,9 @@ public final class LoaderArm extends Subsystem {
      * @param defaultCommandSupplier the supplier for this subsystem's default command; may be null if there is no default command
      */
     public LoaderArm(Solenoid lifter, Solenoid grabber, Supplier<Command> defaultCommandSupplier) {
+        super(defaultCommandSupplier);
         this.lifter = lifter;
         this.grabber = grabber;
-        this.defaultCommandSupplier = defaultCommandSupplier;
     }
 
     /**
@@ -59,13 +64,5 @@ public final class LoaderArm extends Subsystem {
      */
     public void release() {
         grabber.extend();
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        if ( defaultCommandSupplier != null ) {
-            Command command = defaultCommandSupplier.get();
-            setDefaultCommand(command);
-        }
     }
 }

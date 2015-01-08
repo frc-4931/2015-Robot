@@ -1,24 +1,29 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
  * 
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
 package org.frc4931.robot.subsystem;
 
-import java.util.function.Supplier;
-
+import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Relay.State;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import java.util.function.Supplier;
 
 /**
  * A subsystem that can be used to control a {@link DriveTrain} using arcade, tank, or cheesy methods.
  */
-public final class DriveSystem extends Subsystem {
+public final class DriveSystem extends SubsystemBase {
     
     private static final double SENSITIVITY_HIGH = 0.75;
     private static final double SENSITIVITY_LOW = 0.75;
@@ -28,7 +33,6 @@ public final class DriveSystem extends Subsystem {
 
     private final DriveTrain driveTrain;
     private final Relay highGear;
-    private final Supplier<Command> defaultCommandSupplier;
 
     private double quickStopAccumulator = 0.0;
     private double oldWheel = 0.0;
@@ -40,18 +44,9 @@ public final class DriveSystem extends Subsystem {
      * @param defaultCommandSupplier the supplier for this subsystem's default command; may be null if there is no default command
      */
     public DriveSystem(DriveTrain driveTrain, Relay shifter, Supplier<Command> defaultCommandSupplier ) {
+        super(defaultCommandSupplier);
         this.driveTrain = driveTrain;
         this.highGear = shifter != null ? shifter : Relay.fixed(State.OFF);
-        this.defaultCommandSupplier = defaultCommandSupplier;
-        assert this.highGear != null;
-    }
-    
-    @Override
-    protected void initDefaultCommand() {
-        if ( defaultCommandSupplier != null ) {
-            Command command = defaultCommandSupplier.get();
-            setDefaultCommand(command);
-        }
     }
     
     /**
