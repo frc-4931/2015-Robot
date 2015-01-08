@@ -14,6 +14,9 @@ import org.frc4931.robot.component.Solenoid;
 
 import java.util.function.Supplier;
 
+/**
+ * A subsystem used to control the ramp totes are stored on and ejected from.
+ */
 public final class Ramp extends Subsystem {
     public static final double RAIL_MOVE_SPEED = 0.0d;
 
