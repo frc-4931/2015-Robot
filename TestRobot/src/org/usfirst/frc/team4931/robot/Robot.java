@@ -17,19 +17,18 @@ public class Robot extends IterativeRobot {
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
+	@Override
     public void robotInit() {
     	System.out.println("hello world im a bag robot");
-    	
     }
-
+	
     /**
      * This function is called periodically during operator control
      */
+	@Override
     public void teleopPeriodic() {
     	DigitalInput in = new DigitalInput(0);
     	DigitalOutput out = new DigitalOutput(1);
     	out.set(in.get());
-
-    
     }
 }
