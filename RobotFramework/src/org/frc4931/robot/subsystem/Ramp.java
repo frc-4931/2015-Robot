@@ -14,11 +14,12 @@
 
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Solenoid;
 
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * A subsystem used to control the ramp totes are stored on and ejected from.
@@ -28,20 +29,24 @@ public final class Ramp extends SubsystemBase {
 
     private final Solenoid rampLifter;
     private final Solenoid stackLifter;
+    private final Solenoid stackPusher;
     private final LimitedMotor guardRail; // Debatable - solenoid vs motor?
+
 
     /**
      * Creates a new Ramp subsystem using a Solenoid for the lifting mechanism and a LimitedMotor for the guardrails.
      *
      * @param rampLifter The lifting mechanism for the ramp; may not be null.
      * @param stackLifter The lifting mechanism for the stack; may not be null.
+     * @param stackPusher the solenoid that pushes the stack off of the ramp; may not be null.
      * @param guardRail The guard rail control mechanism; may not be null.
      * @param defaultCommandSupplier The supplier for this subsystem's default command; may be null if there is no default command.
      */
-    public Ramp(Solenoid rampLifter, Solenoid stackLifter, LimitedMotor guardRail, Supplier<Command> defaultCommandSupplier) {
+    public Ramp(Solenoid rampLifter, Solenoid stackLifter, Solenoid stackPusher, LimitedMotor guardRail, Supplier<Command> defaultCommandSupplier) {
         super(defaultCommandSupplier);
         this.rampLifter = rampLifter;
         this.stackLifter = stackLifter;
+        this.stackPusher = stackPusher;
         this.guardRail = guardRail;
     }
 
@@ -73,6 +78,19 @@ public final class Ramp extends SubsystemBase {
         stackLifter.retract();
     }
 
+    /**
+     * Extends the solenoid that pushes the totes off the ramp.
+     */
+    public void extendPusher() {
+        stackPusher.extend();
+    }
+    
+    /**
+     * Retracts the solenoid that pushes the totes off the ramp.
+     */
+    public void retractPusher() {
+        stackPusher.retract();
+    }
     /**
      * Opens the ramp's guard rails, releasing the held objects.
      */
