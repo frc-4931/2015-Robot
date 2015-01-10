@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot.driver;
 
+import org.frc4931.robot.component.Switch;
+
 /**
  * Holds the state of the operator interface.
  * 
@@ -15,13 +17,13 @@ public class OperatorInterface {
     public static AnalogAxis wheel;
     public static AnalogAxis throttle;
     
-    public static DigitalButton toggleClaw;
-    public static DigitalButton toggleLift;
-    public static DigitalButton toggleRamp;
-    public static DigitalButton toggleRails;
+    public static Switch toggleClaw;
+    public static Switch toggleLift;
+    public static Switch toggleRamp;
+    public static Switch toggleRails;
     
     // Modified to fit driver preference
-    public static void initialize(LogitechAttack3D joy){
+    public static void initialize(Joystick joy){
         wheel = joy.getYaw();
         throttle = joy.getPitch();
         

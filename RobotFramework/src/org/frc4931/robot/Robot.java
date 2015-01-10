@@ -6,11 +6,14 @@
  */
 package org.frc4931.robot;
 
+import org.frc4931.robot.driver.LogitechAttack3D;
+import org.frc4931.robot.driver.OperatorInterface;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
-
+        OperatorInterface.initialize(new LogitechAttack3D(0));
     }
 }
