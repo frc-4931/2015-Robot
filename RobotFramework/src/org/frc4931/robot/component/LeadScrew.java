@@ -18,13 +18,20 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package org.frc4931.robot.component;
 
 import org.frc4931.utils.Operations;
 
 public final class LeadScrew {
     public enum Position {
-        UNKNOWN, LOW, SHELF, TOTE, TOTE_ON_SHELF
+        UNKNOWN, LOW, STEP, TOTE, TOTE_ON_STEP
     }
 
     public enum Direction {
@@ -33,18 +40,18 @@ public final class LeadScrew {
 
     private final Motor motor;
     private final Switch low;
-    private final Switch shelf;
+    private final Switch step;
     private final Switch tote;
-    private final Switch toteOnShelf;
+    private final Switch toteOnStep;
     private Position lastPosition;
     private Direction lastDirection;
 
-    public LeadScrew(Motor motor, Switch low, Switch shelf, Switch tote, Switch toteOnShelf) {
+    public LeadScrew(Motor motor, Switch low, Switch step, Switch tote, Switch toteOnStep) {
         this.motor = motor;
         this.low = low;
-        this.shelf = shelf;
+        this.step = step;
         this.tote = tote;
-        this.toteOnShelf = toteOnShelf;
+        this.toteOnStep = toteOnStep;
         lastPosition = Position.UNKNOWN;
         lastDirection = getDirection();
     }
@@ -69,16 +76,16 @@ public final class LeadScrew {
         return low.isTriggered();
     }
 
-    public boolean isAtShelf() {
-        return shelf.isTriggered();
+    public boolean isAtStep() {
+        return step.isTriggered();
     }
 
     public boolean isAtTote() {
         return tote.isTriggered();
     }
 
-    public boolean isAtToteOnShelf() {
-        return toteOnShelf.isTriggered();
+    public boolean isAtToteOnStep() {
+        return toteOnStep.isTriggered();
     }
 
     public void moveTowardsLow(double speed) {
@@ -90,15 +97,15 @@ public final class LeadScrew {
         updateLast();
     }
 
-    public void moveTowardsShelf(double speed) {
-        if (isAtShelf()) {
+    public void moveTowardsStep(double speed) {
+        if (isAtStep()) {
             motor.stop();
         } else {
             switch (lastPosition) {
                 case LOW:
                     moveUp(speed);
                     break;
-                case SHELF:
+                case STEP:
                     if (lastDirection == Direction.DOWN) {
                         moveUp(speed);
                     } else if (lastDirection == Direction.UP) {
@@ -106,7 +113,7 @@ public final class LeadScrew {
                     }
                     break;
                 case TOTE:
-                case TOTE_ON_SHELF:
+                case TOTE_ON_STEP:
                     moveDown(speed);
                     break;
             }
@@ -120,7 +127,7 @@ public final class LeadScrew {
         } else {
             switch (lastPosition) {
                 case LOW:
-                case SHELF:
+                case STEP:
                     moveUp(speed);
                     break;
                 case TOTE:
@@ -130,7 +137,7 @@ public final class LeadScrew {
                         moveDown(speed);
                     }
                     break;
-                case TOTE_ON_SHELF:
+                case TOTE_ON_STEP:
                     moveDown(speed);
                     break;
             }
@@ -138,8 +145,8 @@ public final class LeadScrew {
         updateLast();
     }
 
-    public void moveTowardsToteOnShelf(double speed) {
-        if (isAtToteOnShelf()) {
+    public void moveTowardsToteOnStep(double speed) {
+        if (isAtToteOnStep()) {
             motor.stop();
         } else {
             moveUp(speed);
@@ -148,14 +155,14 @@ public final class LeadScrew {
     }
 
     public Position getPosition() {
-        if (isLow() && !isAtShelf() && !isAtTote() && !isAtToteOnShelf()) {
+        if (isLow() && !isAtStep() && !isAtTote() && !isAtToteOnStep()) {
             return Position.LOW;
-        } else if (!isLow() && isAtShelf() && !isAtTote() && !isAtToteOnShelf()) {
-            return Position.SHELF;
-        } else if (!isLow() && !isAtShelf() && isAtTote() && !isAtToteOnShelf()) {
+        } else if (!isLow() && isAtStep() && !isAtTote() && !isAtToteOnStep()) {
+            return Position.STEP;
+        } else if (!isLow() && !isAtStep() && isAtTote() && !isAtToteOnStep()) {
             return Position.TOTE;
-        } else if (!isLow() && !isAtShelf() && !isAtTote() && isAtToteOnShelf()) {
-            return Position.TOTE_ON_SHELF;
+        } else if (!isLow() && !isAtStep() && !isAtTote() && isAtToteOnStep()) {
+            return Position.TOTE_ON_STEP;
         } else {
             return Position.UNKNOWN;
         }
@@ -172,6 +179,10 @@ public final class LeadScrew {
             default:
                 return null;
         }
+    }
+
+    public void stop() {
+        motor.stop();
     }
 
     public Position getLastPosition() {
