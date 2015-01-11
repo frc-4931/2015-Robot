@@ -11,6 +11,13 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package org.frc4931.robot.component;
 
 import org.frc4931.utils.Operations;
@@ -21,7 +28,7 @@ public final class LeadScrew {
     }
 
     public enum Direction {
-        STILL, DOWN, UP
+        STOPPED, DOWN, UP
     }
 
     private final Motor motor;
@@ -30,7 +37,7 @@ public final class LeadScrew {
     private final Switch tote;
     private final Switch toteOnShelf;
     private Position lastPosition;
-    private int lastDirection;
+    private Direction lastDirection;
 
     public LeadScrew(Motor motor, Switch low, Switch shelf, Switch tote, Switch toteOnShelf) {
         this.motor = motor;
@@ -50,22 +57,10 @@ public final class LeadScrew {
         motor.setSpeed(Math.abs(speed));
     }
 
-    private int getDirection() {
-        return Operations.fuzzyCompare(motor.getSpeed(), 0);
-    }
-
     private void updateLast() {
-        if (isLow()) {
-            lastPosition = Position.LOW;
-            lastDirection = getDirection();
-        } else if (isAtShelf()) {
-            lastPosition = Position.SHELF;
-            lastDirection = getDirection();
-        } else if (isAtTote()) {
-            lastPosition = Position.TOTE;
-            lastDirection = getDirection();
-        } else if (isAtToteOnShelf()) {
-            lastPosition = Position.TOTE_ON_SHELF;
+        Position newPosition = getPosition();
+        if (newPosition != Position.UNKNOWN && newPosition != lastPosition) {
+            lastPosition = getPosition();
             lastDirection = getDirection();
         }
     }
@@ -104,9 +99,9 @@ public final class LeadScrew {
                     moveUp(speed);
                     break;
                 case SHELF:
-                    if (lastDirection < 0) {
+                    if (lastDirection == Direction.DOWN) {
                         moveUp(speed);
-                    } else if (lastDirection > 0) {
+                    } else if (lastDirection == Direction.UP) {
                         moveDown(speed);
                     }
                     break;
@@ -129,9 +124,9 @@ public final class LeadScrew {
                     moveUp(speed);
                     break;
                 case TOTE:
-                    if (lastDirection < 0) {
+                    if (lastDirection == Direction.DOWN) {
                         moveUp(speed);
-                    } else if (lastDirection > 0) {
+                    } else if (lastDirection == Direction.UP) {
                         moveDown(speed);
                     }
                     break;
@@ -150,5 +145,40 @@ public final class LeadScrew {
             moveUp(speed);
         }
         updateLast();
+    }
+
+    public Position getPosition() {
+        if (isLow() && !isAtShelf() && !isAtTote() && !isAtToteOnShelf()) {
+            return Position.LOW;
+        } else if (!isLow() && isAtShelf() && !isAtTote() && !isAtToteOnShelf()) {
+            return Position.SHELF;
+        } else if (!isLow() && !isAtShelf() && isAtTote() && !isAtToteOnShelf()) {
+            return Position.TOTE;
+        } else if (!isLow() && !isAtShelf() && !isAtTote() && isAtToteOnShelf()) {
+            return Position.TOTE_ON_SHELF;
+        } else {
+            return Position.UNKNOWN;
+        }
+    }
+
+    public Direction getDirection() {
+        switch (Operations.fuzzyCompare(motor.getSpeed(), 0)) {
+            case -1:
+                return Direction.DOWN;
+            case 0:
+                return Direction.STOPPED;
+            case 1:
+                return Direction.UP;
+            default:
+                return null;
+        }
+    }
+
+    public Position getLastPosition() {
+        return lastPosition;
+    }
+
+    public Direction getLastDirection() {
+        return lastDirection;
     }
 }
