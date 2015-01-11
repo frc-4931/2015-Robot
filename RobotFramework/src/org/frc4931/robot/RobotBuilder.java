@@ -30,8 +30,7 @@ public class RobotBuilder {
                   Motor.compose(
                           Motors.talon(Properties.RIGHT_FRONT_DRIVE),
                           Motors.talon(Properties.RIGHT_REAR_DRIVE))),
-                  Hardware.relay(Properties.DRIVE_SHIFTER),
-                  null);
+                  Hardware.relay(Properties.DRIVE_SHIFTER));
         
         Robot.Componets.grabber = new LoaderArm(
                 Solenoids.doubleSolenoid(
@@ -43,8 +42,7 @@ public class RobotBuilder {
                              Properties.GRABBER_CLAW_RETRACT,
                              Solenoid.Direction.EXTENDING),
                 Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB),
-                Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB),
-                null);
+                Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB));
         
         Robot.Componets.ramp = new Ramp(
                 Solenoids.doubleSolenoid(
@@ -62,8 +60,7 @@ public class RobotBuilder {
                 new LimitedMotor(
                          Motors.talon(Properties.GUARDRAIL_MOTOR),
                          Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH),
-                         Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH)),
-                null);
+                         Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH)));
     }
     
     private static final class Properties {
