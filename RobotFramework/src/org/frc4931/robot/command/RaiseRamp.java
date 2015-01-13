@@ -9,7 +9,7 @@ package org.frc4931.robot.command;
 /**
  * Perpenticualrizes the ramp to the gorund.
  */
-public class RaisesRamp extends CommandBase {
+public class RaiseRamp extends CommandBase {
 
     @Override
     protected void initialize() {

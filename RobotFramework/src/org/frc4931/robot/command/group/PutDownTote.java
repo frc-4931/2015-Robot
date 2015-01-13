@@ -7,9 +7,9 @@
 package org.frc4931.robot.command.group;
 
 import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.LowerStacker;
+import org.frc4931.robot.command.LowerRamp;
 import org.frc4931.robot.command.OpenGuardrail;
-import org.frc4931.robot.command.RaiseStacker;
+import org.frc4931.robot.command.RaiseRamp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PutDownTote extends CommandGroup {
     public PutDownTote(){
-        addSequential(new LowerStacker());
+        addSequential(new LowerRamp());
         addSequential(new OpenGuardrail());
         //TODO move back two feet
         addSequential(new CloseGuardrail());
-        addSequential(new RaiseStacker());
+        addSequential(new RaiseRamp());
         
     }
 

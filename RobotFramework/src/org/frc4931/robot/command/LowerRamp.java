@@ -9,7 +9,7 @@ package org.frc4931.robot.command;
 /**
  * Lowers the ramp.
  */
-public class LowersRamp extends CommandBase {
+public class LowerRamp extends CommandBase {
 
     @Override
     protected void initialize() {
