@@ -32,7 +32,18 @@ public final class Ramp extends SubsystemBase {
     private final Solenoid stackPusher;
     private final LimitedMotor guardRail; // Debatable - solenoid vs motor?
 
-
+    /**
+     * Creates a new Ramp subsystem using a Solenoid for the lifting mechanism and a LimitedMotor for the guardrails. Assumes no default command.
+     *
+     * @param rampLifter The lifting mechanism for the ramp; may not be null.
+     * @param stackLifter The lifting mechanism for the stack; may not be null.
+     * @param stackPusher the solenoid that pushes the stack off of the ramp; may not be null.
+     * @param guardRail The guard rail control mechanism; may not be null.
+     */
+    public Ramp(Solenoid rampLifter, Solenoid stackLifter, Solenoid stackPusher, LimitedMotor guardRail) {
+        this(rampLifter, stackLifter, stackPusher, guardRail, null);
+    }
+    
     /**
      * Creates a new Ramp subsystem using a Solenoid for the lifting mechanism and a LimitedMotor for the guardrails.
      *

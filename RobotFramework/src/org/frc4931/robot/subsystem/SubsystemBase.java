@@ -14,10 +14,10 @@
 
 package org.frc4931.robot.subsystem;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
-import java.util.function.Supplier;
 
 /**
  * A base subsystem that implements commonly-used features.
@@ -25,6 +25,10 @@ import java.util.function.Supplier;
 public abstract class SubsystemBase extends Subsystem {
     private final Supplier<Command> defaultCommandSupplier;
 
+    public SubsystemBase(){
+        this(null);
+    }
+    
     public SubsystemBase(Supplier<Command> defaultCommandSupplier) {
         this.defaultCommandSupplier = defaultCommandSupplier;
     }

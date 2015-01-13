@@ -13,12 +13,13 @@
  */
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Relay.State;
 
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * A subsystem that can be used to control a {@link DriveTrain} using arcade, tank, or cheesy methods.
@@ -37,6 +38,15 @@ public final class DriveSystem extends SubsystemBase {
     private double quickStopAccumulator = 0.0;
     private double oldWheel = 0.0;
 
+    /**
+     * Creates a new DriveSystem subsystem that uses the supplied drive train and optional shifter. Assumes no default command.
+     * @param driveTrain the drive train for the robot; may not be null
+     * @param shifter the optional shifter used to put the transmission into high gear; may be null
+     */
+    public DriveSystem(DriveTrain driveTrain, Relay shifter) {
+        this(driveTrain, shifter, null);
+    }
+    
     /**
      * Creates a new DriveSystem subsystem that uses the supplied drive train and optional shifter.
      * @param driveTrain the drive train for the robot; may not be null

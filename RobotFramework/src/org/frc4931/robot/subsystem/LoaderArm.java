@@ -31,6 +31,17 @@ public final class LoaderArm extends SubsystemBase {
     private final Switch captured;
 
     /**
+     * Creates a new LoaderArm subsystem using the lifting & grabbing Solenoids. Assumes no default command.
+     * @param lifter The Solenoid used to raise and lower the arms; may not be null.
+     * @param grabber The solenoid used to grab and release objects; may not be null.
+     * @param capturable The switch used to identify wether a tote is able to be capture; may not be null.
+     * @param captured The switch used to identify wether a tote has been successfully captured; may not be null.
+     */
+    public LoaderArm(Solenoid lifter, Solenoid grabber, Switch capturable, Switch captured) {
+        this(lifter, grabber, capturable, captured, null);
+    }
+    
+    /**
      * Creates a new LoaderArm subsystem using the lifting & grabbing Solenoids and the default command.
      * @param lifter The Solenoid used to raise and lower the arms; may not be null.
      * @param grabber The solenoid used to grab and release objects; may not be null.
