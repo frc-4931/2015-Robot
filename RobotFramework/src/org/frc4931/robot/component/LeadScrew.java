@@ -6,15 +6,9 @@
  */
 package org.frc4931.robot.component;
 
-import org.frc4931.utils.Operations;
-
 public final class LeadScrew {
     public enum Position {
         UNKNOWN, LOW, STEP, TOTE, TOTE_ON_STEP
-    }
-
-    public enum Direction {
-        STOPPED, DOWN, UP
     }
 
     private final Motor motor;
@@ -23,7 +17,7 @@ public final class LeadScrew {
     private final Switch tote;
     private final Switch toteOnStep;
     private Position lastPosition;
-    private Direction lastDirection;
+    private Motor.Direction lastDirection;
 
     public LeadScrew(Motor motor, Switch low, Switch step, Switch tote, Switch toteOnStep) {
         this.motor = motor;
@@ -43,10 +37,10 @@ public final class LeadScrew {
         motor.setSpeed(Math.abs(speed));
     }
 
-    public void update() {
+    private void update() {
         Position newPosition = getPosition();
         if (newPosition != Position.UNKNOWN && newPosition != lastPosition) {
-            lastPosition = getPosition();
+            lastPosition = newPosition;
             lastDirection = getDirection();
         }
     }
@@ -68,69 +62,59 @@ public final class LeadScrew {
     }
 
     public void moveTowardsLow(double speed) {
+        update();
         if (isLow()) {
             motor.stop();
         } else {
             moveDown(speed);
         }
-        update();
     }
 
     public void moveTowardsStep(double speed) {
+        update();
         if (isAtStep()) {
             motor.stop();
         } else {
-            switch (lastPosition) {
-                case LOW:
+            if (lastPosition == Position.LOW) {
+                moveUp(speed);
+            } else if (lastPosition == Position.STEP) {
+                if (lastDirection == Motor.Direction.REVERSE) {
                     moveUp(speed);
-                    break;
-                case STEP:
-                    if (lastDirection == Direction.DOWN) {
-                        moveUp(speed);
-                    } else if (lastDirection == Direction.UP) {
-                        moveDown(speed);
-                    }
-                    break;
-                case TOTE:
-                case TOTE_ON_STEP:
+                } else if (lastDirection == Motor.Direction.FORWARD) {
                     moveDown(speed);
-                    break;
+                }
+            } else if (lastPosition == Position.TOTE || lastPosition == Position.TOTE_ON_STEP) {
+                moveDown(speed);
             }
         }
-        update();
     }
 
     public void moveTowardsTote(double speed) {
+        update();
         if (isAtTote()) {
             motor.stop();
         } else {
-            switch (lastPosition) {
-                case LOW:
-                case STEP:
+            if (lastPosition == Position.LOW || lastPosition == Position.STEP) {
+                moveUp(speed);
+            } else if (lastPosition == Position.TOTE) {
+                if (lastDirection == Motor.Direction.REVERSE) {
                     moveUp(speed);
-                    break;
-                case TOTE:
-                    if (lastDirection == Direction.DOWN) {
-                        moveUp(speed);
-                    } else if (lastDirection == Direction.UP) {
-                        moveDown(speed);
-                    }
-                    break;
-                case TOTE_ON_STEP:
+                } else if (lastDirection == Motor.Direction.FORWARD) {
                     moveDown(speed);
-                    break;
+                }
+            } else if (lastPosition == Position.TOTE_ON_STEP) {
+                moveDown(speed);
             }
         }
-        update();
     }
 
     public void moveTowardsToteOnStep(double speed) {
+        update();
         if (isAtToteOnStep()) {
             motor.stop();
         } else {
             moveUp(speed);
         }
-        update();
     }
 
     public Position getPosition() {
@@ -147,29 +131,20 @@ public final class LeadScrew {
         }
     }
 
-    public Direction getDirection() {
-        switch (Operations.fuzzyCompare(motor.getSpeed(), 0)) {
-            case -1:
-                return Direction.DOWN;
-            case 0:
-                return Direction.STOPPED;
-            case 1:
-                return Direction.UP;
-            default:
-                return null;
-        }
+    public Motor.Direction getDirection() {
+        return motor.getDirection();
     }
 
     public void stop() {
-        motor.stop();
         update();
+        motor.stop();
     }
 
     public Position getLastPosition() {
         return lastPosition;
     }
 
-    public Direction getLastDirection() {
+    public Motor.Direction getLastDirection() {
         return lastDirection;
     }
 }

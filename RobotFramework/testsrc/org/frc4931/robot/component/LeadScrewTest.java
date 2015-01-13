@@ -72,7 +72,7 @@ public class LeadScrewTest {
     @Test
     public void lowToStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -91,7 +91,7 @@ public class LeadScrewTest {
     @Test
     public void lowToTote() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -110,7 +110,7 @@ public class LeadScrewTest {
     @Test
     public void lowToToteOnStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -129,7 +129,7 @@ public class LeadScrewTest {
     @Test
     public void stepToTote() {
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtStep();
         assertStopped();
@@ -148,7 +148,7 @@ public class LeadScrewTest {
     @Test
     public void stepToToteOnStep() {
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtStep();
         assertStopped();
@@ -167,7 +167,7 @@ public class LeadScrewTest {
     @Test
     public void toteToToteOnStep() {
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtTote();
         assertStopped();
@@ -186,7 +186,7 @@ public class LeadScrewTest {
     @Test
     public void toteOnStepToTote() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -205,7 +205,7 @@ public class LeadScrewTest {
     @Test
     public void toteOnStepToStep() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -224,7 +224,7 @@ public class LeadScrewTest {
     @Test
     public void toteOnStepToLow() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -243,7 +243,7 @@ public class LeadScrewTest {
     @Test
     public void toteToStep() {
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtTote();
         assertStopped();
@@ -262,7 +262,7 @@ public class LeadScrewTest {
     @Test
     public void toteToLow() {
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtTote();
         assertStopped();
@@ -281,7 +281,7 @@ public class LeadScrewTest {
     @Test
     public void stepToLow() {
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtStep();
         assertStopped();
@@ -300,7 +300,7 @@ public class LeadScrewTest {
     @Test
     public void aboveStepToStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -310,7 +310,7 @@ public class LeadScrewTest {
         assertMovingUp();
 
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
         step.setNotTriggered();
 
         leadScrew.moveTowardsStep(0.5);
@@ -326,7 +326,7 @@ public class LeadScrewTest {
     @Test
     public void aboveToteToStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -336,7 +336,7 @@ public class LeadScrewTest {
         assertMovingUp();
 
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsToteOnStep(0.5);
         tote.setNotTriggered();
 
         leadScrew.moveTowardsStep(0.5);
@@ -352,7 +352,7 @@ public class LeadScrewTest {
     @Test
     public void aboveToteToTote() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtLow();
         assertStopped();
@@ -362,7 +362,7 @@ public class LeadScrewTest {
         assertMovingUp();
 
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsToteOnStep(0.5);
         tote.setNotTriggered();
 
         leadScrew.moveTowardsTote(0.5);
@@ -378,7 +378,7 @@ public class LeadScrewTest {
     @Test
     public void belowToteToTote() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -388,7 +388,7 @@ public class LeadScrewTest {
         assertMovingDown();
 
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsLow(0.5);
         tote.setNotTriggered();
 
         leadScrew.moveTowardsTote(0.5);
@@ -404,7 +404,7 @@ public class LeadScrewTest {
     @Test
     public void belowStepToTote() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -414,7 +414,7 @@ public class LeadScrewTest {
         assertMovingDown();
 
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsLow(0.5);
         step.setNotTriggered();
 
         leadScrew.moveTowardsTote(0.5);
@@ -430,7 +430,7 @@ public class LeadScrewTest {
     @Test
     public void belowStepToStep() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         assertAtToteOnStep();
         assertStopped();
@@ -440,7 +440,7 @@ public class LeadScrewTest {
         assertMovingDown();
 
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsLow(0.5);
         step.setNotTriggered();
 
         leadScrew.moveTowardsStep(0.5);
@@ -456,11 +456,11 @@ public class LeadScrewTest {
     @Test
     public void fromLowToStepToTote() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsStep(0.5);
         low.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsStep(0.5);
         assertMovingUp();
 
         leadScrew.moveTowardsTote(0.5);
@@ -475,11 +475,11 @@ public class LeadScrewTest {
     @Test
     public void fromLowToStepToToteOnStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsStep(0.5);
         low.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsStep(0.5);
         assertMovingUp();
 
         leadScrew.moveTowardsToteOnStep(0.5);
@@ -494,11 +494,11 @@ public class LeadScrewTest {
     @Test
     public void fromLowToToteToToteOnStep() {
         low.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsTote(0.5);
         low.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsTote(0.5);
         assertMovingUp();
 
         leadScrew.moveTowardsToteOnStep(0.5);
@@ -513,11 +513,11 @@ public class LeadScrewTest {
     @Test
     public void fromStepToToteToToteOnStep() {
         step.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsTote(0.5);
         step.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsTote(0.5);
         assertMovingUp();
 
         leadScrew.moveTowardsToteOnStep(0.5);
@@ -532,11 +532,11 @@ public class LeadScrewTest {
     @Test
     public void fromToteOnStepToToteToStep() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsTote(0.5);
         toteOnStep.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsTote(0.5);
         assertMovingDown();
 
         leadScrew.moveTowardsStep(0.5);
@@ -551,11 +551,11 @@ public class LeadScrewTest {
     @Test
     public void fromToteOnStepToToteToLow() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsTote(0.5);
         toteOnStep.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsTote(0.5);
         assertMovingDown();
 
         leadScrew.moveTowardsLow(0.5);
@@ -571,11 +571,11 @@ public class LeadScrewTest {
     @Test
     public void fromToteOnStepToStepToLow() {
         toteOnStep.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsStep(0.5);
         toteOnStep.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsStep(0.5);
         assertMovingDown();
 
         leadScrew.moveTowardsLow(0.5);
@@ -591,11 +591,11 @@ public class LeadScrewTest {
     @Test
     public void fromToteToStepToLow() {
         tote.setTriggered();
-        leadScrew.update();
+        leadScrew.stop();
 
         leadScrew.moveTowardsStep(0.5);
         tote.setNotTriggered();
-        leadScrew.update();
+        leadScrew.moveTowardsStep(0.5);
         assertMovingDown();
 
         leadScrew.moveTowardsLow(0.5);
@@ -628,7 +628,6 @@ public class LeadScrewTest {
     @Test
     public void multipleSwitchesTriggeredWhileMoving() {
         low.setTriggered();
-        leadScrew.update();
         leadScrew.moveTowardsToteOnStep(0.5);
 
         low.setTriggered();
@@ -693,17 +692,17 @@ public class LeadScrewTest {
     }
 
     private void assertMovingDown() {
-        assertThat(leadScrew.getDirection()).isEqualTo(LeadScrew.Direction.DOWN);
+        assertThat(leadScrew.getDirection()).isEqualTo(Motor.Direction.REVERSE);
         assertThat(motor.getSpeed()).isLessThan(0.0);
     }
 
     private void assertMovingUp() {
-        assertThat(leadScrew.getDirection()).isEqualTo(LeadScrew.Direction.UP);
+        assertThat(leadScrew.getDirection()).isEqualTo(Motor.Direction.FORWARD);
         assertThat(motor.getSpeed()).isGreaterThan(0.0);
     }
 
     private void assertStopped() {
-        assertThat(leadScrew.getDirection()).isEqualTo(LeadScrew.Direction.STOPPED);
+        assertThat(leadScrew.getDirection()).isEqualTo(Motor.Direction.STOPPED);
         assertThat(Operations.fuzzyCompare(motor.getSpeed(), 0.0)).isEqualTo(0);
     }
 }
