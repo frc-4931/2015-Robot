@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot;
 
+import org.frc4931.robot.Robot.Subsystems;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
@@ -19,48 +20,47 @@ import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
 
 /**
- * Instantiates all of the robot componets and wires them togther.
+ * Instantiates all of the robot components and returns them in an aggregate class.
  */
 public class RobotBuilder {
-    public static void build(){
-        Robot.Componets.drive = new DriveSystem(DriveTrain.create(
-                  Motor.compose(
-                          Motors.talon(Properties.LEFT_FRONT_DRIVE),
-                          Motors.talon(Properties.LEFT_REAR_DRIVE)),
-                  Motor.compose(
-                          Motors.talon(Properties.RIGHT_FRONT_DRIVE),
-                          Motors.talon(Properties.RIGHT_REAR_DRIVE))),
-                  Hardware.relay(Properties.DRIVE_SHIFTER));
-        
-        Robot.Componets.grabber = new LoaderArm(
-                Solenoids.doubleSolenoid(
-                             Properties.GRABBER_LIFTER_EXTEND,
-                             Properties.GRABBER_LIFTER_RETRACT,
-                             Solenoid.Direction.EXTENDING),
-                Solenoids.doubleSolenoid(
-                             Properties.GRABBER_CLAW_EXTEND,
-                             Properties.GRABBER_CLAW_RETRACT,
-                             Solenoid.Direction.EXTENDING),
-                Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB),
-                Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB));
-        
-        Robot.Componets.ramp = new Ramp(
-                Solenoids.doubleSolenoid(
-                         Properties.RAMP_LIFTER_EXTEND,
-                         Properties.RAMP_LIFTER_RETRACT,
-                         Solenoid.Direction.RETRACTING),
-                Solenoids.doubleSolenoid(
-                         Properties.RAMP_STACK_LIFTER_EXTEND,
-                         Properties.RAMP_STACK_LIFTER_RETRACT,
-                         Solenoid.Direction.RETRACTING),
-                Solenoids.doubleSolenoid(
-                         Properties.RAMP_STATCK_PUSHER_EXTEND,
-                         Properties.RAMP_STACK_PUSHER_RETRACT,
-                         Solenoid.Direction.RETRACTING),
-                new LimitedMotor(
-                         Motors.talon(Properties.GUARDRAIL_MOTOR),
-                         Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH),
-                         Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH)));
+    public static Subsystems build() {
+        return new Subsystems(
+                new DriveSystem(DriveTrain.create(
+                        Motor.compose(
+                                Motors.talon(Properties.LEFT_FRONT_DRIVE),
+                                Motors.talon(Properties.LEFT_REAR_DRIVE)),
+                        Motor.compose(
+                                Motors.talon(Properties.RIGHT_FRONT_DRIVE),
+                                Motors.talon(Properties.RIGHT_REAR_DRIVE))),
+                        Hardware.relay(Properties.DRIVE_SHIFTER)),
+                new LoaderArm(
+                        Solenoids.doubleSolenoid(
+                                Properties.GRABBER_LIFTER_EXTEND,
+                                Properties.GRABBER_LIFTER_RETRACT,
+                                Solenoid.Direction.EXTENDING),
+                        Solenoids.doubleSolenoid(
+                                Properties.GRABBER_CLAW_EXTEND,
+                                Properties.GRABBER_CLAW_RETRACT,
+                                Solenoid.Direction.EXTENDING),
+                        Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB),
+                        Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB)),
+                new Ramp(
+                        Solenoids.doubleSolenoid(
+                                Properties.RAMP_LIFTER_EXTEND,
+                                Properties.RAMP_LIFTER_RETRACT,
+                                Solenoid.Direction.RETRACTING),
+                        Solenoids.doubleSolenoid(
+                                Properties.RAMP_STACK_LIFTER_EXTEND,
+                                Properties.RAMP_STACK_LIFTER_RETRACT,
+                                Solenoid.Direction.RETRACTING),
+                        Solenoids.doubleSolenoid(
+                                Properties.RAMP_STATCK_PUSHER_EXTEND,
+                                Properties.RAMP_STACK_PUSHER_RETRACT,
+                                Solenoid.Direction.RETRACTING),
+                        new LimitedMotor(
+                                Motors.talon(Properties.GUARDRAIL_MOTOR),
+                                Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH),
+                                Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH))));
     }
     
     private static final class Properties {
