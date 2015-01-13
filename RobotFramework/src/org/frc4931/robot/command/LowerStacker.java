@@ -7,10 +7,9 @@
 package org.frc4931.robot.command;
 
 /**
- * Lifts the whole stack of totes further up the
- * ramp.
+ * Lowers the whole stack of totes down the ramp.
  */
-public class LiftStack extends CommandBase {
+public class LowerStacker extends CommandBase {
 
     @Override
     protected void initialize() {
