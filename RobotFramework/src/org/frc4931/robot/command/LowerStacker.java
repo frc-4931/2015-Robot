@@ -1,15 +1,15 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
  *
- * Open source software. Licensed under the FIRST BSD license file in the 
+ * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
 package org.frc4931.robot.command;
 
 /**
- * Perpenticualrizes the ramp to the gorund.
+ * Lowers the whole stack of totes down the ramp.
  */
-public class RaisesRamp extends CommandBase {
+public class LowerStacker extends CommandBase {
 
     @Override
     protected void initialize() {
