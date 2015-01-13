@@ -25,6 +25,13 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package org.frc4931.robot.component;
 
 import org.frc4931.robot.component.mock.MockMotor;
@@ -471,6 +478,160 @@ public class LeadScrewTest {
         leadScrew.stop();
 
         assertAtStep();
+        assertStopped();
+    }
+
+    @Test
+    public void fromLowToStepToTote() {
+        low.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsStep(0.5);
+        low.setNotTriggered();
+        leadScrew.update();
+        assertMovingUp();
+
+        leadScrew.moveTowardsTote(0.5);
+        assertMovingUp();
+
+        tote.setTriggered();
+        leadScrew.stop();
+        assertAtTote();
+        assertStopped();
+    }
+
+    @Test
+    public void fromLowToStepToToteOnStep() {
+        low.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsStep(0.5);
+        low.setNotTriggered();
+        leadScrew.update();
+        assertMovingUp();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        assertMovingUp();
+
+        toteOnStep.setTriggered();
+        leadScrew.stop();
+        assertAtToteOnStep();
+        assertStopped();
+    }
+
+    @Test
+    public void fromLowToToteToToteOnStep() {
+        low.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsTote(0.5);
+        low.setNotTriggered();
+        leadScrew.update();
+        assertMovingUp();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        assertMovingUp();
+
+        toteOnStep.setTriggered();
+        leadScrew.stop();
+        assertAtToteOnStep();
+        assertStopped();
+    }
+
+    @Test
+    public void fromStepToToteToToteOnStep() {
+        step.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsTote(0.5);
+        step.setNotTriggered();
+        leadScrew.update();
+        assertMovingUp();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        assertMovingUp();
+
+        toteOnStep.setTriggered();
+        leadScrew.stop();
+        assertAtToteOnStep();
+        assertStopped();
+    }
+
+    @Test
+    public void fromToteOnStepToToteToStep() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsTote(0.5);
+        toteOnStep.setNotTriggered();
+        leadScrew.update();
+        assertMovingDown();
+
+        leadScrew.moveTowardsStep(0.5);
+        assertMovingDown();
+
+        step.setTriggered();
+        leadScrew.stop();
+        assertAtStep();
+        assertStopped();
+    }
+
+    @Test
+    public void fromToteOnStepToToteToLow() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsTote(0.5);
+        toteOnStep.setNotTriggered();
+        leadScrew.update();
+        assertMovingDown();
+
+        leadScrew.moveTowardsLow(0.5);
+        assertMovingDown();
+
+        low.setTriggered();
+        leadScrew.stop();
+        assertAtLow();
+        assertStopped();
+    }
+
+
+    @Test
+    public void fromToteOnStepToStepToLow() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsStep(0.5);
+        toteOnStep.setNotTriggered();
+        leadScrew.update();
+        assertMovingDown();
+
+        leadScrew.moveTowardsLow(0.5);
+        assertMovingDown();
+
+        low.setTriggered();
+        leadScrew.stop();
+        assertAtLow();
+        assertStopped();
+    }
+
+
+    @Test
+    public void fromToteToStepToLow() {
+        tote.setTriggered();
+        leadScrew.update();
+
+        leadScrew.moveTowardsStep(0.5);
+        tote.setNotTriggered();
+        leadScrew.update();
+        assertMovingDown();
+
+        leadScrew.moveTowardsLow(0.5);
+        assertMovingDown();
+
+        low.setTriggered();
+        leadScrew.stop();
+        assertAtLow();
         assertStopped();
     }
 
