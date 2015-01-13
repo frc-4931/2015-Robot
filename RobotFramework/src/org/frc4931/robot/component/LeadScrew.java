@@ -25,6 +25,13 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package org.frc4931.robot.component;
 
 import org.frc4931.utils.Operations;
@@ -64,7 +71,7 @@ public final class LeadScrew {
         motor.setSpeed(Math.abs(speed));
     }
 
-    private void updateLast() {
+    public void update() {
         Position newPosition = getPosition();
         if (newPosition != Position.UNKNOWN && newPosition != lastPosition) {
             lastPosition = getPosition();
@@ -94,7 +101,7 @@ public final class LeadScrew {
         } else {
             moveDown(speed);
         }
-        updateLast();
+        update();
     }
 
     public void moveTowardsStep(double speed) {
@@ -118,7 +125,7 @@ public final class LeadScrew {
                     break;
             }
         }
-        updateLast();
+        update();
     }
 
     public void moveTowardsTote(double speed) {
@@ -142,7 +149,7 @@ public final class LeadScrew {
                     break;
             }
         }
-        updateLast();
+        update();
     }
 
     public void moveTowardsToteOnStep(double speed) {
@@ -151,7 +158,7 @@ public final class LeadScrew {
         } else {
             moveUp(speed);
         }
-        updateLast();
+        update();
     }
 
     public Position getPosition() {
@@ -183,6 +190,7 @@ public final class LeadScrew {
 
     public void stop() {
         motor.stop();
+        update();
     }
 
     public Position getLastPosition() {

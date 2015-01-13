@@ -11,6 +11,13 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
+
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package org.frc4931.robot.component;
 
 import org.frc4931.robot.component.mock.MockMotor;
@@ -53,27 +60,23 @@ public class LeadScrewTest {
 
         leadScrew.moveTowardsLow(0.5);
         assertMovingDown();
-        assertPositionUnknown();
 
         low.setTriggered();
-        // A command will be responsible for stopping the motor
         leadScrew.stop();
 
-        assertStopped();
         assertAtLow();
+        assertStopped();
     }
 
     @Test
-    public void upUntilHigh() {
+    public void upUntilToteOnStep() {
         assertStopped();
 
         leadScrew.moveTowardsToteOnStep(0.5);
         leadScrew.moveTowardsToteOnStep(0.5);
         assertMovingUp();
-        assertPositionUnknown();
 
         toteOnStep.setTriggered();
-        // A command will be responsible for stopping the motor
         leadScrew.stop();
 
         assertAtToteOnStep();
@@ -81,20 +84,56 @@ public class LeadScrewTest {
     }
 
     @Test
-    public void lowToHigh() {
+    public void lowToStep() {
         low.setTriggered();
+        leadScrew.update();
+
+        assertAtLow();
+        assertStopped();
+
+        leadScrew.moveTowardsStep(0.5);
+        low.setNotTriggered();
+        assertMovingUp();
+
+        step.setTriggered();
+        leadScrew.stop();
+
+        assertAtStep();
+        assertStopped();
+    }
+
+    @Test
+    public void lowToTote() {
+        low.setTriggered();
+        leadScrew.update();
+
+        assertAtLow();
+        assertStopped();
+
+        leadScrew.moveTowardsTote(0.5);
+        low.setNotTriggered();
+        assertMovingUp();
+
+        tote.setTriggered();
+        leadScrew.stop();
+
+        assertAtTote();
+        assertStopped();
+    }
+
+    @Test
+    public void lowToToteOnStep() {
+        low.setTriggered();
+        leadScrew.update();
 
         assertAtLow();
         assertStopped();
 
         leadScrew.moveTowardsToteOnStep(0.5);
         low.setNotTriggered();
-
-        assertPositionUnknown();
         assertMovingUp();
 
         toteOnStep.setTriggered();
-        // A command will be responsible for stopping the motor
         leadScrew.stop();
 
         assertAtToteOnStep();
@@ -102,25 +141,223 @@ public class LeadScrewTest {
     }
 
     @Test
-    public void highToLow() {
+    public void stepToTote() {
+        step.setTriggered();
+        leadScrew.update();
+
+        assertAtStep();
+        assertStopped();
+
+        leadScrew.moveTowardsTote(0.5);
+        step.setNotTriggered();
+        assertMovingUp();
+
+        tote.setTriggered();
+        leadScrew.stop();
+
+        assertAtTote();
+        assertStopped();
+    }
+
+    @Test
+    public void stepToToteOnStep() {
+        step.setTriggered();
+        leadScrew.update();
+
+        assertAtStep();
+        assertStopped();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        step.setNotTriggered();
+        assertMovingUp();
+
         toteOnStep.setTriggered();
+        leadScrew.stop();
+
+        assertAtToteOnStep();
+        assertStopped();
+    }
+
+    @Test
+    public void toteToToteOnStep() {
+        tote.setTriggered();
+        leadScrew.update();
+
+        assertAtTote();
+        assertStopped();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        tote.setNotTriggered();
+        assertMovingUp();
+
+        toteOnStep.setTriggered();
+        leadScrew.stop();
+
+        assertAtToteOnStep();
+        assertStopped();
+    }
+
+    @Test
+    public void toteOnStepToTote() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
+
+        assertAtToteOnStep();
+        assertStopped();
+
+        leadScrew.moveTowardsTote(0.5);
+        toteOnStep.setNotTriggered();
+        assertMovingDown();
+
+        tote.setTriggered();
+        leadScrew.stop();
+
+        assertAtTote();
+        assertStopped();
+    }
+
+    @Test
+    public void toteOnStepToStep() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
+
+        assertAtToteOnStep();
+        assertStopped();
+
+        leadScrew.moveTowardsStep(0.5);
+        toteOnStep.setNotTriggered();
+        assertMovingDown();
+
+        step.setTriggered();
+        leadScrew.stop();
+
+        assertAtStep();
+        assertStopped();
+    }
+
+    @Test
+    public void toteOnStepToLow() {
+        toteOnStep.setTriggered();
+        leadScrew.update();
 
         assertAtToteOnStep();
         assertStopped();
 
         leadScrew.moveTowardsLow(0.5);
         toteOnStep.setNotTriggered();
-
-        assertPositionUnknown();
         assertMovingDown();
 
         low.setTriggered();
-        // A command will be responsible for stopping the motor
         leadScrew.stop();
 
         assertAtLow();
         assertStopped();
     }
+
+    @Test
+    public void toteToStep() {
+        tote.setTriggered();
+        leadScrew.update();
+
+        assertAtTote();
+        assertStopped();
+
+        leadScrew.moveTowardsStep(0.5);
+        tote.setNotTriggered();
+        assertMovingDown();
+
+        step.setTriggered();
+        leadScrew.stop();
+
+        assertAtStep();
+        assertStopped();
+    }
+
+    @Test
+    public void toteToLow() {
+        tote.setTriggered();
+        leadScrew.update();
+
+        assertAtTote();
+        assertStopped();
+
+        leadScrew.moveTowardsLow(0.5);
+        tote.setNotTriggered();
+        assertMovingDown();
+
+        low.setTriggered();
+        leadScrew.stop();
+
+        assertAtLow();
+        assertStopped();
+    }
+
+    @Test
+    public void stepToLow() {
+        step.setTriggered();
+        leadScrew.update();
+
+        assertAtStep();
+        assertStopped();
+
+        leadScrew.moveTowardsLow(0.5);
+        step.setNotTriggered();
+        assertMovingDown();
+
+        low.setTriggered();
+        leadScrew.stop();
+
+        assertAtLow();
+        assertStopped();
+    }
+
+//    @Test
+//    public void lowToHighIntermittent() {
+//        low.setTriggered();
+//        leadScrew.update();
+//        assertAtLow();
+//
+//        leadScrew.moveTowardsToteOnStep(0.5);
+//        low.setNotTriggered();
+//        assertMovingUp();
+//
+//        tote.setTriggered();
+//        leadScrew.update();
+//        tote.setNotTriggered();
+//
+//        leadScrew.moveTowardsStep(0.5);
+//        assertMovingDown();
+//
+//        step.setTriggered();
+//        leadScrew.stop();
+//
+//        assertAtStep();
+//        assertStopped();
+//    }
+
+//    @Test
+//    public void HighToLowIntermittent() {
+//        toteOnStep.setTriggered();
+//        leadScrew.update();
+//        assertAtToteOnStep();
+//
+//        leadScrew.moveTowardsLow(0.5);
+//        toteOnStep.setNotTriggered();
+//        assertMovingDown();
+//
+//        step.setTriggered();
+//        leadScrew.update();
+//        step.setNotTriggered();
+//
+//        leadScrew.moveTowardsStep(0.5);
+//        assertMovingUp();
+//
+//        step.setTriggered();
+//        leadScrew.stop();
+//
+//        assertAtStep();
+//        assertStopped();
+//    }
 
     @Test
     public void noSwitchesTriggered() {
