@@ -13,19 +13,29 @@ import org.frc4931.robot.subsystem.Ramp;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
-    private Subsystems subsystems;
+    private static Robot instance;
+    private Systems systems;
+    
+    public Systems getSubsystems(){
+        return systems;
+    }
     
     @Override
     public void robotInit() {
-        subsystems = RobotBuilder.build();
+        instance = this;
+        systems = RobotBuilder.build();
     }
     
-    public static final class Subsystems {
+    public static Robot getInstance(){
+        return instance;
+    }
+    
+    public static final class Systems {
         public final DriveSystem drive;
         public final LoaderArm grabber;
         public final Ramp ramp;
         
-        public Subsystems(DriveSystem drive, LoaderArm arm, Ramp ramp){
+        public Systems(DriveSystem drive, LoaderArm arm, Ramp ramp){
             this.drive = drive;
             this.grabber = arm;
             this.ramp = ramp;

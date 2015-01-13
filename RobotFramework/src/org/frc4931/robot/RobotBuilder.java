@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot;
 
-import org.frc4931.robot.Robot.Subsystems;
+import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
@@ -23,8 +23,8 @@ import org.frc4931.robot.subsystem.Ramp;
  * Instantiates all of the robot components and returns them in an aggregate class.
  */
 public class RobotBuilder {
-    public static Subsystems build() {
-        return new Subsystems(
+    public static Systems build() {
+        return new Systems(
                 new DriveSystem(DriveTrain.create(
                         Motor.compose(
                                 Motors.talon(Properties.LEFT_FRONT_DRIVE),
