@@ -68,6 +68,14 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Determine whether there is at most 1 switch triggered.
+     * Multiple switches should not be triggered under normal circumstances; in this case, it should return true.
+     * If a switch gets stuck, and is always triggered, this method attempts to detect the failure
+     * and other methods would stop the motors to prevent damage.
+     *
+     * @return True if the switches are operating normally; otherwise, false.
+     */
     public boolean isNormalState() {
         int switchCount = 0;
 

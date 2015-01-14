@@ -623,6 +623,18 @@ public class LeadScrewTest {
         tote.setTriggered();
         toteOnStep.setTriggered();
         assertPositionUnknown();
+
+        leadScrew.moveTowardsLow(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsStep(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsTote(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        assertStopped();
     }
 
     @Test
@@ -636,6 +648,18 @@ public class LeadScrewTest {
         toteOnStep.setTriggered();
 
         assertPositionUnknown();
+
+        leadScrew.moveTowardsLow(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsStep(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsTote(0.5);
+        assertStopped();
+
+        leadScrew.moveTowardsToteOnStep(0.5);
+        assertStopped();
     }
 
     @Test
