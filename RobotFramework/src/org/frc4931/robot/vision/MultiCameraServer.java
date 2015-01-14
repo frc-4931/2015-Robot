@@ -28,9 +28,9 @@ public final class MultiCameraServer {
 
     protected static final CameraServer SERVER = CameraServer.getInstance(); // starts the server
 
-    private static AtomicReference<String> CAMERA_NAME = new AtomicReference<>();
-    private static Thread captureThread;
+    private static final AtomicReference<String> CAMERA_NAME = new AtomicReference<>();
     private static final Lock lock = new ReentrantLock();
+    private static volatile Thread captureThread;
 
     /**
      * Start automatically capturing images to send to the dashboard from the named camera. This method can safely be called
