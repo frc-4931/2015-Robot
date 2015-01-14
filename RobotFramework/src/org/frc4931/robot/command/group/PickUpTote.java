@@ -22,13 +22,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PickUpTote extends CommandGroup {
     public PickUpTote(Systems systems){
-        addSequential(new CloseGrabber());
+        addSequential(new CloseGrabber(systems.grabber));
         addSequential(new RaiseGrabber(systems.grabber));
         addSequential(new OpenGrabber(systems.grabber));
-        addSequential(new OpenGuardrail());
-        addSequential(new RaiseStacker());
-        addSequential(new CloseGuardrail());
-        addSequential(new LowerStacker());
+        addSequential(new OpenGuardrail(systems.ramp));
+        addSequential(new RaiseStacker(systems.ramp));
+        addSequential(new CloseGuardrail(systems.ramp));
+        addSequential(new LowerStacker(systems.ramp));
     }
 
 }

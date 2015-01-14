@@ -6,22 +6,30 @@
  */
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.subsystem.Ramp;
+
 /**
  * Closes the guardrail.
  */
 public class CloseGuardrail extends CommandBase {
-
+    
+    private Ramp ramp;
+    public CloseGuardrail(Ramp ramp){
+        this.ramp = ramp;
+        requires(ramp);
+    }
     @Override
     protected void initialize() {
     }
 
     @Override
     protected void execute() {
+        ramp.closeGuardRail();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return ramp.isGuardRailClosed();
     }
 
     @Override
