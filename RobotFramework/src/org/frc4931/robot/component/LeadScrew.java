@@ -6,6 +6,20 @@
  */
 package org.frc4931.robot.component;
 
+/**
+ * A lead screw bound by 4 switches along the range of motion:
+ * <p>
+ * <ul>
+ * <li>Low (near the ground)</li>
+ * <li>Step (at the height of the step</li>
+ * <li>Tote (at the height of a tote</li>
+ * <li>Tote on Step (at the height of a tote on top of the step</li>
+ * </ul>
+ *
+ * @author Adam Gausmann
+ * @see Motor
+ * @see Switch
+ */
 public final class LeadScrew {
     public enum Position {
         UNKNOWN, LOW, STEP, TOTE, TOTE_ON_STEP
@@ -19,6 +33,15 @@ public final class LeadScrew {
     private Position lastPosition;
     private Motor.Direction lastDirection;
 
+    /**
+     * Creates a new LeadScrew object with the specified motor and position switches.
+     *
+     * @param motor The motor used to control linear motion.
+     * @param low The switch corresponding to the lowest position.
+     * @param step The switch corresponding to the position at the step level.
+     * @param tote The switch corresponding to the position at the tote level.
+     * @param toteOnStep The switch corresponding to the position at the level of the tote on top of the step.
+     */
     public LeadScrew(Motor motor, Switch low, Switch step, Switch tote, Switch toteOnStep) {
         this.motor = motor;
         this.low = low;
@@ -45,22 +68,42 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Tells whether the low switch is triggered.
+     * @return true if the switch is triggered.
+     */
     public boolean isLow() {
         return low.isTriggered();
     }
 
+    /**
+     * Tells whether the step switch is triggered.
+     * @return true if the switch is triggered.
+     */
     public boolean isAtStep() {
         return step.isTriggered();
     }
 
+    /**
+     * Tells whether the tote switch is triggered.
+     * @return true if the switch is triggered.
+     */
     public boolean isAtTote() {
         return tote.isTriggered();
     }
 
+    /**
+     * Tells whether the tote-on-step switch is triggered.
+     * @return true if the switch is triggered.
+     */
     public boolean isAtToteOnStep() {
         return toteOnStep.isTriggered();
     }
 
+    /**
+     * Attempts to move the lead screw to the lowest position.
+     * @param speed The speed to move the motor at.
+     */
     public void moveTowardsLow(double speed) {
         update();
         if (isLow()) {
@@ -70,6 +113,10 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Attempts to move the lead screw to the position above the step.
+     * @param speed The speed to move the motor at.
+     */
     public void moveTowardsStep(double speed) {
         update();
         if (isAtStep()) {
@@ -89,6 +136,10 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Attempts to move the lead screw to the position above the tote.
+     * @param speed The speed to move the motor at.
+     */
     public void moveTowardsTote(double speed) {
         update();
         if (isAtTote()) {
@@ -108,6 +159,10 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Attempts to move the lead screw to the position above the tote on the step.
+     * @param speed The speed to move the motor at.
+     */
     public void moveTowardsToteOnStep(double speed) {
         update();
         if (isAtToteOnStep()) {
@@ -117,6 +172,10 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Returns the current position of the lead screw.
+     * @return LOW, STEP, TOTE, or TOTE_ON_STEP if only its corresponding switch is triggered; UNKNOWN otherwise
+     */
     public Position getPosition() {
         if (isLow() && !isAtStep() && !isAtTote() && !isAtToteOnStep()) {
             return Position.LOW;
@@ -131,19 +190,36 @@ public final class LeadScrew {
         }
     }
 
+    /**
+     * Gets the direction of the controlled {@link Motor}.
+     * Delegates {@link Motor#getDirection()}
+     *
+     * @return The direction the Motor is running, FORWARD, REVERSE, or STOPPED.
+     */
     public Motor.Direction getDirection() {
         return motor.getDirection();
     }
 
+    /**
+     * Stops the controlled {@link Motor}
+     */
     public void stop() {
         update();
         motor.stop();
     }
 
+    /**
+     * Gets the last switch the lead screw was recorded at.
+     * @return Any value of {@link Position} except UNKNOWN.
+     */
     public Position getLastPosition() {
         return lastPosition;
     }
 
+    /**
+     * Gets the last direction the {@link Motor} was running in.
+     * @return Any value of {@link org.frc4931.robot.component.Motor.Direction}
+     */
     public Motor.Direction getLastDirection() {
         return lastDirection;
     }
