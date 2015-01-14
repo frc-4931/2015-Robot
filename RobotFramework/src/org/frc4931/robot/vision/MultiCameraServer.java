@@ -28,9 +28,14 @@ public final class MultiCameraServer {
 
     protected static final CameraServer SERVER = CameraServer.getInstance(); // starts the server
 
-    private static final AtomicReference<String> CAMERA_NAME = new AtomicReference<>();
+    protected static final AtomicReference<ImageCapture> CAPTURE = new AtomicReference<>();
     private static final Lock lock = new ReentrantLock();
     private static volatile Thread captureThread;
+    private static volatile boolean captureMore = false;
+
+    private static interface ImageCapture {
+        public void captureAndSend(Image frame);
+    }
 
     /**
      * Start automatically capturing images to send to the dashboard from the named camera. This method can safely be called
@@ -47,11 +52,19 @@ public final class MultiCameraServer {
             try {
                 if (SERVER.isAutoCaptureStarted()) {
                     throw new IllegalStateException("Unable to start the auto-capture of images using " +
-                                MultiCameraServer.class.getSimpleName() + " because auto-capture has already been started on the " +
-                                CameraServer.class.getSimpleName() + " class.");
+                            MultiCameraServer.class.getSimpleName() + " because auto-capture has already been started on the " +
+                            CameraServer.class.getSimpleName() + " class.");
                 } else if (captureThread == null) {
                     // not yet running, so start it ...
-                    Thread thread = new Thread(MultiCameraServer::captureImageFromCamera);
+                    captureMore = true;
+                    Thread thread = new Thread(() -> {
+                        // Create an image that we'll use for a buffer ...
+                        Image frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+                        // Then as long as we're supposed to, capture an image and send it ...
+                        while (captureMore) {
+                            CAPTURE.get().captureAndSend(frame);
+                        }
+                    });
                     thread.start();
                     captureThread = thread;
                 }
@@ -70,19 +83,41 @@ public final class MultiCameraServer {
      */
     public static void useCamera(String cameraName) {
         assert cameraName != null;
-        CAMERA_NAME.set(cameraName);
+
+        // Change the function to grab the image from the right camera. We use a little trick to first set a function that
+        // initializes NIVision to use the given named camera, and that function (when completed) will set a new function that
+        // just does the capture and sends the image to the CameraServer. This makes the `useCamera(id)` function
+        CAPTURE.set( new ImageCapture() {
+            @Override
+            public void captureAndSend(Image frame) {
+                // The camera name changed, so configure NIVision to use the new camera name ...
+                int id = NIVision.IMAQdxOpenCamera(cameraName, NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+                NIVision.IMAQdxConfigureGrab(id);
+                NIVision.IMAQdxStartAcquisition(id);
+                
+                // Now that NIVision is prepped for the new camera, create a new function that will do the work ...
+                ImageCapture grab = new ImageCapture() {
+                    @Override
+                    public void captureAndSend(Image frame) {
+                        NIVision.IMAQdxGrab(id, frame, 1);
+                        SERVER.setImage(frame);
+                    }
+                };
+                
+                // Replace this function so it will be called next time ...
+                CAPTURE.set(grab);
+                
+                // But we have to call it once for this call ...
+                grab.captureAndSend(frame);
+            }
+        });
     }
-
-    private static void captureImageFromCamera() {
-        String name = CAMERA_NAME.get();
-        Image frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-        int id = NIVision.IMAQdxOpenCamera(name, NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        NIVision.IMAQdxConfigureGrab(id);
-        NIVision.IMAQdxStartAcquisition(id);
-
-        while (true) {
-            NIVision.IMAQdxGrab(id, frame, 1);
-            SERVER.setImage(frame);
-        }
+    
+    /**
+     * Stop the automatic capture server. Generally this won't be needed, but it is avialable just in case.
+     */
+    public static void stopAutomaticCapture() {
+        captureMore = false;
+        captureThread = null;
     }
 }
