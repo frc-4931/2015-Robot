@@ -6,6 +6,10 @@
  */
 package org.frc4931.robot;
 
+import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.Relay;
+import org.frc4931.robot.component.Solenoid;
+import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
@@ -23,7 +27,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         instance = this;
-        systems = RobotBuilder.build();
+        Components components = RobotBuilder.components();
+        systems = RobotBuilder.build(components);
     }
     
     public static Robot getInstance(){
@@ -40,5 +45,21 @@ public class Robot extends IterativeRobot {
             this.grabber = arm;
             this.ramp = ramp;
         }
+    }
+    
+    public static interface Components {
+        Relay shifter();
+        Motor leftDriveMotor();
+        Motor rightDriveMotor();
+        Solenoid armLifterActuator();
+        Solenoid grabberActuator();
+        Switch capturableSwitch();
+        Switch capturedSwitch();
+        Solenoid rampLifterActuator();
+        Solenoid stackLifterActuator();
+        Solenoid kickerActuator();
+        Motor guardRailActuator();
+        Switch guardRailOpenSwitch();
+        Switch guardRailClosedSwitch();
     }
 }
