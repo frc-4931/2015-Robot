@@ -22,10 +22,8 @@ import static org.fest.assertions.Assertions.assertThat;
  * out with the robot in the {@link MockRobot#resetToStartingPosition() starting position}, though individual tests may want to
  * start with preconditions to move the robot into a different state and then {@link #runCommandAnd create and run a command} to
  * verify that the robot has responded correctly.
- * 
- * @param <T> the type of command
  */
-public abstract class AbstractCommandTest<T extends Command> {
+public abstract class AbstractCommandTest {
 
     // The subsystems will be registered automatically with the Scheduler ...
     protected final static MockRobot robot = new MockRobot();
@@ -74,7 +72,7 @@ public abstract class AbstractCommandTest<T extends Command> {
      * @param systems the systems on the {@link #robot() mock robot}; never null
      * @return the new command; may not be null
      */
-    protected abstract T createCommand(Systems systems);
+    protected abstract Command createCommand(Systems systems);
 
     /**
      * Create a command using {@link #createCommand(Systems)}, add it to the scheduler, and run the scheduler as many times
@@ -99,7 +97,7 @@ public abstract class AbstractCommandTest<T extends Command> {
      *            be null
      */
     protected void runCommandAnd(PostExecution... afterEachExecution) {
-        T command = createCommand(robot.systems());
+        Command command = createCommand(robot.systems());
         assertThat(command).isNotNull();
         lastCommand = new WrappedCommand(command);
         Scheduler.getInstance().add(lastCommand);

@@ -9,10 +9,12 @@ package org.frc4931.robot.command;
 import org.frc4931.robot.Robot.Systems;
 import org.junit.Test;
 
-public class CloseGrabberTest extends AbstractCommandTest<CloseGrabber> {
+import edu.wpi.first.wpilibj.command.Command;
+
+public class CloseGrabberTest extends AbstractCommandTest {
 
     @Override
-    protected CloseGrabber createCommand(Systems systems) {
+    protected Command createCommand(Systems systems) {
         return new CloseGrabber(systems.grabber);
     }
     
