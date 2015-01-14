@@ -6,10 +6,16 @@
  */
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.subsystem.Ramp;
+
 /**
  * Lowers the ramp.
  */
-public class LowerRamp extends CommandBase {
+public class LowerRamp extends OneShotCommand {
+    private Ramp ramp;
+    public LowerRamp(Ramp ramp){
+        this.ramp = ramp;
+    }
 
     @Override
     protected void initialize() {
@@ -17,11 +23,12 @@ public class LowerRamp extends CommandBase {
 
     @Override
     protected void execute() {
+        ramp.lowerStack();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override

@@ -115,4 +115,17 @@ public final class Ramp extends SubsystemBase {
     public void closeGuardRail() {
         guardRail.moveTowardsLow(RAIL_MOVE_SPEED);
     }
+    /**
+     * @return Checks to see if Guardrail is open.
+     */
+    public boolean isGuardRailOpen(){
+        return guardRail.isHigh();
+    }
+    /**
+     *  Checks to see if Guardrail is closed
+     * @return true if the guardrail is in the closed position, or false otherwise
+     */
+    public boolean isGuardRailClosed(){
+        return guardRail.isLow();
+    }
 }

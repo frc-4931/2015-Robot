@@ -6,10 +6,17 @@
  */
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.subsystem.Ramp;
+
 /**
  * Opens the guardrail.
  */
 public class OpenGuardrail extends CommandBase {
+    private Ramp ramp;
+    public OpenGuardrail(Ramp ramp){
+        this.ramp = ramp;
+        requires(ramp);
+    }
 
     @Override
     protected void initialize() {
@@ -17,11 +24,12 @@ public class OpenGuardrail extends CommandBase {
 
     @Override
     protected void execute() {
+        
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return ramp.isGuardRailOpen();
     }
 
     @Override
