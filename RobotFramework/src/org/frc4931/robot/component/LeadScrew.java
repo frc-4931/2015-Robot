@@ -68,12 +68,31 @@ public final class LeadScrew {
         }
     }
 
+    public boolean isNormalState() {
+        int switchCount = 0;
+
+        if (low.isTriggered()) {
+            switchCount++;
+        }
+        if (step.isTriggered()) {
+            switchCount++;
+        }
+        if (tote.isTriggered()) {
+            switchCount++;
+        }
+        if (toteOnStep.isTriggered()) {
+            switchCount++;
+        }
+
+        return switchCount <= 1;
+    }
+
     /**
      * Tells whether the low switch is triggered.
      * @return true if the switch is triggered.
      */
     public boolean isLow() {
-        return low.isTriggered();
+        return low.isTriggered() && !step.isTriggered() && !tote.isTriggered() && !toteOnStep.isTriggered();
     }
 
     /**
@@ -81,7 +100,7 @@ public final class LeadScrew {
      * @return true if the switch is triggered.
      */
     public boolean isAtStep() {
-        return step.isTriggered();
+        return !low.isTriggered() && step.isTriggered() && !tote.isTriggered() && !toteOnStep.isTriggered();
     }
 
     /**
@@ -89,7 +108,7 @@ public final class LeadScrew {
      * @return true if the switch is triggered.
      */
     public boolean isAtTote() {
-        return tote.isTriggered();
+        return !low.isTriggered() && !step.isTriggered() && tote.isTriggered() && !toteOnStep.isTriggered();
     }
 
     /**
@@ -97,7 +116,7 @@ public final class LeadScrew {
      * @return true if the switch is triggered.
      */
     public boolean isAtToteOnStep() {
-        return toteOnStep.isTriggered();
+        return !low.isTriggered() && !step.isTriggered() && !tote.isTriggered() && toteOnStep.isTriggered();
     }
 
     /**
@@ -106,7 +125,8 @@ public final class LeadScrew {
      */
     public void moveTowardsLow(double speed) {
         update();
-        if (isLow()) {
+
+        if (isLow() || !isNormalState()) {
             motor.stop();
         } else {
             moveDown(speed);
@@ -119,7 +139,7 @@ public final class LeadScrew {
      */
     public void moveTowardsStep(double speed) {
         update();
-        if (isAtStep()) {
+        if (isAtStep() || !isNormalState()) {
             motor.stop();
         } else {
             if (lastPosition == Position.LOW) {
@@ -142,7 +162,7 @@ public final class LeadScrew {
      */
     public void moveTowardsTote(double speed) {
         update();
-        if (isAtTote()) {
+        if (isAtTote() || !isNormalState()) {
             motor.stop();
         } else {
             if (lastPosition == Position.LOW || lastPosition == Position.STEP) {
@@ -165,7 +185,7 @@ public final class LeadScrew {
      */
     public void moveTowardsToteOnStep(double speed) {
         update();
-        if (isAtToteOnStep()) {
+        if (isAtToteOnStep() || !isNormalState()) {
             motor.stop();
         } else {
             moveUp(speed);
@@ -177,13 +197,13 @@ public final class LeadScrew {
      * @return LOW, STEP, TOTE, or TOTE_ON_STEP if only its corresponding switch is triggered; UNKNOWN otherwise
      */
     public Position getPosition() {
-        if (isLow() && !isAtStep() && !isAtTote() && !isAtToteOnStep()) {
+        if (isLow()) {
             return Position.LOW;
-        } else if (!isLow() && isAtStep() && !isAtTote() && !isAtToteOnStep()) {
+        } else if (isAtStep()) {
             return Position.STEP;
-        } else if (!isLow() && !isAtStep() && isAtTote() && !isAtToteOnStep()) {
+        } else if (isAtTote()) {
             return Position.TOTE;
-        } else if (!isLow() && !isAtStep() && !isAtTote() && isAtToteOnStep()) {
+        } else if (isAtToteOnStep()) {
             return Position.TOTE_ON_STEP;
         } else {
             return Position.UNKNOWN;

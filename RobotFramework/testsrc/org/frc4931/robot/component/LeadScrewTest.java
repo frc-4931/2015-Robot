@@ -660,34 +660,18 @@ public class LeadScrewTest {
     }
 
     private void assertAtLow() {
-        assertThat(leadScrew.getPosition()).isEqualTo(LeadScrew.Position.LOW);
         assertThat(leadScrew.isLow()).isTrue();
-        assertThat(leadScrew.isAtStep()).isFalse();
-        assertThat(leadScrew.isAtTote()).isFalse();
-        assertThat(leadScrew.isAtToteOnStep()).isFalse();
     }
 
     private void assertAtStep() {
-        assertThat(leadScrew.getPosition()).isEqualTo(LeadScrew.Position.STEP);
-        assertThat(leadScrew.isLow()).isFalse();
         assertThat(leadScrew.isAtStep()).isTrue();
-        assertThat(leadScrew.isAtTote()).isFalse();
-        assertThat(leadScrew.isAtToteOnStep()).isFalse();
     }
 
     private void assertAtTote() {
-        assertThat(leadScrew.getPosition()).isEqualTo(LeadScrew.Position.TOTE);
-        assertThat(leadScrew.isLow()).isFalse();
-        assertThat(leadScrew.isAtStep()).isFalse();
         assertThat(leadScrew.isAtTote()).isTrue();
-        assertThat(leadScrew.isAtToteOnStep()).isFalse();
     }
 
     private void assertAtToteOnStep() {
-        assertThat(leadScrew.getPosition()).isEqualTo(LeadScrew.Position.TOTE_ON_STEP);
-        assertThat(leadScrew.isLow()).isFalse();
-        assertThat(leadScrew.isAtStep()).isFalse();
-        assertThat(leadScrew.isAtTote()).isFalse();
         assertThat(leadScrew.isAtToteOnStep()).isTrue();
     }
 
