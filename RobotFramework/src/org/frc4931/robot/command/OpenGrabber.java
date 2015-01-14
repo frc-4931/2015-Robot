@@ -6,10 +6,19 @@
  */
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.subsystem.LoaderArm;
+
 /**
  * Opens the grabber arm.
  */
 public class OpenGrabber extends CommandBase {
+    
+    private final LoaderArm arm;
+    
+    public OpenGrabber(LoaderArm arm){
+        this.arm = arm;
+        requires(this.arm);
+    }
 
     @Override
     protected void initialize() {
@@ -17,11 +26,12 @@ public class OpenGrabber extends CommandBase {
 
     @Override
     protected void execute() {
+        arm.grab();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
