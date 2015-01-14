@@ -27,8 +27,12 @@ import static org.fest.assertions.Assertions.assertThat;
  * the {@link TestableRobotState}.
  */
 public class MockRobot implements Robot.Components {
+    
+    static {
+        TestableRobotState.beginTeleopMode();   // must be done before anything else ...
+    }
 
-    protected final Robot.Systems systems;
+    private final Robot.Systems systems;
     private final MockRelay shifter = MockRelay.withOff();
     private final MockMotor leftDrive = MockMotor.stopped();
     private final MockMotor rightDrive = MockMotor.stopped();
@@ -44,8 +48,6 @@ public class MockRobot implements Robot.Components {
     private final MockSwitch guardRailClosedSwitch = MockSwitch.notTriggered();
 
     public MockRobot() {
-        // This must be done first ...
-        TestableRobotState.beginTeleopMode();
         systems = RobotBuilder.build(this);
     }
 

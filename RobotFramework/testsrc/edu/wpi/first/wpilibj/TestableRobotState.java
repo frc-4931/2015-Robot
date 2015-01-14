@@ -1,7 +1,23 @@
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ * 
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
 package edu.wpi.first.wpilibj;
 
+import org.frc4931.robot.MockRobot;
+
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 
+/**
+ * Some gritty code that manipulates some WPILib components and replaces the implementation of others so that the {@link Scheduler}
+ * can be used within unit tests. This class is already referenced by {@link MockRobot} so that all initialization is done before
+ * the robot's subsystems are needed.
+ * 
+ * @see MockRobot
+ */
 public class TestableRobotState extends RobotState {
     
     public static double MATCH_DURATION_IN_SECONDS = 180.0;
