@@ -15,7 +15,7 @@ public class RaiseRamp extends CommandBase {
 
     private final Ramp ramp;
     
-    public RaisesRamp(Ramp ramp){
+    public RaiseRamp(Ramp ramp){
         this.ramp = ramp;
         requires(this.ramp);
     }

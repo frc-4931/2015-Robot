@@ -6,13 +6,14 @@
  */
 package org.frc4931.robot.command.group;
 
+import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.command.CloseGrabber;
 import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.RaiseStacker;
 import org.frc4931.robot.command.LowerStacker;
 import org.frc4931.robot.command.OpenGrabber;
 import org.frc4931.robot.command.OpenGuardrail;
 import org.frc4931.robot.command.RaiseGrabber;
+import org.frc4931.robot.command.RaiseStacker;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -20,10 +21,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * 
  */
 public class PickUpTote extends CommandGroup {
-    public PickUpTote(){
+    public PickUpTote(Systems systems){
         addSequential(new CloseGrabber());
-        addSequential(new RaiseGrabber());
-        addSequential(new OpenGrabber());
+        addSequential(new RaiseGrabber(systems.grabber));
+        addSequential(new OpenGrabber(systems.grabber));
         addSequential(new OpenGuardrail());
         addSequential(new RaiseStacker());
         addSequential(new CloseGuardrail());
