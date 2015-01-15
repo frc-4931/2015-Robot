@@ -13,7 +13,7 @@ package org.frc4931.robot.command;
  */
 public abstract class OneShotCommand extends CommandBase  {
     @Override
-    protected boolean isFinished() {
+    protected final boolean isFinished() {
         return true;
     }
 
