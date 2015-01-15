@@ -11,7 +11,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
 /**
  * Raise the grabber arm to tote/ground level.
  */
-public class RaiseGrabber extends CommandBase {
+public class RaiseGrabber extends OneShotCommand {
 
     private final LoaderArm arm;
     
@@ -27,11 +27,6 @@ public class RaiseGrabber extends CommandBase {
     @Override
     protected void execute() {
         arm.raise();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
     }
 
     @Override

@@ -11,7 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 /**
  * Perpenticualrizes the ramp to the gorund.
  */
-public class RaiseRamp extends CommandBase {
+public class RaiseRamp extends OneShotCommand {
 
     private final Ramp ramp;
     
@@ -27,11 +27,6 @@ public class RaiseRamp extends CommandBase {
     @Override
     protected void execute() {
         ramp.raiseRamp();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
     }
 
     @Override

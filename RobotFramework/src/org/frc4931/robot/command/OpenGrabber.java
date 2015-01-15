@@ -11,7 +11,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
 /**
  * Opens the grabber arm.
  */
-public class OpenGrabber extends CommandBase {
+public class OpenGrabber extends OneShotCommand {
     
     private final LoaderArm arm;
     
@@ -28,12 +28,7 @@ public class OpenGrabber extends CommandBase {
     protected void execute() {
         arm.grab();
     }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
+    
     @Override
     protected void end() {
     }
