@@ -56,6 +56,24 @@ public final class MockSolenoid implements Solenoid {
         return direction;
     }
     
+    /**
+     * Determine whether this solenoid has been extended. This mock solenoid is considered to be instantaneous: as soon as {@link #extend()}
+     * or {@link #retract()} is called, then it is assumed to be in that state.
+     * @return true if the solenoid has been extended, or false otherwise
+     */
+    public boolean isExtended() {
+        return direction == Direction.EXTENDING;
+    }
+    
+    /**
+     * Determine whether this solenoid has been retracted. This mock solenoid is considered to be instantaneous: as soon as {@link #extend()}
+     * or {@link #retract()} is called, then it is assumed to be in that state.
+     * @return true if the solenoid has been retracted, or false otherwise
+     */
+    public boolean isRetracted() {
+        return direction == Direction.RETRACTING;
+    }
+    
     @Override
     public String toString() {
         return direction.toString();
