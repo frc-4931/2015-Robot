@@ -27,11 +27,6 @@ public class LowerRamp extends OneShotCommand {
     }
 
     @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-    @Override
     protected void end() {
     }
 
