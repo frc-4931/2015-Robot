@@ -11,7 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 /**
  * Lowers the whole stack of totes down the ramp.
  */
-public class LowerStacker extends CommandBase {
+public class LowerStacker extends OneShotCommand {
     private Ramp ramp;
 
     public LowerStacker(Ramp ramp) {
@@ -26,11 +26,6 @@ public class LowerStacker extends CommandBase {
     @Override
     protected void execute() {
         ramp.lowerStack();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return true;
     }
 
     @Override
