@@ -14,16 +14,16 @@ import org.frc4931.robot.component.Switch;
  * @author Zach Anderson
  */
 public class OperatorInterface {
-    public static AnalogAxis wheel;
-    public static AnalogAxis throttle;
+    public final AnalogAxis wheel;
+    public final AnalogAxis throttle;
     
-    public static Switch toggleClaw;
-    public static Switch toggleLift;
-    public static Switch toggleRamp;
-    public static Switch toggleRails;
+    public final Switch toggleClaw;
+    public final Switch toggleLift;
+    public final Switch toggleRamp;
+    public final Switch toggleRails;
     
     // Modified to fit driver preference
-    public static void initialize(Joystick joy){
+    public OperatorInterface(Joystick joy){
         wheel = joy.getYaw();
         throttle = joy.getPitch();
         
