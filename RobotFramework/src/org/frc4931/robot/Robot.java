@@ -10,6 +10,7 @@ import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
@@ -36,11 +37,13 @@ public class Robot extends IterativeRobot {
     }
     
     public static final class Systems {
+        public final OperatorInterface operatorInterface;
         public final DriveSystem drive;
         public final LoaderArm grabber;
         public final Ramp ramp;
         
-        public Systems(DriveSystem drive, LoaderArm arm, Ramp ramp){
+        public Systems(OperatorInterface operatorInterface, DriveSystem drive, LoaderArm arm, Ramp ramp){
+            this.operatorInterface = operatorInterface;
             this.drive = drive;
             this.grabber = arm;
             this.ramp = ramp;
