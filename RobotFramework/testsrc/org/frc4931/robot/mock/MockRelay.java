@@ -4,7 +4,7 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.component.mock;
+package org.frc4931.robot.mock;
 
 import org.frc4931.robot.component.Relay;
 

@@ -6,8 +6,8 @@
  */
 package org.frc4931.robot.component;
 
-import org.frc4931.robot.component.mock.MockMotor;
-import org.frc4931.robot.component.mock.MockSwitch;
+import org.frc4931.robot.mock.MockMotor;
+import org.frc4931.robot.mock.MockSwitch;
 import org.frc4931.utils.Operations;
 import org.junit.Before;
 import org.junit.Test;

@@ -6,10 +6,10 @@
  */
 package org.frc4931.robot;
 
-import org.frc4931.robot.component.mock.MockMotor;
-import org.frc4931.robot.component.mock.MockRelay;
-import org.frc4931.robot.component.mock.MockSolenoid;
-import org.frc4931.robot.component.mock.MockSwitch;
+import org.frc4931.robot.mock.MockMotor;
+import org.frc4931.robot.mock.MockRelay;
+import org.frc4931.robot.mock.MockSolenoid;
+import org.frc4931.robot.mock.MockSwitch;
 
 import edu.wpi.first.wpilibj.TestableRobotState;
 import edu.wpi.first.wpilibj.Timer;
