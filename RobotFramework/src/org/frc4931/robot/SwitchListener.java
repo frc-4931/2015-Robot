@@ -13,7 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.frc4931.robot.component.Switch;
 
 /**
- * 
+ * A class that allows {@link ListenerFunction}s to be registered with {@link Switch}es
+ * to execute on a certain change of state.
  */
 public enum SwitchListener implements Runnable{
     INSTANCE;
@@ -25,11 +26,17 @@ public enum SwitchListener implements Runnable{
         running = new AtomicBoolean(false);
     }
     
+    /**
+     * Starts monitoring the registered listeners in a new thread.
+     */
     public void start(){
         running.set(true);
         new Thread(this).start();
     }
     
+    /**
+     * Stops monitoring the register listeners.
+     */
     public void stop(){
         running.set(false);
     }
@@ -40,18 +47,36 @@ public enum SwitchListener implements Runnable{
             monitor();
     }
     
-    public void monitor(){
+    private void monitor(){
         listeners.forEach((swtch, container)->container.update(swtch));
     }
     
+    /**
+     * Register a {@link ListenerFunction} to be called the moment when the specified
+     * {@link Switch} is triggered.
+     * @param swtch the {@link Switch} to bind the command to
+     * @param function the {@link ListenerFunction} to execute
+     */
     public void onTriggered(Switch swtch, ListenerFunction function){
         listeners.putIfAbsent(swtch, new Container()).addWhenTriggered(function);
     }
     
+    /**
+     * Register a {@link ListenerFunction} to be called repeatedly while the specified
+     * {@link Switch} is triggered.
+     * @param swtch the {@link Switch} to bind the command to
+     * @param function the {@link ListenerFunction} to execute
+     */
     public void whileTriggered(Switch swtch, ListenerFunction function){
         listeners.putIfAbsent(swtch, new Container()).addWhileTriggered(function);
     }
     
+    /**
+     * Register a {@link ListenerFunction} to be called the moment when the specified
+     * {@link Switch} is untriggered.
+     * @param swtch the {@link Switch} to bind the command to
+     * @param function the {@link ListenerFunction} to execute
+     */
     public void onUntriggered(Switch swtch, ListenerFunction function){
         listeners.putIfAbsent(swtch, new Container()).addWhenUntriggered(function);
     }
