@@ -14,6 +14,7 @@ import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -52,11 +53,13 @@ public class Robot extends IterativeRobot {
         public final DriveSystem drive;
         public final LoaderArm grabber;
         public final Ramp ramp;
+        public final VisionSystem vision;
 
         public Systems(DriveSystem drive, LoaderArm arm, Ramp ramp, VisionSystem vision) {
             this.drive = drive;
             this.grabber = arm;
             this.ramp = ramp;
+            this.vision = vision;
         }
 
         @Override
@@ -64,6 +67,7 @@ public class Robot extends IterativeRobot {
             drive.startup();
             grabber.startup();
             ramp.startup();
+            vision.startup();
         }
 
         @Override
@@ -77,6 +81,7 @@ public class Robot extends IterativeRobot {
                     try {
                         ramp.shutdown();
                     } finally {
+                        vision.shutdown();
                     }
                 }
             }
@@ -109,5 +114,9 @@ public class Robot extends IterativeRobot {
         Switch guardRailOpenSwitch();
 
         Switch guardRailClosedSwitch();
+
+        String frontCameraName();
+
+        String rearCameraName();
     }
 }

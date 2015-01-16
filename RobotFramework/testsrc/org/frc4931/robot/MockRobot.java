@@ -46,9 +46,13 @@ public class MockRobot implements Robot.Components {
     private final MockMotor guardRailMotor = MockMotor.stopped();
     private final MockSwitch guardRailOpenSwitch = MockSwitch.triggered();
     private final MockSwitch guardRailClosedSwitch = MockSwitch.notTriggered();
+    private final String frontCameraName;
+    private final String rearCameraName;
 
     public MockRobot() {
         systems = RobotBuilder.build(this);
+        frontCameraName = null;
+        rearCameraName = null;
     }
 
     public Robot.Systems systems() {
@@ -118,6 +122,16 @@ public class MockRobot implements Robot.Components {
     @Override
     public MockSwitch guardRailClosedSwitch() {
         return guardRailClosedSwitch;
+    }
+    
+    @Override
+    public String frontCameraName() {
+        return frontCameraName;
+    }
+    
+    @Override
+    public String rearCameraName() {
+        return rearCameraName;
     }
 
     public MockRobot enableRobot() {

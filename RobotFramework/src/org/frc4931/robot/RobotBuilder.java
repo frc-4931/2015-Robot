@@ -23,6 +23,7 @@ import org.frc4931.robot.hardware.Hardware.Solenoids;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.
@@ -38,6 +39,8 @@ public class RobotBuilder {
         DriveSystem driveSystem = buildDriveSystem(components);
         LoaderArm arm = buildLoaderArm(components);
         Ramp ramp = buildRamp(components);
+        VisionSystem vision = buildVision(components);
+        return new Systems(driveSystem, arm, ramp, vision);
     }
 
     /**
@@ -78,6 +81,14 @@ public class RobotBuilder {
                         guardRailMotor);
     }
     
+    /**
+     * Build an instance of the {@link LoaderArm} subsystem given the supplied set of robot components.
+     * @param components the components of the robot; may not be null
+     * @return a new loader arm instance; never null
+     */
+    public static VisionSystem buildVision(Robot.Components components) {
+        return new VisionSystem(components.frontCameraName(), components.rearCameraName());
+    }
     /**
      * Get the operator interface that will be used for the robot.
      * @return the default operator interface; never null
@@ -124,6 +135,9 @@ public class RobotBuilder {
         Motor guardRailMotor = Motors.talon(Properties.GUARDRAIL_MOTOR);
         Switch guardRailOpenSwitch = Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH);
         Switch guardRailClosedSwitch = Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH);
+        
+        String frontCameraName = Properties.FRONT_CAMERA_NAME;
+        String rearCameraName = Properties.REAR_CAMERA_NAME;
 
         return new Robot.Components() {
 
@@ -192,6 +206,15 @@ public class RobotBuilder {
                 return guardRailClosedSwitch;
             }
             
+            @Override
+            public String frontCameraName() {
+                return frontCameraName;
+            }
+            
+            @Override
+            public String rearCameraName() {
+                return rearCameraName;
+            }
         };
     }
     
@@ -232,6 +255,9 @@ public class RobotBuilder {
         private static final int GUARDRAIL_MOTOR = 4;
         private static final int GUARDRAIL_OPEN_SWITCH = 0;
         private static final int GUARDRAIL_CLOSE_SWITCH = 1;
-
+        
+        /*-------VISION-------*/
+        private static final String FRONT_CAMERA_NAME = "cam1";
+        private static final String REAR_CAMERA_NAME = "cam2";
     }
 }
