@@ -13,6 +13,8 @@ import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.driver.LogitechAttack3D;
+import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
@@ -35,7 +37,8 @@ public class RobotBuilder {
         DriveSystem driveSystem = buildDriveSystem(components);
         LoaderArm arm = buildLoaderArm(components);
         Ramp ramp = buildRamp(components);
-        return new Systems(driveSystem, arm, ramp);
+        OperatorInterface operatorInterface = operatorInterface();
+        return new Systems(operatorInterface,driveSystem, arm, ramp);
     }
 
     /**
@@ -74,6 +77,14 @@ public class RobotBuilder {
                         components.stackLifterActuator(),
                         components.kickerActuator(),
                         guardRailMotor);
+    }
+    
+    /**
+     * Get the operator interface that will be used for the robot.
+     * @return the default operator interface; never null
+     */
+    public static OperatorInterface operatorInterface() {
+        return new OperatorInterface( new LogitechAttack3D(Properties.JOYSTICK) );
     }
 
     /**
@@ -185,6 +196,11 @@ public class RobotBuilder {
     }
     
     private static final class Properties {
+        // TODO: Make sure these are all correct before running on the hardware!!
+        
+        /*-------JOYSTICK------*/
+        private static final int JOYSTICK = 0;
+
         /*-------DRIVE SYSTEM------*/
         private static final int LEFT_FRONT_DRIVE = 0;
         private static final int LEFT_REAR_DRIVE = 1;
