@@ -13,6 +13,7 @@ import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.driver.Joystick;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
@@ -30,20 +31,18 @@ public class RobotBuilder {
     
     /**
      * Build the {@link Systems robot systems} given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new Systems instance; never null
      */
     public static Systems build( Robot.Components components ) {
         DriveSystem driveSystem = buildDriveSystem(components);
         LoaderArm arm = buildLoaderArm(components);
         Ramp ramp = buildRamp(components);
-        OperatorInterface operatorInterface = operatorInterface();
-        return new Systems(operatorInterface,driveSystem, arm, ramp);
     }
 
     /**
      * Build an instance of the {@link DriveSystem} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new drive system instance; never null
      */
     public static DriveSystem buildDriveSystem(Robot.Components components) {
@@ -54,7 +53,7 @@ public class RobotBuilder {
 
     /**
      * Build an instance of the {@link LoaderArm} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new loader arm instance; never null
      */
     public static LoaderArm buildLoaderArm(Robot.Components components) {
@@ -66,7 +65,7 @@ public class RobotBuilder {
 
     /**
      * Build an instance of the {@link Ramp} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new ramp instance; never null
      */
     public static Ramp buildRamp(Robot.Components components) {
@@ -84,7 +83,8 @@ public class RobotBuilder {
      * @return the default operator interface; never null
      */
     public static OperatorInterface operatorInterface() {
-        return new OperatorInterface( new LogitechAttack3D(Properties.JOYSTICK) );
+        Joystick joystick = new LogitechAttack3D(Properties.JOYSTICK);
+        return new OperatorInterface(joystick);
     }
 
     /**
