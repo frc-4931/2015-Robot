@@ -11,10 +11,11 @@ import org.frc4931.robot.subsystem.LoaderArm;
 /**
  * Lowers the grabber arm to tote/ground level.
  */
-public class LowerGrabber extends OneShotCommand {
+public class LowerGrabber extends SpeedCommandBase {
     private LoaderArm loaderArm;
 
-    public LowerGrabber(LoaderArm loaderArm) {
+    public LowerGrabber(LoaderArm loaderArm, double speed ) {
+        super(speed);
         this.loaderArm = loaderArm;
         requires(loaderArm);
     }
@@ -25,7 +26,12 @@ public class LowerGrabber extends OneShotCommand {
 
     @Override
     protected void execute() {
-        loaderArm.lower();
+        loaderArm.lower(speed);
+    }
+    
+    @Override
+    protected boolean isFinished() {
+        return loaderArm.isLowered();
     }
 
     @Override

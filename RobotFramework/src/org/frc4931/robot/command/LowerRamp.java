@@ -1,6 +1,6 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- *
+ * 
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
@@ -13,7 +13,8 @@ import org.frc4931.robot.subsystem.Ramp;
  */
 public class LowerRamp extends OneShotCommand {
     private Ramp ramp;
-    public LowerRamp(Ramp ramp){
+
+    public LowerRamp(Ramp ramp) {
         this.ramp = ramp;
     }
 
@@ -23,7 +24,7 @@ public class LowerRamp extends OneShotCommand {
 
     @Override
     protected void execute() {
-        ramp.lowerStack();
+        ramp.lowerRamp();
     }
 
     @Override

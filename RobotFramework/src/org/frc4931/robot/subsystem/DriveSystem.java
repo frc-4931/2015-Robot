@@ -29,8 +29,6 @@ public final class DriveSystem extends SubsystemBase {
     private static final double SENSITIVITY_HIGH = 0.75;
     private static final double SENSITIVITY_LOW = 0.75;
     private static final double HALF_PI = Math.PI / 2.0;
-    private static final double MAXIMUM_VOLTAGE = 1.0;
-    private static final double MINIMUM_USABLE_VOLTAGE = 0.02;
 
     private final DriveTrain driveTrain;
     private final Relay highGear;
@@ -306,24 +304,5 @@ public final class DriveSystem extends SubsystemBase {
             rightPwm = -1.0;
         }
         driveTrain.drive(leftPwm, rightPwm);
-    }
-
-    /**
-     * Limit motor values to the -1.0 to +1.0 range, ensuring that it is above the specified minimum value.
-     * 
-     * @param maximum the maximum allowed value; must be positive or equal to zero
-     * @param num the input value
-     * @param minimumReadable the minimum value below which 0.0 is used; must be positive or equal to zero
-     * @return the limited output value
-     */
-    private static double limit(double maximum, double num, double minimumReadable) {
-        assert maximum >= 0.0;
-        if (num > maximum) {
-            return 1.0;
-        }
-        if (Math.abs(num) < maximum) {
-            return -1.0;
-        }
-        return Math.abs(num) > minimumReadable ? num : 0.0;
     }
 }

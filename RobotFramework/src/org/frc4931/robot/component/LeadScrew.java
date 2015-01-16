@@ -128,6 +128,31 @@ public final class LeadScrew {
     }
 
     /**
+     * Attempts to move the lead screw to the specified position.
+     * @param desiredPosition the desiredPosition; may not be null
+     * @param speed The speed to move the motor at.
+     */
+    public void moveTo( Position desiredPosition, double speed) {
+        assert desiredPosition != null;
+        switch( desiredPosition ) {
+            case LOW:
+                moveTowardsLow(speed);
+                break;
+            case STEP:
+                moveTowardsStep(speed);
+                break;
+            case TOTE:
+                moveTowardsTote(speed);
+                break;
+            case TOTE_ON_STEP:
+                moveTowardsToteOnStep(speed);
+                break;
+            case UNKNOWN:
+                motor.stop();
+        }
+    }
+
+    /**
      * Attempts to move the lead screw to the lowest position.
      * @param speed The speed to move the motor at.
      */

@@ -26,7 +26,7 @@ public final class MockSwitch implements Switch {
      * 
      * @return the mock switch
      */
-    public static MockSwitch notTriggered() {
+    public static MockSwitch createNotTriggeredSwitch() {
         return new MockSwitch(false);
     }
 
@@ -37,7 +37,7 @@ public final class MockSwitch implements Switch {
      * 
      * @return the mock switch
      */
-    public static MockSwitch triggered() {
+    public static MockSwitch createTriggeredSwitch() {
         return new MockSwitch(true);
     }
 
