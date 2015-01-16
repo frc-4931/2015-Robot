@@ -45,41 +45,5 @@ public abstract class SubsystemBase extends Subsystem {
             setDefaultCommand(command);
         }
     }
-    
-    /**
-     * Limit motor values to the 0 to +1.0 range, ensuring that it is above the specified minimum value.
-     * 
-     * @param maximum the maximum allowed value; must be positive or equal to zero
-     * @param num the input value
-     * @param minimumReadable the minimum value below which 0.0 is used; must be positive or equal to zero
-     * @return the positive limited output value
-     */
-    protected static double positiveLimit(double maximum, double num, double minimumReadable) {
-        assert maximum >= 0.0;
-        num = Math.abs(num);
-        if (num > maximum) {
-            return 1.0;
-        }
-        return Math.abs(num) > minimumReadable ? num : 0.0;
-    }
-    
-    /**
-     * Limit motor values to the -1.0 to +1.0 range, ensuring that it is above the specified minimum value.
-     * 
-     * @param maximum the maximum allowed value; must be positive or equal to zero
-     * @param num the input value
-     * @param minimumReadable the minimum value below which 0.0 is used; must be positive or equal to zero
-     * @return the limited output value
-     */
-    protected static double limit(double maximum, double num, double minimumReadable) {
-        assert maximum >= 0.0;
-        if (num > maximum) {
-            return 1.0;
-        }
-        if (Math.abs(num) < maximum) {
-            return -1.0;
-        }
-        return Math.abs(num) > minimumReadable ? num : 0.0;
-    }
 
 }

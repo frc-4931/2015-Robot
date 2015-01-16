@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Relay.State;
+import org.frc4931.utils.Operations;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -102,8 +103,8 @@ public final class DriveSystem extends SubsystemBase {
         double leftMotorSpeed;
         double rightMotorSpeed;
 
-        driveSpeed = limit(MAXIMUM_VOLTAGE, driveSpeed, MINIMUM_USABLE_VOLTAGE);
-        turnSpeed = limit(MAXIMUM_VOLTAGE, turnSpeed, MINIMUM_USABLE_VOLTAGE);
+        driveSpeed = Operations.limit(MAXIMUM_VOLTAGE, driveSpeed, MINIMUM_USABLE_VOLTAGE);
+        turnSpeed = Operations.limit(MAXIMUM_VOLTAGE, turnSpeed, MINIMUM_USABLE_VOLTAGE);
 
         if (squaredInputs) {
             // square the inputs (while preserving the sign) to increase fine control while permitting full power
@@ -150,8 +151,8 @@ public final class DriveSystem extends SubsystemBase {
      */
     public void tank(double leftSpeed, double rightSpeed, boolean squaredInputs) {
         // square the inputs (while preserving the sign) to increase fine control while permitting full power
-        leftSpeed = limit(MAXIMUM_VOLTAGE, leftSpeed, MINIMUM_USABLE_VOLTAGE);
-        rightSpeed = limit(MAXIMUM_VOLTAGE, rightSpeed, MINIMUM_USABLE_VOLTAGE);
+        leftSpeed = Operations.limit(MAXIMUM_VOLTAGE, leftSpeed, MINIMUM_USABLE_VOLTAGE);
+        rightSpeed = Operations.limit(MAXIMUM_VOLTAGE, rightSpeed, MINIMUM_USABLE_VOLTAGE);
         if (squaredInputs) {
             if (leftSpeed >= 0.0) {
                 leftSpeed = (leftSpeed * leftSpeed);
@@ -175,8 +176,8 @@ public final class DriveSystem extends SubsystemBase {
      * @param rightSpeed The value of the right stick; must be -1 to 1, inclusive
      */
     public void tank(double leftSpeed, double rightSpeed) {
-        leftSpeed = limit(MAXIMUM_VOLTAGE, leftSpeed, MINIMUM_USABLE_VOLTAGE);
-        rightSpeed = limit(MAXIMUM_VOLTAGE, rightSpeed, MINIMUM_USABLE_VOLTAGE);
+        leftSpeed = Operations.limit(MAXIMUM_VOLTAGE, leftSpeed, MINIMUM_USABLE_VOLTAGE);
+        rightSpeed = Operations.limit(MAXIMUM_VOLTAGE, rightSpeed, MINIMUM_USABLE_VOLTAGE);
         this.driveTrain.drive(leftSpeed, rightSpeed);
     }
 
@@ -203,8 +204,8 @@ public final class DriveSystem extends SubsystemBase {
      */
     public void cheesy(double throttle, double wheel, boolean isQuickTurn) {
 
-        wheel = limit(MAXIMUM_VOLTAGE, wheel, MINIMUM_USABLE_VOLTAGE);
-        throttle = limit(MAXIMUM_VOLTAGE, throttle, MINIMUM_USABLE_VOLTAGE);
+        wheel = Operations.limit(MAXIMUM_VOLTAGE, wheel, MINIMUM_USABLE_VOLTAGE);
+        throttle = Operations.limit(MAXIMUM_VOLTAGE, throttle, MINIMUM_USABLE_VOLTAGE);
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
@@ -265,7 +266,7 @@ public final class DriveSystem extends SubsystemBase {
         if (isQuickTurn) {
             if (Math.abs(linearPower) < 0.2) {
                 double alpha = 0.1;
-                quickStopAccumulator = (1 - alpha) * quickStopAccumulator + alpha * limit(1.0, wheel, 0.0) * 5;
+                quickStopAccumulator = (1 - alpha) * quickStopAccumulator + alpha * Operations.limit(1.0, wheel, 0.0) * 5;
             }
             overPower = 1.0;
             if (isHighGear) {

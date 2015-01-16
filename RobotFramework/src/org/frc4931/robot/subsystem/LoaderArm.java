@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.utils.Operations;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -68,7 +69,7 @@ public final class LoaderArm extends SubsystemBase {
      * @param speed the speed to raise the arm; must be greater than 0 and less than or equal to 1.
      */
     public void raise( double speed ) {
-        speed = positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
+        speed = Operations.positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
         lifter.moveTowardsHigh(speed);
     }
 
@@ -77,7 +78,7 @@ public final class LoaderArm extends SubsystemBase {
      * @param speed the speed to raise the arm; must be greater than 0 and less than or equal to 1.
      */
     public void lower( double speed ) {
-        speed = positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
+        speed = Operations.positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
         lifter.moveTowardsLow(speed);
     }
     
