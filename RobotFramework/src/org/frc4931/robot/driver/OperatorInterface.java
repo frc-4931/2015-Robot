@@ -14,9 +14,14 @@ import org.frc4931.robot.component.Switch;
  * @author Zach Anderson
  */
 public class OperatorInterface {
+    /* Cheesy */
     public final AnalogAxis wheel;
     public final AnalogAxis throttle;
-    
+
+    /* Arcade */
+    public final AnalogAxis driveSpeed;
+    public final AnalogAxis turnSpeed;
+
     public final Switch toggleClaw;
     public final Switch toggleLift;
     public final Switch toggleRamp;
@@ -26,6 +31,9 @@ public class OperatorInterface {
     public OperatorInterface(Joystick joy){
         wheel = joy.getYaw();
         throttle = joy.getPitch();
+
+        driveSpeed = joy.getPitch();
+        turnSpeed = joy.getYaw();
         
         toggleClaw = joy.getButton(0);
         toggleLift = joy.getButton(1);
