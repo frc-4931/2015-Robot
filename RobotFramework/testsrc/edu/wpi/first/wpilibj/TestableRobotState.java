@@ -144,7 +144,7 @@ public class TestableRobotState extends RobotState {
                         if (get() > period) {
                             // Advance the start time by the period.
                             // Don't set it to the current time... we want to avoid drift.
-                            m_startTime += period;
+                            m_startTime += period * 1000;
                             return true;
                         }
                         return false;
