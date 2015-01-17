@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot;
 
+import org.frc4931.robot.component.LeadScrew;
+import org.frc4931.robot.component.LeadScrew.Position;
 import org.frc4931.robot.component.mock.MockMotor;
 import org.frc4931.robot.component.mock.MockRelay;
 import org.frc4931.robot.component.mock.MockSolenoid;
@@ -36,16 +38,24 @@ public class MockRobot implements Robot.Components {
     private final MockRelay shifter = MockRelay.withOff();
     private final MockMotor leftDrive = MockMotor.stopped();
     private final MockMotor rightDrive = MockMotor.stopped();
-    private final MockSolenoid armLifter = MockSolenoid.extending();
+    private final MockMotor armLifterMotor = MockMotor.stopped();
+    private final MockSwitch armLifterLowerSwitch = MockSwitch.createTriggeredSwitch();
+    private final MockSwitch armLifterUpperSwitch = MockSwitch.createNotTriggeredSwitch();
     private final MockSolenoid grabber = MockSolenoid.extending();
-    private final MockSwitch capturable = MockSwitch.notTriggered();
-    private final MockSwitch captured = MockSwitch.notTriggered();
+    private final MockSwitch capturable = MockSwitch.createNotTriggeredSwitch();
+    private final MockSwitch captured = MockSwitch.createNotTriggeredSwitch();
     private final MockSolenoid rampLifter = MockSolenoid.retracting();
-    private final MockSolenoid stackLifter = MockSolenoid.retracting();
-    private final MockSolenoid kicker = MockSolenoid.retracting();
+    private final MockMotor leadScrewMotor = MockMotor.stopped();
+    private final MockSwitch leadScrewLowerSwitch = MockSwitch.createTriggeredSwitch();
+    private final MockSwitch leadScrewStepSwitch = MockSwitch.createNotTriggeredSwitch();
+    private final MockSwitch leadScrewToteSwitch = MockSwitch.createNotTriggeredSwitch();
+    private final MockSwitch leadScrewToteOnStepSwitch = MockSwitch.createNotTriggeredSwitch();
+    private final MockMotor kickerMotor = MockMotor.stopped();
+    private final MockSwitch kickerLowerSwitch = MockSwitch.createTriggeredSwitch();
+    private final MockSwitch kickerUpperSwitch = MockSwitch.createNotTriggeredSwitch();
     private final MockMotor guardRailMotor = MockMotor.stopped();
-    private final MockSwitch guardRailOpenSwitch = MockSwitch.triggered();
-    private final MockSwitch guardRailClosedSwitch = MockSwitch.notTriggered();
+    private final MockSwitch guardRailOpenSwitch = MockSwitch.createTriggeredSwitch();
+    private final MockSwitch guardRailClosedSwitch = MockSwitch.createNotTriggeredSwitch();
 
     public MockRobot() {
         systems = RobotBuilder.build(this);
@@ -71,8 +81,18 @@ public class MockRobot implements Robot.Components {
     }
 
     @Override
-    public MockSolenoid armLifterActuator() {
-        return armLifter;
+    public MockMotor armLifterActuator() {
+        return armLifterMotor;
+    }
+    
+    @Override
+    public MockSwitch armLifterLowerSwitch() {
+        return armLifterLowerSwitch;
+    }
+    
+    @Override
+    public MockSwitch armLifterUpperSwitch() {
+        return armLifterLowerSwitch;
     }
 
     @Override
@@ -94,15 +114,45 @@ public class MockRobot implements Robot.Components {
     public MockSolenoid rampLifterActuator() {
         return rampLifter;
     }
-
+    
     @Override
-    public MockSolenoid stackLifterActuator() {
-        return stackLifter;
+    public MockMotor leadScrewActuator() {
+        return leadScrewMotor;
     }
-
+    
     @Override
-    public MockSolenoid kickerActuator() {
-        return kicker;
+    public MockSwitch leadScrewLowerSwitch() {
+        return leadScrewLowerSwitch;
+    }
+    
+    @Override
+    public MockSwitch leadScrewStepSwitch() {
+        return leadScrewStepSwitch;
+    }
+    
+    @Override
+    public MockSwitch leadScrewToteSwitch() {
+        return leadScrewToteSwitch;
+    }
+    
+    @Override
+    public MockSwitch leadScrewToteOnStepSwitch() {
+        return leadScrewToteOnStepSwitch;
+    }
+    
+    @Override
+    public MockMotor kickerActuator() {
+        return kickerMotor;
+    }
+    
+    @Override
+    public MockSwitch kickerLowerSwitch() {
+        return kickerLowerSwitch;
+    }
+    
+    @Override
+    public MockSwitch kickerUpperSwitch() {
+        return kickerUpperSwitch;
     }
 
     @Override
@@ -152,50 +202,84 @@ public class MockRobot implements Robot.Components {
 
     public MockRobot lowerRamp() {
         systems().ramp.lowerRamp();
+        // no switch to flip
+        return this;
+    }
+    
+    public MockRobot raiseRamp() {
+        systems().ramp.raiseRamp();
+        // no switch to flip
         return this;
     }
 
-    public MockRobot lowerStack() {
-        systems().ramp.lowerStack();
+    public MockRobot moveStackTo( LeadScrew.Position desiredPosition, double speed ) {
+        systems().ramp.moveStackTowards(desiredPosition, speed );
+        // immediately flip the switch to the signal that this is done
+        switch( desiredPosition ) {
+            case LOW:
+                leadScrewLowerSwitch.setTriggered();
+                break;
+            case STEP:
+                leadScrewStepSwitch.setTriggered();
+                break;
+            case TOTE:
+                leadScrewToteSwitch.setTriggered();
+                break;
+            case TOTE_ON_STEP:
+                leadScrewToteOnStepSwitch.setTriggered();
+                break;
+            case UNKNOWN:
+                break;
+        }
         return this;
     }
 
-    public MockRobot lowerGrabber() {
-        systems().grabber.lower();
+    public MockRobot lowerGrabberArm( double speed ) {
+        systems().grabber.lower(speed);
+        // immediately flip the switch to the signal that this is done
+        armLifterLowerSwitch.setTriggered();
         return this;
     }
 
-    public MockRobot raiseGrabber() {
-        systems().grabber.raise();
+    public MockRobot raiseGrabber( double speed ) {
+        systems().grabber.raise(speed);
+        // immediately flip the switch to the signal that this is done
+        armLifterUpperSwitch.setTriggered();
         return this;
     }
 
     public MockRobot openGrabber() {
         systems().grabber.release();
+        // no switch to flip
         return this;
     }
 
     public MockRobot closeGrabber() {
         systems().grabber.grab();
+        // no switch to flip
         return this;
     }
 
     public MockRobot openGuardRail() {
         systems().ramp.openGuardRail();
+        // immediately flip the switch to the signal that this is done
+        guardRailOpenSwitch.setTriggered();
         return this;
     }
 
     public MockRobot closeGuardRail() {
         systems().ramp.closeGuardRail();
+        // immediately flip the switch to the signal that this is done
+        guardRailClosedSwitch.setTriggered();
         return this;
     }
 
     public MockRobot resetToStartingPosition() {
-        return stopDriving().lowerRamp().lowerStack().openGuardRail().lowerGrabber().openGrabber();
+        return stopDriving().lowerRamp().moveStackTo(Position.LOW,1).openGuardRail().lowerGrabberArm(1).openGrabber();
     }
 
     public MockRobot resetToCapturedPosition() {
-        return stopDriving().lowerRamp().lowerStack().closeGuardRail().lowerGrabber().closeGrabber();
+        return stopDriving().lowerRamp().moveStackTo(Position.LOW,1).closeGuardRail().lowerGrabberArm(1).closeGrabber();
     }
 
     public void assertGrabberSolenoidRetracted() {
@@ -208,14 +292,14 @@ public class MockRobot implements Robot.Components {
         assertThat(grabberActuator().isRetracted()).isEqualTo(false);
     }
 
-    public void assertArmLifterSolenoidRetracted() {
-        assertThat(armLifterActuator().isRetracted()).isEqualTo(true);
-        assertThat(armLifterActuator().isExtended()).isEqualTo(false);
+    public void assertArmLifterRaised() {
+        assertThat(armLifterUpperSwitch().isTriggered()).isEqualTo(true);
+        assertThat(armLifterLowerSwitch().isTriggered()).isEqualTo(false);
     }
 
-    public void assertArmLifterExtended() {
-        assertThat(armLifterActuator().isExtended()).isEqualTo(true);
-        assertThat(armLifterActuator().isRetracted()).isEqualTo(false);
+    public void assertArmLifterLowered() {
+        assertThat(armLifterUpperSwitch().isTriggered()).isEqualTo(false);
+        assertThat(armLifterLowerSwitch().isTriggered()).isEqualTo(true);
     }
 
 }

@@ -26,10 +26,10 @@ public class LeadScrewTest {
     public void beforeEach() {
         // Start stopped in an unknown position
         motor = MockMotor.stopped();
-        low = MockSwitch.notTriggered();
-        step = MockSwitch.notTriggered();
-        tote = MockSwitch.notTriggered();
-        toteOnStep = MockSwitch.notTriggered();
+        low = MockSwitch.createNotTriggeredSwitch();
+        step = MockSwitch.createNotTriggeredSwitch();
+        tote = MockSwitch.createNotTriggeredSwitch();
+        toteOnStep = MockSwitch.createNotTriggeredSwitch();
         leadScrew = new LeadScrew(motor, low, step, tote, toteOnStep);
     }
 

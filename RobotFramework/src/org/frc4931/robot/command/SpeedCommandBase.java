@@ -9,9 +9,15 @@ package org.frc4931.robot.command;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Command helper class that automatically overrides {@link #interrupted()} to call {@link #end()}.
+ * Abstract base class for command that require a speed.
  */
-public abstract class CommandBase extends Command {
+public abstract class SpeedCommandBase extends Command {
+    
+    protected final double speed;
+    
+    protected SpeedCommandBase( double speed ) {
+        this.speed = speed;
+    }
 
     @Override
     protected void interrupted() {

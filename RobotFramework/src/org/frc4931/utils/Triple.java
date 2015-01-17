@@ -11,7 +11,7 @@ package org.frc4931.utils;
  * 
  * @author Zach Anderson
  */
-public class Triple {
+public final class Triple {
     private final double x;
     private final double y;
     private final double z;

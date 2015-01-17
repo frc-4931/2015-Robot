@@ -26,8 +26,8 @@ public class LimitedMotorTest {
     public void beforeEach() {
         // Start out stopped in an unknown position
         motor = MockMotor.stopped();
-        highSwitch = MockSwitch.notTriggered();
-        lowSwitch = MockSwitch.notTriggered();
+        highSwitch = MockSwitch.createNotTriggeredSwitch();
+        lowSwitch = MockSwitch.createNotTriggeredSwitch();
         limitedMotor = new LimitedMotor(motor, highSwitch, lowSwitch);
     }
 

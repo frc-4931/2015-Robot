@@ -26,8 +26,8 @@ public class LimitedSolenoidTest {
     public void beforeEach() {
         // Start out stopped in an unknown position ...
         solenoid = MockSolenoid.extending();
-        retract = MockSwitch.notTriggered();
-        extend = MockSwitch.notTriggered();
+        retract = MockSwitch.createNotTriggeredSwitch();
+        extend = MockSwitch.createNotTriggeredSwitch();
         limitedSolenoid = new SolenoidWithPosition(solenoid, retract, extend);
     }
 

@@ -16,8 +16,10 @@ package org.frc4931.robot.subsystem;
 
 import java.util.function.Supplier;
 
+import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.utils.Operations;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -25,7 +27,8 @@ import edu.wpi.first.wpilibj.command.Command;
  * A subsystem used to control the grabbing arms that load totes onto the Ramp.
  */
 public final class LoaderArm extends SubsystemBase {
-    private final Solenoid lifter;
+
+    private final LimitedMotor lifter;
     private final Solenoid grabber;
     private final Switch capturable;
     private final Switch captured;
@@ -37,7 +40,7 @@ public final class LoaderArm extends SubsystemBase {
      * @param capturable The switch used to identify wether a tote is able to be capture; may not be null.
      * @param captured The switch used to identify wether a tote has been successfully captured; may not be null.
      */
-    public LoaderArm(Solenoid lifter, Solenoid grabber, Switch capturable, Switch captured) {
+    public LoaderArm(LimitedMotor lifter, Solenoid grabber, Switch capturable, Switch captured) {
         this(lifter, grabber, capturable, captured, null);
     }
     
@@ -49,7 +52,7 @@ public final class LoaderArm extends SubsystemBase {
      * @param captured The switch used to identify wether a tote has been successfully captured; may not be null.
      * @param defaultCommandSupplier the supplier for this subsystem's default command; may be null if there is no default command
      */
-    public LoaderArm(Solenoid lifter, Solenoid grabber, Switch capturable, Switch captured, Supplier<Command> defaultCommandSupplier) {
+    public LoaderArm(LimitedMotor lifter, Solenoid grabber, Switch capturable, Switch captured, Supplier<Command> defaultCommandSupplier) {
         super(defaultCommandSupplier);
         this.lifter = lifter;
         this.grabber = grabber;
@@ -62,17 +65,37 @@ public final class LoaderArm extends SubsystemBase {
     }
 
     /**
-     * Raises the arms, including any objects held by them.
+     * Raises the arms, including any objects held by them, at the given speed.
+     * @param speed the speed to raise the arm; must be greater than 0 and less than or equal to 1.
      */
-    public void raise() {
-        lifter.extend();
+    public void raise( double speed ) {
+        speed = Operations.positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
+        lifter.moveTowardsHigh(speed);
     }
 
     /**
-     * Lowers the arms, including any objects held by them.
+     * Lowers the arms, including any objects held by them, at the given speed
+     * @param speed the speed to raise the arm; must be greater than 0 and less than or equal to 1.
      */
-    public void lower() {
-        lifter.retract();
+    public void lower( double speed ) {
+        speed = Operations.positiveLimit(MAXIMUM_VOLTAGE, speed, MINIMUM_USABLE_VOLTAGE);
+        lifter.moveTowardsLow(speed);
+    }
+    
+    /**
+     * Determine if the arms are raised.
+     * @return true if the arms are in the raised position, or false otherwise.
+     */
+    public boolean isRaised() {
+        return lifter.isHigh();
+    }
+    
+    /**
+     * Determine if the arms are lowered.
+     * @return true if the arms are in the lower position, or false otherwise.
+     */
+    public boolean isLowered() {
+        return lifter.isLow();
     }
 
     /**

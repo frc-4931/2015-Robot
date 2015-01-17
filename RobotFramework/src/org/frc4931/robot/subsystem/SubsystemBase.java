@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * A base subsystem that implements commonly-used features.
  */
 public abstract class SubsystemBase extends Subsystem {
+    
+    protected static final double MAXIMUM_VOLTAGE = 1.0;
+    protected static final double MINIMUM_USABLE_VOLTAGE = 0.02;
+
     private final Supplier<Command> defaultCommandSupplier;
 
     public SubsystemBase(){
@@ -41,4 +45,5 @@ public abstract class SubsystemBase extends Subsystem {
             setDefaultCommand(command);
         }
     }
+
 }

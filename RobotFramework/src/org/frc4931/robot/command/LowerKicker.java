@@ -1,6 +1,6 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- * 
+ *
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
@@ -9,23 +9,30 @@ package org.frc4931.robot.command;
 import org.frc4931.robot.subsystem.Ramp;
 
 /**
- * Lowers the whole stack of totes down the ramp.
+ * Lower the kicker to the lowest/stowed position.
  */
-public class LowerStacker extends OneShotCommand {
-    private Ramp ramp;
+public class LowerKicker extends SpeedCommandBase {
 
-    public LowerStacker(Ramp ramp) {
+    private final Ramp ramp;
+    
+    public LowerKicker(Ramp ramp, double speed ) {
+        super(speed);
         this.ramp = ramp;
-        requires(ramp);
+        requires(this.ramp);
     }
-
+    
     @Override
     protected void initialize() {
     }
 
     @Override
     protected void execute() {
-        ramp.lowerStack();
+        ramp.lowerKicker(speed);
+    }
+    
+    @Override
+    protected boolean isFinished() {
+        return ramp.isKickerLowered();
     }
 
     @Override

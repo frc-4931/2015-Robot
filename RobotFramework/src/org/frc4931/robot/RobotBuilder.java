@@ -8,6 +8,7 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DriveTrain;
+import org.frc4931.robot.component.LeadScrew;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
@@ -58,7 +59,10 @@ public class RobotBuilder {
      * @return a new loader arm instance; never null
      */
     public static LoaderArm buildLoaderArm(Robot.Components components) {
-        return new LoaderArm(components.armLifterActuator(),
+        LimitedMotor armMotor = new LimitedMotor(components.armLifterActuator(),
+                                                 components.armLifterUpperSwitch(),
+                                                 components.armLifterLowerSwitch());
+        return new LoaderArm(armMotor,
                              components.grabberActuator(),
                              components.capturableSwitch(),
                              components.capturedSwitch());
@@ -70,12 +74,20 @@ public class RobotBuilder {
      * @return a new ramp instance; never null
      */
     public static Ramp buildRamp(Robot.Components components) {
+        LimitedMotor kickerMotor = new LimitedMotor(components.kickerActuator(),
+                                                    components.kickerUpperSwitch(),
+                                                    components.kickerLowerSwitch());
+        LeadScrew leadScrew = new LeadScrew(components.leadScrewActuator(),
+                                            components.leadScrewLowerSwitch(),
+                                            components.leadScrewStepSwitch(),
+                                            components.leadScrewToteSwitch(),
+                                            components.leadScrewToteOnStepSwitch());
         LimitedMotor guardRailMotor = new LimitedMotor(components.guardRailActuator(),
-                                                  components.guardRailOpenSwitch(),
-                                                  components.guardRailClosedSwitch());
+                                                       components.guardRailOpenSwitch(),
+                                                       components.guardRailClosedSwitch());
         return new Ramp(components.rampLifterActuator(),
-                        components.stackLifterActuator(),
-                        components.kickerActuator(),
+                        leadScrew,
+                        kickerMotor,
                         guardRailMotor);
     }
     
@@ -100,9 +112,9 @@ public class RobotBuilder {
         Relay shifter = Hardware.relay(Properties.DRIVE_SHIFTER);
 
         // Create the loader arm subsystem ...
-        Solenoid grabberLift = Solenoids.doubleSolenoid(Properties.GRABBER_LIFTER_EXTEND,
-                                                        Properties.GRABBER_LIFTER_RETRACT,
-                                                        Solenoid.Direction.EXTENDING);
+        Motor grabberLifterMotor = Motors.talon(Properties.GRABBER_LIFTER_MOTOR);
+        Switch grabberLifterLowerSwitch = Switches.normallyClosed(Properties.GRABBER_LIFTER_LOWER_SWITCH);
+        Switch grabberLifterUpperSwitch = Switches.normallyClosed(Properties.GRABBER_LIFTER_UPPER_SWITCH);
         Solenoid grabberClaw = Solenoids.doubleSolenoid(Properties.GRABBER_CLAW_EXTEND,
                                                         Properties.GRABBER_CLAW_RETRACT,
                                                         Solenoid.Direction.EXTENDING);
@@ -113,14 +125,14 @@ public class RobotBuilder {
         Solenoid rampLifter = Solenoids.doubleSolenoid(Properties.RAMP_LIFTER_EXTEND,
                                                        Properties.RAMP_LIFTER_RETRACT,
                                                        Solenoid.Direction.RETRACTING);
-        Solenoid stackLifter = Solenoids.doubleSolenoid(
-                                                        Properties.RAMP_STACK_LIFTER_EXTEND,
-                                                        Properties.RAMP_STACK_LIFTER_RETRACT,
-                                                        Solenoid.Direction.RETRACTING);
-        Solenoid kicker = Solenoids.doubleSolenoid(
-                                                   Properties.RAMP_STATCK_PUSHER_EXTEND,
-                                                   Properties.RAMP_STACK_PUSHER_RETRACT,
-                                                   Solenoid.Direction.RETRACTING);
+        Motor leadScrewMotor = Motors.talon(Properties.STACK_LIFTER_MOTOR);
+        Switch leadScrewLowerSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_LOWER_SWITCH);
+        Switch leadScrewStepSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_STEP_SWITCH);
+        Switch leadScrewToteSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_TOTE_SWITCH);
+        Switch leadScrewToteOnStepSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_TOTE_ON_STEP_SWITCH);
+        Motor kickerMotor = Motors.talon(Properties.KICKER_MOTOR);
+        Switch kickerLowerSwitch = Switches.normallyClosed(Properties.KICKER_LOWER_SWITCH);
+        Switch kickerUpperSwitch = Switches.normallyClosed(Properties.KICKER_UPPER_SWITCH);
         Motor guardRailMotor = Motors.talon(Properties.GUARDRAIL_MOTOR);
         Switch guardRailOpenSwitch = Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH);
         Switch guardRailClosedSwitch = Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH);
@@ -143,8 +155,18 @@ public class RobotBuilder {
             }
 
             @Override
-            public Solenoid armLifterActuator() {
-                return grabberLift;
+            public Motor armLifterActuator() {
+                return grabberLifterMotor;
+            }
+            
+            @Override
+            public Switch armLifterLowerSwitch() {
+                return grabberLifterLowerSwitch;
+            }
+            
+            @Override
+            public Switch armLifterUpperSwitch() {
+                return grabberLifterUpperSwitch;
             }
 
             @Override
@@ -166,15 +188,45 @@ public class RobotBuilder {
             public Solenoid rampLifterActuator() {
                 return rampLifter;
             }
-
+            
             @Override
-            public Solenoid stackLifterActuator() {
-                return stackLifter;
+            public Motor leadScrewActuator() {
+                return leadScrewMotor;
+            }
+            
+            @Override
+            public Switch leadScrewLowerSwitch() {
+                return leadScrewLowerSwitch;
+            }
+            
+            @Override
+            public Switch leadScrewStepSwitch() {
+                return leadScrewStepSwitch;
+            }
+            
+            @Override
+            public Switch leadScrewToteSwitch() {
+                return leadScrewToteSwitch;
+            }
+            
+            @Override
+            public Switch leadScrewToteOnStepSwitch() {
+                return leadScrewToteOnStepSwitch;
             }
 
             @Override
-            public Solenoid kickerActuator() {
-                return kicker;
+            public Motor kickerActuator() {
+                return kickerMotor;
+            }
+            
+            @Override
+            public Switch kickerLowerSwitch() {
+                return kickerLowerSwitch;
+            }
+            
+            @Override
+            public Switch kickerUpperSwitch() {
+                return kickerUpperSwitch;
             }
 
             @Override
@@ -210,8 +262,9 @@ public class RobotBuilder {
         private static final int DRIVE_SHIFTER = 0;
 
         /*-------GRABBER------*/
-        private static final int GRABBER_LIFTER_EXTEND = 0;
-        private static final int GRABBER_LIFTER_RETRACT = 1;
+        private static final int GRABBER_LIFTER_MOTOR = 4;
+        private static final int GRABBER_LIFTER_UPPER_SWITCH = 0;
+        private static final int GRABBER_LIFTER_LOWER_SWITCH = 1;
 
         private static final int GRABBER_CLAW_EXTEND = 2;
         private static final int GRABBER_CLAW_RETRACT = 3;
@@ -223,15 +276,19 @@ public class RobotBuilder {
         private static final int RAMP_LIFTER_EXTEND = 4;
         private static final int RAMP_LIFTER_RETRACT = 5;
 
-        private static final int RAMP_STACK_LIFTER_EXTEND = 6;
-        private static final int RAMP_STACK_LIFTER_RETRACT = 7;
+        private static final int STACK_LIFTER_MOTOR = 5;
+        private static final int LEAD_SCREW_LOWER_SWITCH = 2;
+        private static final int LEAD_SCREW_STEP_SWITCH = 3;
+        private static final int LEAD_SCREW_TOTE_SWITCH = 4;
+        private static final int LEAD_SCREW_TOTE_ON_STEP_SWITCH = 5;
 
-        private static final int RAMP_STATCK_PUSHER_EXTEND = 8;
-        private static final int RAMP_STACK_PUSHER_RETRACT = 9;
+        private static final int KICKER_MOTOR = 6;
+        private static final int KICKER_LOWER_SWITCH = 6;
+        private static final int KICKER_UPPER_SWITCH = 7;
 
-        private static final int GUARDRAIL_MOTOR = 4;
-        private static final int GUARDRAIL_OPEN_SWITCH = 0;
-        private static final int GUARDRAIL_CLOSE_SWITCH = 1;
+        private static final int GUARDRAIL_MOTOR = 7;
+        private static final int GUARDRAIL_OPEN_SWITCH = 8;
+        private static final int GUARDRAIL_CLOSE_SWITCH = 9;
 
     }
 }
