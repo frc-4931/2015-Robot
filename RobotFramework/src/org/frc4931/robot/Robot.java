@@ -27,7 +27,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
         instance = this;
-        SwitchListener.INSTANCE.start();
+        SwitchListener.getInstance().start();
         Components components = RobotBuilder.components();
         systems = RobotBuilder.build(components);
     }
