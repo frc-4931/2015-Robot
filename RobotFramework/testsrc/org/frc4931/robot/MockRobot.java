@@ -315,5 +315,13 @@ public class MockRobot implements Robot.Components {
         assertThat(armLifterUpperSwitch().isTriggered()).isEqualTo(false);
         assertThat(armLifterLowerSwitch().isTriggered()).isEqualTo(true);
     }
+    
+    public void assertRampRaised() {
+        // no switch to tell us that ramp is raised
+    }
+
+    public void assertRampLowered() {
+        // no switch to tell us that ramp is lowered
+    }
 
 }
