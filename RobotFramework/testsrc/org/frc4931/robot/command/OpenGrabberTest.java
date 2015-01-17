@@ -19,20 +19,20 @@ public class OpenGrabberTest extends AbstractCommandTest {
     }
     
     @Test
-    public void shouldCloseGrabberWhenGrabberIsOpen() {
-        // Preconditions ...
-        robot.grabberActuator().extend();
-        robot.assertGrabberSolenoidExtended();
-        // Create and execute the command multiple times ...
-        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidRetracted));
-    }
-        
-    @Test
-    public void shouldCloseGrabberWhenGrabberIsAlreadyClosed() {
+    public void shouldOpenGrabberWhenGrabberIsClosed() {
         // Preconditions ...
         robot.grabberActuator().retract();
         robot.assertGrabberSolenoidRetracted();
         // Create and execute the command multiple times ...
-        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidRetracted));
+        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidExtended));
+    }
+        
+    @Test
+    public void shouldOpenGrabberWhenGrabberIsAlreadyOpen() {
+        // Preconditions ...
+        robot.grabberActuator().extend();
+        robot.assertGrabberSolenoidExtended();
+        // Create and execute the command multiple times ...
+        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidExtended));
     }
 }
