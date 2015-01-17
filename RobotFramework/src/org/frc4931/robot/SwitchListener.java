@@ -42,7 +42,7 @@ public class SwitchListener{
         running = true;
         monitorThread = new Thread(()->{
                 while(running) monitor();
-            });
+            },"Switch Listener Thread");
         monitorThread.start();
     }
     
