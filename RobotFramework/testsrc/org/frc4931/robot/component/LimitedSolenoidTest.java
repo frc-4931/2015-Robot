@@ -8,8 +8,8 @@ package org.frc4931.robot.component;
 
 import org.frc4931.robot.component.Solenoid.Direction;
 import org.frc4931.robot.component.SolenoidWithPosition.Position;
-import org.frc4931.robot.component.mock.MockSolenoid;
-import org.frc4931.robot.component.mock.MockSwitch;
+import org.frc4931.robot.mock.MockSolenoid;
+import org.frc4931.robot.mock.MockSwitch;
 import org.junit.Before;
 import org.junit.Test;
 

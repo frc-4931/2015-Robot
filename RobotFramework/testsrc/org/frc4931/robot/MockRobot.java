@@ -8,10 +8,10 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.component.LeadScrew;
 import org.frc4931.robot.component.LeadScrew.Position;
-import org.frc4931.robot.component.mock.MockMotor;
-import org.frc4931.robot.component.mock.MockRelay;
-import org.frc4931.robot.component.mock.MockSolenoid;
-import org.frc4931.robot.component.mock.MockSwitch;
+import org.frc4931.robot.mock.MockMotor;
+import org.frc4931.robot.mock.MockRelay;
+import org.frc4931.robot.mock.MockSolenoid;
+import org.frc4931.robot.mock.MockSwitch;
 
 import edu.wpi.first.wpilibj.TestableRobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -56,9 +56,13 @@ public class MockRobot implements Robot.Components {
     private final MockMotor guardRailMotor = MockMotor.stopped();
     private final MockSwitch guardRailOpenSwitch = MockSwitch.createTriggeredSwitch();
     private final MockSwitch guardRailClosedSwitch = MockSwitch.createNotTriggeredSwitch();
+    private final String frontCameraName;
+    private final String rearCameraName;
 
     public MockRobot() {
         systems = RobotBuilder.build(this);
+        frontCameraName = null;
+        rearCameraName = null;
     }
 
     public Robot.Systems systems() {
@@ -168,6 +172,16 @@ public class MockRobot implements Robot.Components {
     @Override
     public MockSwitch guardRailClosedSwitch() {
         return guardRailClosedSwitch;
+    }
+    
+    @Override
+    public String frontCameraName() {
+        return frontCameraName;
+    }
+    
+    @Override
+    public String rearCameraName() {
+        return rearCameraName;
     }
 
     public MockRobot enableRobot() {

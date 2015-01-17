@@ -29,9 +29,11 @@ public final class MultiCameraServer {
     protected static final CameraServer SERVER = CameraServer.getInstance(); // starts the server
 
     protected static final AtomicReference<ImageCapture> CAPTURE = new AtomicReference<>();
-    private static final Lock lock = new ReentrantLock();
+    private static final Lock threadLock = new ReentrantLock();
+    private static final Lock nameLock = new ReentrantLock();
     private static volatile Thread captureThread;
     private static volatile boolean captureMore = false;
+    private static volatile String lastCameraName = null;
 
     private static interface ImageCapture {
         public void captureAndSend(Image frame);
@@ -48,7 +50,7 @@ public final class MultiCameraServer {
         if (captureThread == null) {
             // Try to start the capture thread if it is not already running, but use a lock to make sure that multiple threads
             // don't try to call this at the same time.
-            lock.lock();
+            threadLock.lock();
             try {
                 if (SERVER.isAutoCaptureStarted()) {
                     throw new IllegalStateException("Unable to start the auto-capture of images using " +
@@ -59,17 +61,17 @@ public final class MultiCameraServer {
                     captureMore = true;
                     Thread thread = new Thread(() -> {
                         // Create an image that we'll use for a buffer ...
-                        Image frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-                        // Then as long as we're supposed to, capture an image and send it ...
-                        while (captureMore) {
-                            CAPTURE.get().captureAndSend(frame);
-                        }
-                    });
+                            Image frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+                            // Then as long as we're supposed to, capture an image and send it ...
+                            while (captureMore) {
+                                CAPTURE.get().captureAndSend(frame);
+                            }
+                        });
                     thread.start();
                     captureThread = thread;
                 }
             } finally {
-                lock.unlock();
+                threadLock.unlock();
             }
         }
     }
@@ -83,36 +85,46 @@ public final class MultiCameraServer {
      */
     public static void useCamera(String cameraName) {
         assert cameraName != null;
-
-        // Change the function to grab the image from the right camera. We use a little trick to first set a function that
-        // initializes NIVision to use the given named camera, and that function (when completed) will set a new function that
-        // just does the capture and sends the image to the CameraServer. This makes the `useCamera(id)` function
-        CAPTURE.set( new ImageCapture() {
-            @Override
-            public void captureAndSend(Image frame) {
-                // The camera name changed, so configure NIVision to use the new camera name ...
-                int id = NIVision.IMAQdxOpenCamera(cameraName, NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-                NIVision.IMAQdxConfigureGrab(id);
-                NIVision.IMAQdxStartAcquisition(id);
-                
-                // Now that NIVision is prepped for the new camera, create a new function that will do the work ...
-                ImageCapture grab = new ImageCapture() {
-                    @Override
-                    public void captureAndSend(Image frame) {
-                        NIVision.IMAQdxGrab(id, frame, 1);
-                        SERVER.setImage(frame);
-                    }
-                };
-                
-                // Replace this function so it will be called next time ...
-                CAPTURE.set(grab);
-                
-                // But we have to call it once for this call ...
-                grab.captureAndSend(frame);
+        try {
+            nameLock.lock();
+            if ( lastCameraName.equals(cameraName) ) {
+                // We're already using this camera ...
+                return;
             }
-        });
+            lastCameraName = cameraName;
+
+            // Change the function to grab the image from the right camera. We use a little trick to first set a function that
+            // initializes NIVision to use the given named camera, and that function (when completed) will set a new function that
+            // just does the capture and sends the image to the CameraServer. This makes the `useCamera(id)` function
+            CAPTURE.set(new ImageCapture() {
+                @Override
+                public void captureAndSend(Image frame) {
+                    // The camera name changed, so configure NIVision to use the new camera name ...
+                    int id = NIVision.IMAQdxOpenCamera(cameraName, NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+                    NIVision.IMAQdxConfigureGrab(id);
+                    NIVision.IMAQdxStartAcquisition(id);
+
+                    // Now that NIVision is prepped for the new camera, create a new function that will do the work ...
+                    ImageCapture grab = new ImageCapture() {
+                        @Override
+                        public void captureAndSend(Image frame) {
+                            NIVision.IMAQdxGrab(id, frame, 1);
+                            SERVER.setImage(frame);
+                        }
+                    };
+
+                    // Replace this function so it will be called next time ...
+                    CAPTURE.set(grab);
+
+                    // But we have to call it once for this call ...
+                    grab.captureAndSend(frame);
+                }
+            });
+        } finally {
+            nameLock.unlock();
+        }
     }
-    
+
     /**
      * Stop the automatic capture server. Generally this won't be needed, but it is avialable just in case.
      */

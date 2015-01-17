@@ -16,14 +16,15 @@ package org.frc4931.robot.subsystem;
 
 import java.util.function.Supplier;
 
+import org.frc4931.utils.Lifecycle;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * A base subsystem that implements commonly-used features.
  */
-public abstract class SubsystemBase extends Subsystem {
-    
+public abstract class SubsystemBase extends Subsystem implements Lifecycle {
     protected static final double MAXIMUM_VOLTAGE = 1.0;
     protected static final double MINIMUM_USABLE_VOLTAGE = 0.02;
 
@@ -35,6 +36,20 @@ public abstract class SubsystemBase extends Subsystem {
     
     public SubsystemBase(Supplier<Command> defaultCommandSupplier) {
         this.defaultCommandSupplier = defaultCommandSupplier;
+    }
+
+    /**
+     * Prepare this subsystem for use. By default, this method does nothing.
+     */
+    @Override
+    public void startup() {
+    }
+
+    /**
+     * Stop this subsystem and release any claimed resources. By default, this method does nothing.
+     */
+    @Override
+    public void shutdown() {
     }
 
     @Override

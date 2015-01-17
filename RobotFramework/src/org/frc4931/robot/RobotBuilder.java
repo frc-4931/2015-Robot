@@ -14,6 +14,7 @@ import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.driver.Joystick;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
@@ -23,6 +24,7 @@ import org.frc4931.robot.hardware.Hardware.Solenoids;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.
@@ -31,20 +33,20 @@ public class RobotBuilder {
     
     /**
      * Build the {@link Systems robot systems} given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new Systems instance; never null
      */
     public static Systems build( Robot.Components components ) {
         DriveSystem driveSystem = buildDriveSystem(components);
         LoaderArm arm = buildLoaderArm(components);
         Ramp ramp = buildRamp(components);
-        OperatorInterface operatorInterface = operatorInterface();
-        return new Systems(operatorInterface,driveSystem, arm, ramp);
+        VisionSystem vision = buildVision(components);
+        return new Systems(driveSystem, arm, ramp, vision);
     }
 
     /**
      * Build an instance of the {@link DriveSystem} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new drive system instance; never null
      */
     public static DriveSystem buildDriveSystem(Robot.Components components) {
@@ -55,7 +57,7 @@ public class RobotBuilder {
 
     /**
      * Build an instance of the {@link LoaderArm} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new loader arm instance; never null
      */
     public static LoaderArm buildLoaderArm(Robot.Components components) {
@@ -70,7 +72,7 @@ public class RobotBuilder {
 
     /**
      * Build an instance of the {@link Ramp} subsystem given the supplied set of robot components.
-     * @param components the components on the robot; may not be null
+     * @param components the components of the robot; may not be null
      * @return a new ramp instance; never null
      */
     public static Ramp buildRamp(Robot.Components components) {
@@ -92,11 +94,20 @@ public class RobotBuilder {
     }
     
     /**
+     * Build an instance of the {@link LoaderArm} subsystem given the supplied set of robot components.
+     * @param components the components of the robot; may not be null
+     * @return a new loader arm instance; never null
+     */
+    public static VisionSystem buildVision(Robot.Components components) {
+        return new VisionSystem(components.frontCameraName(), components.rearCameraName());
+    }
+    /**
      * Get the operator interface that will be used for the robot.
      * @return the default operator interface; never null
      */
     public static OperatorInterface operatorInterface() {
-        return new OperatorInterface( new LogitechAttack3D(Properties.JOYSTICK) );
+        Joystick joystick = new LogitechAttack3D(Properties.JOYSTICK);
+        return new OperatorInterface(joystick);
     }
 
     /**
@@ -136,6 +147,9 @@ public class RobotBuilder {
         Motor guardRailMotor = Motors.talon(Properties.GUARDRAIL_MOTOR);
         Switch guardRailOpenSwitch = Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH);
         Switch guardRailClosedSwitch = Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH);
+        
+        String frontCameraName = Properties.FRONT_CAMERA_NAME;
+        String rearCameraName = Properties.REAR_CAMERA_NAME;
 
         return new Robot.Components() {
 
@@ -244,6 +258,15 @@ public class RobotBuilder {
                 return guardRailClosedSwitch;
             }
             
+            @Override
+            public String frontCameraName() {
+                return frontCameraName;
+            }
+            
+            @Override
+            public String rearCameraName() {
+                return rearCameraName;
+            }
         };
     }
     
@@ -289,6 +312,9 @@ public class RobotBuilder {
         private static final int GUARDRAIL_MOTOR = 7;
         private static final int GUARDRAIL_OPEN_SWITCH = 8;
         private static final int GUARDRAIL_CLOSE_SWITCH = 9;
-
+        
+        /*-------VISION-------*/
+        private static final String FRONT_CAMERA_NAME = "cam1";
+        private static final String REAR_CAMERA_NAME = "cam2";
     }
 }
