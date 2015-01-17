@@ -4,8 +4,9 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.vision;
 
+import org.frc4931.robot.command.OneShotCommand;
 import org.frc4931.robot.subsystem.VisionSystem;
 
 /**

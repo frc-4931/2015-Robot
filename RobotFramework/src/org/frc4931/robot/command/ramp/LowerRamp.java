@@ -1,35 +1,31 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- *
+ * 
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.ramp;
 
+import org.frc4931.robot.command.OneShotCommand;
 import org.frc4931.robot.subsystem.Ramp;
 
 /**
- * Closes the guardrail.
+ * Lowers the ramp.
  */
-public class CloseGuardrail extends CommandBase {
-    
+public class LowerRamp extends OneShotCommand {
     private Ramp ramp;
-    public CloseGuardrail(Ramp ramp){
+
+    public LowerRamp(Ramp ramp) {
         this.ramp = ramp;
-        requires(ramp);
     }
+
     @Override
     protected void initialize() {
     }
 
     @Override
     protected void execute() {
-        ramp.closeGuardRail();
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return ramp.isGuardRailClosed();
+        ramp.lowerRamp();
     }
 
     @Override

@@ -1,37 +1,39 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- * 
+ *
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
+import org.frc4931.robot.command.SpeedCommandBase;
 import org.frc4931.robot.subsystem.LoaderArm;
 
 /**
- * Lowers the grabber arm to tote/ground level.
+ * Raise the grabber arm to tote/ground level.
  */
-public class LowerGrabber extends SpeedCommandBase {
-    private LoaderArm loaderArm;
+public class RaiseGrabber extends SpeedCommandBase {
 
-    public LowerGrabber(LoaderArm loaderArm, double speed ) {
+    private final LoaderArm arm;
+    
+    public RaiseGrabber(LoaderArm arm, double speed ) {
         super(speed);
-        this.loaderArm = loaderArm;
-        requires(loaderArm);
+        this.arm = arm;
+        requires(this.arm);
     }
-
+    
     @Override
     protected void initialize() {
     }
 
     @Override
     protected void execute() {
-        loaderArm.lower(speed);
+        arm.raise(speed);
     }
     
     @Override
     protected boolean isFinished() {
-        return loaderArm.isLowered();
+        return arm.isRaised();
     }
 
     @Override

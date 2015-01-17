@@ -4,18 +4,19 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.drive;
 
+import org.frc4931.robot.command.TimedCommand;
 import org.frc4931.robot.subsystem.DriveSystem;
 
-public class DriveForwardWithDuration extends TimedCommand {
+public class TurnLeftWithDuration extends TimedCommand {
     private final DriveSystem driveSystem;
-    private final double driveSpeed;
+    private final double turnSpeed;
 
-    public DriveForwardWithDuration(DriveSystem driveSystem, double driveSpeed, long duration) {
+    public TurnLeftWithDuration(DriveSystem driveSystem, double turnSpeed, long duration) {
         super(duration);
         this.driveSystem = driveSystem;
-        this.driveSpeed = driveSpeed;
+        this.turnSpeed = turnSpeed;
         requires(driveSystem);
     }
 
@@ -26,7 +27,7 @@ public class DriveForwardWithDuration extends TimedCommand {
 
     @Override
     protected void execute() {
-        driveSystem.arcade(Math.abs(driveSpeed), 0.0);
+        driveSystem.arcade(0.0, -Math.abs(turnSpeed));
     }
 
     @Override

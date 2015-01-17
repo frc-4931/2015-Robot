@@ -6,16 +6,15 @@
  */
 package org.frc4931.robot.command.group;
 
-import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.AdvanceTotes;
-import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.LowerGrabber;
-import org.frc4931.robot.command.LowerKicker;
-import org.frc4931.robot.command.OpenGrabber;
-import org.frc4931.robot.command.OpenGuardrail;
-import org.frc4931.robot.command.RaiseGrabber;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.command.grabber.LowerGrabber;
+import org.frc4931.robot.command.grabber.OpenGrabber;
+import org.frc4931.robot.command.grabber.RaiseGrabber;
+import org.frc4931.robot.command.ramp.AdvanceTotes;
+import org.frc4931.robot.command.ramp.CloseGuardrail;
+import org.frc4931.robot.command.ramp.LowerKicker;
+import org.frc4931.robot.command.ramp.OpenGuardrail;
 
 /**
  * 

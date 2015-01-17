@@ -8,10 +8,10 @@ package org.frc4931.robot.command.group;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.LowerRamp;
-import org.frc4931.robot.command.OpenGuardrail;
-import org.frc4931.robot.command.RaiseRamp;
+import org.frc4931.robot.command.ramp.CloseGuardrail;
+import org.frc4931.robot.command.ramp.LowerRamp;
+import org.frc4931.robot.command.ramp.OpenGuardrail;
+import org.frc4931.robot.command.ramp.RaiseRamp;
 
 /**
  * 

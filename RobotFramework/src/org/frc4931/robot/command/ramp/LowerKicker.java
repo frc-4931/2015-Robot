@@ -4,21 +4,22 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.ramp;
 
-import org.frc4931.robot.subsystem.LoaderArm;
+import org.frc4931.robot.command.SpeedCommandBase;
+import org.frc4931.robot.subsystem.Ramp;
 
 /**
- * Raise the grabber arm to tote/ground level.
+ * Lower the kicker to the lowest/stowed position.
  */
-public class RaiseGrabber extends SpeedCommandBase {
+public class LowerKicker extends SpeedCommandBase {
 
-    private final LoaderArm arm;
+    private final Ramp ramp;
     
-    public RaiseGrabber(LoaderArm arm, double speed ) {
+    public LowerKicker(Ramp ramp, double speed ) {
         super(speed);
-        this.arm = arm;
-        requires(this.arm);
+        this.ramp = ramp;
+        requires(this.ramp);
     }
     
     @Override
@@ -27,12 +28,12 @@ public class RaiseGrabber extends SpeedCommandBase {
 
     @Override
     protected void execute() {
-        arm.raise(speed);
+        ramp.lowerKicker(speed);
     }
     
     @Override
     protected boolean isFinished() {
-        return arm.isRaised();
+        return ramp.isKickerLowered();
     }
 
     @Override
