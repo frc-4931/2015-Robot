@@ -324,4 +324,13 @@ public class MockRobot implements Robot.Components {
         // no switch to tell us that ramp is lowered
     }
 
+    public void assertGuardRailOpen() {
+        assertThat(guardRailOpenSwitch().isTriggered()).isEqualTo(true);
+        assertThat(guardRailClosedSwitch().isTriggered()).isEqualTo(false);
+    }
+
+    public void assertGuardRailClosed() {
+        assertThat(guardRailClosedSwitch().isTriggered()).isEqualTo(false);
+        assertThat(guardRailOpenSwitch().isTriggered()).isEqualTo(true);
+    }
 }
