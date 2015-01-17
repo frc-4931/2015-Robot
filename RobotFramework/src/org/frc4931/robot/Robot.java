@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
@@ -16,8 +17,6 @@ import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     private static Robot instance;
@@ -37,6 +36,20 @@ public class Robot extends IterativeRobot {
 
         // Start each of the subsystems and other objects that need initializing ...
         systems.startup();
+    }
+
+    /**
+     * This function is called periodically during operator control.
+     */
+    @Override
+    public void teleopPeriodic() {
+        double throttle = operatorInterface.throttle.read();
+        double wheel = operatorInterface.wheel.read();
+        double driveSpeed = operatorInterface.driveSpeed.read();
+        double turnSpeed = operatorInterface.turnSpeed.read();
+
+        systems.drive.arcade(driveSpeed, turnSpeed);
+//        systems.drive.cheesy(throttle, wheel, false);
     }
 
     @Override
