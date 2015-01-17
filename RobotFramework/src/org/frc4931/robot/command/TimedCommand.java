@@ -7,8 +7,12 @@
 package org.frc4931.robot.command;
 
 public abstract class TimedCommand extends CommandBase {
-    protected TimedCommand(long timeout) {
+    protected TimedCommand(double timeout) {
         super(timeout);
+    }
+
+    protected TimedCommand(String name, double timeout) {
+        super(name, timeout);
     }
 
     @Override
