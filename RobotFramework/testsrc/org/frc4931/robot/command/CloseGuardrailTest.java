@@ -19,12 +19,14 @@ public class CloseGuardrailTest extends AbstractCommandTest {
         robot.assertGuardRailOpen();
         // Create and execute the command multiple times ...
         repeat(10,()->runCommandAnd(()->robot.guardRailClosedSwitch().setTriggered(),
+                                    ()->robot.guardRailOpenSwitch().setNotTriggered(),
                                     robot::assertGuardRailClosed));
     }
         
     @Test
     public void shouldCloseGuardrailWhenguardrailIsClosed() {
         // Preconditions ...
+        robot.closeGuardRail();
         robot.guardRailActuator().stop();
         robot.assertGuardRailClosed();
         // Create and execute the command multiple times ...

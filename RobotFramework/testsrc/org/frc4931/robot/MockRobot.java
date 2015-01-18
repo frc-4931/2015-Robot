@@ -96,7 +96,7 @@ public class MockRobot implements Robot.Components {
     
     @Override
     public MockSwitch armLifterUpperSwitch() {
-        return armLifterLowerSwitch;
+        return armLifterUpperSwitch;
     }
 
     @Override
@@ -252,6 +252,7 @@ public class MockRobot implements Robot.Components {
         systems().grabber.lower(speed);
         // immediately flip the switch to the signal that this is done
         armLifterLowerSwitch.setTriggered();
+        armLifterUpperSwitch.setNotTriggered();
         return this;
     }
 
@@ -259,6 +260,7 @@ public class MockRobot implements Robot.Components {
         systems().grabber.raise(speed);
         // immediately flip the switch to the signal that this is done
         armLifterUpperSwitch.setTriggered();
+        armLifterLowerSwitch.setNotTriggered();
         return this;
     }
 
@@ -278,6 +280,7 @@ public class MockRobot implements Robot.Components {
         systems().ramp.openGuardRail();
         // immediately flip the switch to the signal that this is done
         guardRailOpenSwitch.setTriggered();
+        guardRailClosedSwitch.setNotTriggered();
         return this;
     }
 
@@ -285,6 +288,7 @@ public class MockRobot implements Robot.Components {
         systems().ramp.closeGuardRail();
         // immediately flip the switch to the signal that this is done
         guardRailClosedSwitch.setTriggered();
+        guardRailOpenSwitch.setNotTriggered();
         return this;
     }
 
@@ -330,7 +334,17 @@ public class MockRobot implements Robot.Components {
     }
 
     public void assertGuardRailClosed() {
-        assertThat(guardRailClosedSwitch().isTriggered()).isEqualTo(false);
-        assertThat(guardRailOpenSwitch().isTriggered()).isEqualTo(true);
+        assertThat(guardRailClosedSwitch().isTriggered()).isEqualTo(true);
+        assertThat(guardRailOpenSwitch().isTriggered()).isEqualTo(false);
+    }
+    
+    public void assertGrabberRaised() {
+        assertThat(armLifterUpperSwitch().isTriggered()).isEqualTo(true);
+        assertThat(armLifterLowerSwitch().isTriggered()).isEqualTo(false);
+    }
+
+    public void assertGrabberLowered() {
+        assertThat(armLifterUpperSwitch().isTriggered()).isEqualTo(false);
+        assertThat(armLifterLowerSwitch().isTriggered()).isEqualTo(true);
     }
 }
