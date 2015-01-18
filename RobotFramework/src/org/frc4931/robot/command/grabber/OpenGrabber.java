@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
 
 /**
  * Opens the grabber arm.
+ * @see org.frc4931.robot.subsystem.LoaderArm
  */
 public class OpenGrabber extends OneShotCommand {
     

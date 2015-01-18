@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 
 /**
  * Lower the kicker to the lowest/stowed position.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
 public class LowerKicker extends SpeedCommandBase {
 

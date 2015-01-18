@@ -10,7 +10,8 @@ import org.frc4931.robot.command.OneShotCommand;
 import org.frc4931.robot.subsystem.Ramp;
 
 /**
- * Perpenticualrizes the ramp to the gorund.
+ * Raises the ramp so it is perpendicular to the ground.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
 public class RaiseRamp extends OneShotCommand {
 

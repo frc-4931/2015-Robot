@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
 
 /**
  * Lowers the grabber arm to tote/ground level.
+ * @see org.frc4931.robot.subsystem.LoaderArm
  */
 public class LowerGrabber extends SpeedCommandBase {
     private LoaderArm loaderArm;

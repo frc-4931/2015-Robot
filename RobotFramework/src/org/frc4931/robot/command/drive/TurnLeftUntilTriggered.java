@@ -10,10 +10,23 @@ import org.frc4931.robot.command.CommandWithSwitch;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.subsystem.DriveSystem;
 
+/**
+ * Turns the drive system leftward until a switch is triggered.
+ *
+ * @author Adam Gausmann
+ * @see org.frc4931.robot.subsystem.DriveSystem
+ * @see org.frc4931.robot.component.Switch
+ */
 public class TurnLeftUntilTriggered extends CommandWithSwitch {
     private final DriveSystem driveSystem;
     private final double speed;
 
+    /**
+     * Creates a new instance of this command.
+     * @param driveSystem The {@link org.frc4931.robot.subsystem.DriveSystem} to operate upon.
+     * @param speed The speed at which to turn
+     * @param swtch The switch that stops the drive system when triggered.
+     */
     public TurnLeftUntilTriggered(DriveSystem driveSystem, double speed, Switch swtch) {
         super(swtch);
         this.driveSystem = driveSystem;

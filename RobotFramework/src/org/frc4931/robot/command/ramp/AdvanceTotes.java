@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 
 /**
  * Raise the kicker to advance the totes.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
 public class AdvanceTotes extends SpeedCommandBase {
 

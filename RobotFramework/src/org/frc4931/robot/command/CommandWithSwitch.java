@@ -8,6 +8,9 @@ package org.frc4931.robot.command;
 
 import org.frc4931.robot.component.Switch;
 
+/**
+ * Base command that finishes itself when a switch is triggered.
+ */
 public abstract class CommandWithSwitch extends CommandBase {
     private final Switch swtch;
 

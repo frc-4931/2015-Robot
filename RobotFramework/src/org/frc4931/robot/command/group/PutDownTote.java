@@ -14,15 +14,15 @@ import org.frc4931.robot.command.ramp.OpenGuardrail;
 import org.frc4931.robot.command.ramp.RaiseRamp;
 
 /**
- * 
+ * Ejects the tote stack at ground level.
  */
+@Deprecated //TODO Re-do tote ejection
 public class PutDownTote extends CommandGroup {
     public PutDownTote(Systems systems){
-        addSequential(new LowerRamp(systems.ramp));
-        addSequential(new OpenGuardrail(systems.ramp));
-        addSequential(new CloseGuardrail(systems.ramp));
         addSequential(new RaiseRamp(systems.ramp));
-        
+        addSequential(new OpenGuardrail(systems.ramp));
+        addSequential(new LowerRamp(systems.ramp));
+        addSequential(new CloseGuardrail(systems.ramp));
     }
 
 }

@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
  * Switches to the front camera.
+ * @see org.frc4931.robot.subsystem.VisionSystem
  */
 public class UseFrontCamera extends OneShotCommand {
 

@@ -6,6 +6,9 @@
  */
 package org.frc4931.robot.command;
 
+/**
+ * Base command that finishes itself when it times out.
+ */
 public abstract class TimedCommand extends CommandBase {
     protected TimedCommand(double timeout) {
         super(timeout);

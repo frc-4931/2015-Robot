@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 
 /**
  * Opens the guardrail.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
 public class OpenGuardrail extends CommandBase {
     private Ramp ramp;

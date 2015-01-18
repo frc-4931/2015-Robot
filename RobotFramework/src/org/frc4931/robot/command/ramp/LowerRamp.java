@@ -11,6 +11,7 @@ import org.frc4931.robot.subsystem.Ramp;
 
 /**
  * Lowers the ramp.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
 public class LowerRamp extends OneShotCommand {
     private Ramp ramp;

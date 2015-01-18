@@ -17,7 +17,7 @@ import org.frc4931.robot.command.ramp.LowerKicker;
 import org.frc4931.robot.command.ramp.OpenGuardrail;
 
 /**
- * 
+ * Picks up a tote with the grabber and loads it in the bottom of the stack.
  */
 public class PickUpTote extends CommandGroup {
     public PickUpTote(Systems systems){
