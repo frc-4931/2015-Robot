@@ -58,6 +58,8 @@ public interface Motor {
         else
             return Direction.STOPPED;
     }
+    
+    public int getSpeedAsInt();
 
     /**
      * Create a new Motor instance that is composed of two other motors that will be controlled identically. This is useful
@@ -78,6 +80,12 @@ public interface Motor {
             public void setSpeed(double speed) {
                 motor1.setSpeed(speed);
                 motor2.setSpeed(speed);
+            }
+            
+            @Override
+            public int getSpeedAsInt(){
+                return motor1.getSpeedAsInt();
+                
             }
         };
     }
@@ -103,6 +111,11 @@ public interface Motor {
                 motor1.setSpeed(speed);
                 motor2.setSpeed(speed);
                 motor3.setSpeed(speed);
+            }
+            
+            @Override
+            public int getSpeedAsInt(){
+                return motor1.getSpeedAsInt();
             }
         };
     }

@@ -53,5 +53,10 @@ public final class MockMotor implements Motor {
     public double getSpeed() {
         return speed;
     }
+    
+    @Override
+    public int getSpeedAsInt(){
+        return (int)((speed+1)/2*255);
+    }
 
 }

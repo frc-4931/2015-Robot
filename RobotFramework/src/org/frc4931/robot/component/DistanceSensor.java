@@ -21,4 +21,8 @@ public interface DistanceSensor {
      * @return the value of this {@link DistanceSensor}
      */
     public double getDistance();
+    
+    public default int getAsInt(){
+        return (int)(getDistance()*Math.pow(2, 12));
+    }
 }
