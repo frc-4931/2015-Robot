@@ -6,18 +6,18 @@
  */
 package org.frc4931.robot.command;
 
-import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.RampLifter;
 
 /**
  * Perpenticualrizes the ramp to the gorund.
  */
 public class RaiseRamp extends OneShotCommand {
 
-    private final Ramp ramp;
+    private final RampLifter lifter;
     
-    public RaiseRamp(Ramp ramp){
-        this.ramp = ramp;
-        requires(this.ramp);
+    public RaiseRamp(RampLifter lifter){
+        this.lifter = lifter;
+        requires(this.lifter);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RaiseRamp extends OneShotCommand {
 
     @Override
     protected void execute() {
-        ramp.raiseRamp();
+        lifter.raise();
     }
 
     @Override

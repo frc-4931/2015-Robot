@@ -6,8 +6,6 @@
  */
 package org.frc4931.robot;
 
-import org.frc4931.robot.component.LeadScrew;
-import org.frc4931.robot.component.LeadScrew.Position;
 import org.frc4931.robot.mock.MockMotor;
 import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
@@ -215,36 +213,14 @@ public class MockRobot implements Robot.Components {
     }
 
     public MockRobot lowerRamp() {
-        systems().ramp.lowerRamp();
+        systems().ramp.rampLift.lower();
         // no switch to flip
         return this;
     }
     
     public MockRobot raiseRamp() {
-        systems().ramp.raiseRamp();
+        systems().ramp.rampLift.raise();
         // no switch to flip
-        return this;
-    }
-
-    public MockRobot moveStackTo( LeadScrew.Position desiredPosition, double speed ) {
-        systems().ramp.moveStackTowards(desiredPosition, speed );
-        // immediately flip the switch to the signal that this is done
-        switch( desiredPosition ) {
-            case LOW:
-                leadScrewLowerSwitch.setTriggered();
-                break;
-            case STEP:
-                leadScrewStepSwitch.setTriggered();
-                break;
-            case TOTE:
-                leadScrewToteSwitch.setTriggered();
-                break;
-            case TOTE_ON_STEP:
-                leadScrewToteOnStepSwitch.setTriggered();
-                break;
-            case UNKNOWN:
-                break;
-        }
         return this;
     }
 
@@ -275,25 +251,25 @@ public class MockRobot implements Robot.Components {
     }
 
     public MockRobot openGuardRail() {
-        systems().ramp.openGuardRail();
+        systems().ramp.guardrail.open();
         // immediately flip the switch to the signal that this is done
         guardRailOpenSwitch.setTriggered();
         return this;
     }
 
     public MockRobot closeGuardRail() {
-        systems().ramp.closeGuardRail();
+        systems().ramp.guardrail.close();
         // immediately flip the switch to the signal that this is done
         guardRailClosedSwitch.setTriggered();
         return this;
     }
 
     public MockRobot resetToStartingPosition() {
-        return stopDriving().lowerRamp().moveStackTo(Position.LOW,1).openGuardRail().lowerGrabberArm(1).openGrabber();
+        return stopDriving().lowerRamp().openGuardRail().lowerGrabberArm(1).openGrabber();
     }
 
     public MockRobot resetToCapturedPosition() {
-        return stopDriving().lowerRamp().moveStackTo(Position.LOW,1).closeGuardRail().lowerGrabberArm(1).closeGrabber();
+        return stopDriving().lowerRamp().closeGuardRail().lowerGrabberArm(1).closeGrabber();
     }
 
     public void assertGrabberSolenoidRetracted() {
