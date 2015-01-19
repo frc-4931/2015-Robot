@@ -20,6 +20,7 @@ import org.frc4931.utils.Lifecycle;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
+    public static final int NUMBER_OF_ADC_BITS = 12;
     private static Robot instance;
     private Systems systems;
     private OperatorInterface operatorInterface;

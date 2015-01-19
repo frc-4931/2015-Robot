@@ -32,7 +32,7 @@ final class HardwareAnalogUltrasonic implements DistanceSensor {
     }
     
     @Override
-    public int getAsInt(){
-        return sensor.getAverageBits();
+    public short getAsShort(){
+        return (short) sensor.getAverageBits();
     }
 }

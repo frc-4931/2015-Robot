@@ -59,7 +59,7 @@ public interface Motor {
             return Direction.STOPPED;
     }
     
-    public int getSpeedAsInt();
+    public short getSpeedAsShort();
 
     /**
      * Create a new Motor instance that is composed of two other motors that will be controlled identically. This is useful
@@ -83,8 +83,8 @@ public interface Motor {
             }
             
             @Override
-            public int getSpeedAsInt(){
-                return motor1.getSpeedAsInt();
+            public short getSpeedAsShort(){
+                return motor1.getSpeedAsShort();
                 
             }
         };
@@ -114,8 +114,8 @@ public interface Motor {
             }
             
             @Override
-            public int getSpeedAsInt(){
-                return motor1.getSpeedAsInt();
+            public short getSpeedAsShort(){
+                return motor1.getSpeedAsShort();
             }
         };
     }

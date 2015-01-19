@@ -52,7 +52,7 @@ public final class HardwareMotor implements Motor {
     }
     
     @Override
-    public int getSpeedAsInt(){
-        return ((PWM) (controller)).getRaw();
+    public short getSpeedAsShort(){
+        return (short) ((PWM) (controller)).getRaw();
     }
 }
