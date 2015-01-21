@@ -44,6 +44,10 @@ public class Logger implements LiveWindowSendable{
     private BufferedWriter writer;
     private Thread writerThread;
     
+    /**
+     * Starts logging data using the current mode.  Will not do anything if {@link Logger}
+     * is already running.
+     */
     public void start() {
         if(running) return;
         running = true;
@@ -66,10 +70,10 @@ public class Logger implements LiveWindowSendable{
                 e.printStackTrace();
             }
             
-            // Initalize the buffer
+            // Initialize the buffer
             buffer = ShortBuffer.allocate(names.size());
             
-            // Initalize the thread that does the actual file output
+            // Initialize the thread that does the actual file output
             writerThread = new Thread(()->{
                 while(running) {
                     // Wait for permission before we start writing
@@ -104,10 +108,10 @@ public class Logger implements LiveWindowSendable{
                 }
                 try {
                     writer.close();
-                    System.out.println("Closed Logger");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                buffer = null;
             });
             writerThread.setName("writer");
             
@@ -117,10 +121,20 @@ public class Logger implements LiveWindowSendable{
         updateThread.start();
     }
     
+    /**
+     * Stops logging data, kills both threads, flushes buffers if neccassary, and frees resources.
+     */
     public void stop() {
         running = false;
     }
     
+    /**
+     * Sets the mode of this {@link Logger}. Will throw an {@link IllegalUseOfCommandException} if {@link Logger}
+     * is still running.
+     * <li>{@link Mode#LOCAL_FILE} - The data is logged to a csv stored locally on the RIO.
+     * <li>{@link Mode#NETWORK_TABLES} - The data is written to the {@link SmartDashboard}, no data is stored locally.
+     * @param mode the new {@link Mode} of this {@link Logger}
+     */
     public void setMode(Mode mode){
         if(!running)
             this.mode = mode;
@@ -143,7 +157,6 @@ public class Logger implements LiveWindowSendable{
                     writerThread.notify();
                 }
             }
-                
         } else if(mode==Mode.NETWORK_TABLES) {
             SmartDashboard.putData("Logger Data",this);
         }
