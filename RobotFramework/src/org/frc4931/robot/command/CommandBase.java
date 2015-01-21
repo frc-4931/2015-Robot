@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * Command helper class that automatically overrides {@link #interrupted()} to call {@link #end()}.
  */
 public abstract class CommandBase extends Command {
-    public CommandBase() {
+    protected CommandBase() {
     }
 
     protected CommandBase(String name) {

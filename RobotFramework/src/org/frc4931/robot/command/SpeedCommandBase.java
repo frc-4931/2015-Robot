@@ -11,8 +11,23 @@ package org.frc4931.robot.command;
  */
 public abstract class SpeedCommandBase extends CommandBase {
     protected final double speed;
-    
+
     protected SpeedCommandBase( double speed ) {
+        this.speed = speed;
+    }
+
+    protected SpeedCommandBase(String name, double speed) {
+        super(name);
+        this.speed = speed;
+    }
+
+    protected SpeedCommandBase(double timeout, double speed) {
+        super(timeout);
+        this.speed = speed;
+    }
+
+    protected SpeedCommandBase(String name, double timeout, double speed) {
+        super(name, timeout);
         this.speed = speed;
     }
 }
