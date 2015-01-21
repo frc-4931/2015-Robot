@@ -32,15 +32,14 @@ public class Logger implements LiveWindowSendable{
     private final Stack<IntSupplier> suppliers = new Stack<>();
     private final Stack<String> names = new Stack<>();
     
-    private Thread updateThread;
-    private volatile boolean running = false;
-    private ShortBuffer buffer;
     private Mode mode = Mode.NETWORK_TABLES;
-    
+    private volatile boolean running = false;
+    private Thread updateThread;
     
     //File Output
     private static final short FRAMES_PER_FLUSH = 15;
     private short sinceFlush = 0;
+    private ShortBuffer buffer;
     private BufferedWriter writer;
     private Thread writerThread;
     
@@ -68,6 +67,7 @@ public class Logger implements LiveWindowSendable{
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                buffer = ShortBuffer.allocate(names.size());
                 
                 writerThread = new Thread(()->{
                     while(running) {
@@ -109,7 +109,7 @@ public class Logger implements LiveWindowSendable{
     }
     
     private void update() {
-        if(mode==Mode.LOCAL_FILE){
+        if(mode==Mode.LOCAL_FILE) {
             // Put all of the data into a buffer
             buffer.clear();
             suppliers.forEach((supplier)->buffer.put((short) supplier.getAsInt()));
@@ -125,7 +125,7 @@ public class Logger implements LiveWindowSendable{
                 }
             }
                 
-        }else if(mode==Mode.NETWORK_TABLES){
+        } else if(mode==Mode.NETWORK_TABLES) {
             SmartDashboard.putData("Logger Data",this);
         }
         
