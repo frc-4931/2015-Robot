@@ -82,7 +82,7 @@ public class TurnRightUntilTriggeredTest extends AbstractCommandTest {
     }
 
     public void assertStopped() {
-        assertThat(robot.rightDriveMotor().getDirection()).isEqualTo(Motor.Direction.STOPPED);
+        assertThat(robot.leftDriveMotor().getDirection()).isEqualTo(Motor.Direction.STOPPED);
         assertThat(robot.rightDriveMotor().getDirection()).isEqualTo(Motor.Direction.STOPPED);
     }
 

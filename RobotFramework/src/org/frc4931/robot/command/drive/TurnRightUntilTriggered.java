@@ -41,7 +41,7 @@ public class TurnRightUntilTriggered extends CommandWithSwitch {
 
     @Override
     protected void execute() {
-        driveSystem.arcade(0.0, Math.abs(speed));
+        driveSystem.arcade(0.0, -Math.abs(speed));
     }
 
     @Override

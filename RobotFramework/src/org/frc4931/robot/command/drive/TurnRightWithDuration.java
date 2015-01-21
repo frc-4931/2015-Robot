@@ -39,7 +39,7 @@ public class TurnRightWithDuration extends TimedCommand {
 
     @Override
     protected void execute() {
-        driveSystem.arcade(0.0, Math.abs(turnSpeed));
+        driveSystem.arcade(0.0, -Math.abs(turnSpeed));
     }
 
     @Override
