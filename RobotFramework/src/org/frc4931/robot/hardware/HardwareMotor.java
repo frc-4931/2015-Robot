@@ -8,6 +8,7 @@ package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.Motor;
 
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SpeedController;
 
 /**
@@ -48,5 +49,10 @@ public final class HardwareMotor implements Motor {
     @Override
     public double getSpeed() {
         return controller.get();
+    }
+    
+    @Override
+    public short getSpeedAsShort(){
+        return (short) ((PWM) (controller)).getRaw();
     }
 }

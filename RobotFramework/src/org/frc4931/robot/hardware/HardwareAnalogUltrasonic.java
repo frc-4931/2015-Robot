@@ -30,4 +30,9 @@ final class HardwareAnalogUltrasonic implements DistanceSensor {
     public double getDistance() {
         return sensor.getVoltage() * VOLTS_TO_INCHES;
     }
+    
+    @Override
+    public short getAsShort(){
+        return (short) sensor.getAverageBits();
+    }
 }
