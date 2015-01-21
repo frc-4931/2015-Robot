@@ -18,6 +18,7 @@ import java.util.function.IntSupplier;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Switch;
 
+import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -46,8 +47,73 @@ public class Logger implements LiveWindowSendable{
     public void start() {
         if(running) return;
         running = true;
+        
+        // Create the monitor thread
         updateThread = new Thread(()->{while(running) update();});
-        updateThread.setName("logger");
+        updateThread.setName("loggerupdater");
+        
+        // If we start in file write mode, we need to initalize the writers
+        if(mode == Mode.LOCAL_FILE) {
+            // Initalize the writer
+            try {
+                writer = new BufferedWriter(new FileWriter("Log.csv"));
+                for(String name : names) {
+                    writer.write(name+", ");
+                }
+                writer.newLine();
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            // Initalize the buffer
+            buffer = ShortBuffer.allocate(names.size());
+            
+            // Initalize the thread that does the actual file output
+            writerThread = new Thread(()->{
+                while(running) {
+                    // Wait for permission before we start writing
+                    synchronized(writerThread){
+                        try {
+                            writerThread.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    for(int i = 0; i < buffer.limit();i++){
+                        try {
+                            writer.write(buffer.get(i)+", ");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        writer.newLine();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    sinceFlush++;
+                    if(sinceFlush==FRAMES_PER_FLUSH) {
+                        try {
+                            writer.flush();
+                            sinceFlush=0;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                try {
+                    writer.close();
+                    System.out.println("Closed Logger");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            writerThread.setName("writer");
+            
+            // The writer will immediately wait for permission to write
+            writerThread.start();
+        }
         updateThread.start();
     }
     
@@ -56,56 +122,9 @@ public class Logger implements LiveWindowSendable{
     }
     
     public void setMode(Mode mode){
-        if(mode == Mode.LOCAL_FILE) {
-            if(writer==null) {
-                try {
-                    writer = new BufferedWriter(new FileWriter("Log.csv"));
-                    for(String name : names){
-                        writer.write(name+", ");
-                    }
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                buffer = ShortBuffer.allocate(names.size());
-                
-                writerThread = new Thread(()->{
-                    while(running) {
-                        // Wait for permission before we start writing
-                        synchronized(this){
-                            try {
-                                wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        for(int i = 0; i < buffer.limit();i++){
-                            try {
-                                writer.write(buffer.get(i)+", ");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        try {
-                            writer.newLine();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        sinceFlush++;
-                        if(sinceFlush==FRAMES_PER_FLUSH) {
-                            try {
-                                writer.flush();
-                                sinceFlush=0;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-                writerThread.setName("writer");
-                writerThread.start();
-            }
-        }
+        if(!running)
+            this.mode = mode;
+        else throw new IllegalUseOfCommandException("Cannot change modes while running");
     }
     
     private void update() {
@@ -113,7 +132,7 @@ public class Logger implements LiveWindowSendable{
             // Put all of the data into a buffer
             buffer.clear();
             suppliers.forEach((supplier)->buffer.put((short) supplier.getAsInt()));
-
+            
             // Tell the writer that the next buffer is ready
             synchronized(writerThread) {
                 // If the writer is waiting, flip the buffer and then tell writer to write
