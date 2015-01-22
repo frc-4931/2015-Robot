@@ -44,7 +44,7 @@ public class TurnRightWithDurationTest extends AbstractCommandTest {
 
     @Test
     public void shouldRunWhileNotTimedOut() {
-        runCommandAnd(this::assertTurningRightIfSupposedTo);
+        repeat(10, () -> runCommandAnd(this::assertTurningRightIfSupposedTo));
     }
 
     private void assertTurningRight() {

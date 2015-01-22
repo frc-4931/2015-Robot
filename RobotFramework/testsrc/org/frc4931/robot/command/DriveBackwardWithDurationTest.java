@@ -37,7 +37,7 @@ public class DriveBackwardWithDurationTest extends AbstractCommandTest {
 
     @Test
     public void shouldRunWhileNotTimedOut() {
-        runCommandAnd(this::assertDrivingBackwardIfSupposedTo);
+        repeat(10, () -> runCommandAnd(this::assertDrivingBackwardIfSupposedTo));
     }
 
     private void assertDrivingBackward() {

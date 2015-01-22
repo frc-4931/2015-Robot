@@ -37,7 +37,7 @@ public class TurnLeftWithDurationTest extends AbstractCommandTest {
 
     @Test
     public void shouldRunWhileNotTimedOut() {
-        runCommandAnd(this::assertTurningLeftIfSupposedTo);
+        repeat(10, () -> runCommandAnd(this::assertTurningLeftIfSupposedTo));
     }
 
     private void assertTurningLeft() {
