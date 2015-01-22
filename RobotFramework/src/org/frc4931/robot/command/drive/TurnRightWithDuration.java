@@ -44,6 +44,6 @@ public class TurnRightWithDuration extends TimedCommand {
 
     @Override
     protected void end() {
-
+        driveSystem.stop();
     }
 }
