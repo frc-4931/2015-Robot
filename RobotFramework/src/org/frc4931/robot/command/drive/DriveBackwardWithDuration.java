@@ -23,10 +23,10 @@ public class DriveBackwardWithDuration extends TimedCommand {
      * Creates a new instance of this command.
      * @param driveSystem The {@link DriveSystem} to operate upon.
      * @param driveSpeed The speed to drive at.
-     * @param duration The drive duration in milliseconds
+     * @param timeout The command timeout in seconds.
      */
-    public DriveBackwardWithDuration(DriveSystem driveSystem, double driveSpeed, long duration) {
-        super(duration);
+    public DriveBackwardWithDuration(DriveSystem driveSystem, double driveSpeed, double timeout) {
+        super(timeout);
         this.driveSystem = driveSystem;
         this.driveSpeed = driveSpeed;
         requires(driveSystem);

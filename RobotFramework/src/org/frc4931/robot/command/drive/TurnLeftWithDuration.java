@@ -23,10 +23,10 @@ public class TurnLeftWithDuration extends TimedCommand {
      * Creates a new instance of this command
      * @param driveSystem The {@link org.frc4931.robot.subsystem.DriveSystem} to operate upon.
      * @param turnSpeed The speed at which to turn.
-     * @param duration The turn duration in milliseconds.
+     * @param timeout The command timeout in seconds.
      */
-    public TurnLeftWithDuration(DriveSystem driveSystem, double turnSpeed, long duration) {
-        super(duration);
+    public TurnLeftWithDuration(DriveSystem driveSystem, double turnSpeed, double timeout) {
+        super(timeout);
         this.driveSystem = driveSystem;
         this.turnSpeed = turnSpeed;
         requires(driveSystem);
