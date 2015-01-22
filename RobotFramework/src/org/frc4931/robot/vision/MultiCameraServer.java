@@ -13,26 +13,57 @@ import edu.wpi.first.wpilibj.CameraServer;
  * This class wraps the WPILib {@link CameraServer} class, which can only handle one camera at a time.
  * <p>
  * This class should not be used if vision processing is to be done on the RoboRIO. Also, if this class is used, then code should
- * not use {@link CameraServer}.
+ * not direclty use {@link CameraServer}.
  * <p>
  * This class is threadsafe.
  */
 public final class MultiCameraServer {
 
-    private static final CameraServer SERVER = CameraServer.getInstance(); // starts the server
+    private static final StoppableCameraServer SERVER = StoppableCameraServer.getInstance(); // starts the server
 
-    private static CompositeCamera composite;
+    private static volatile CompositeCamera composite;
 
     /**
-     * Start automatically capturing images to send to the dashboard from the named camera. This method can safely be called
+     * Start automatically capturing images to send to the dashboard from the named cameras. This method can safely be called
      * multiple times, although after the first time it only sets the name of the camera from which images are captured.
      *
      * @param cameraNames The names of the camera interfaces (e.g. "cam1") from which the images should be captured; may not be
      *            null
      */
     public static void startAutomaticCapture(String... cameraNames) {
-        composite = new CompositeCamera(cameraNames);
-        SERVER.startAutomaticCapture(composite);
+        if (composite == null) {
+            // Not yet started ...
+            composite = new CompositeCamera(cameraNames);
+            SERVER.startServer();
+            SERVER.startAutomaticCapture(composite);
+        } else {
+            // It was already started once and shutdown, so we just need to re-start the current camera ...
+            composite.startCapture();
+        }
+    }
+    
+    public static void startServer() {
+        SERVER.startServer();
+    }
+
+    /**
+     * Start automatically capturing images to send to the dashboard from the specified {@link Camera}s. This method can safely be
+     * called multiple times, although after the first time it only sets the name of the camera from which images are captured.
+     *
+     * @param cameras The cameras from which the images should be captured; may not be
+     *            null
+     */
+    public static void startAutomaticCapture(Camera... cameras) {
+        if (composite == null) {
+            // Not yet started ...
+            if ( cameras.length == 1 && cameras[0] instanceof CompositeCamera ) {
+                composite = (CompositeCamera)cameras[0];
+            } else {
+                composite = new CompositeCamera(cameras);
+            }
+            SERVER.startServer();
+            SERVER.startAutomaticCapture(composite);
+        }
     }
 
     /**
@@ -65,6 +96,29 @@ public final class MultiCameraServer {
      */
     public static int getQuality() {
         return SERVER.getQuality();
+    }
+
+    /**
+     * Stop automatically capturing images to send to the dashboard.
+     */
+    public static void stopAutomaticCapture() {
+        // There is currently nothing we can do to shut down the CameraServer!
+        SERVER.stopAutomaticCapture();
+        if (composite != null) {
+            try {
+                composite.stopCapture();
+            } finally {
+                composite = null;
+            }
+        }
+    }
+
+    /**
+     * Stop the server. This should only be called once, and the server is really not usable after that.
+     */
+    protected static void stopServer() {
+        stopAutomaticCapture();
+        SERVER.stopServer();
     }
 
 }
