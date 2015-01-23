@@ -6,18 +6,38 @@
  */
 package org.frc4931.robot.subsystem;
 
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.LimitedMotor;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The {@link Subsystem} that controls the ramp guardrails.
  */
-public class Guardrail extends Subsystem{
+public class Guardrail extends SubsystemBase{
     public static final double RAIL_MOVE_SPEED = 0.0d;
     private final LimitedMotor guardRail;
     
+    /**
+     * Constructs a {@link Guardrail} with the specified {@link LimitedMotor}
+     * and no default command.
+     * @param guardRail the {@link LimitedMotor} that actuates this {@link Guardrail}
+     */
     public Guardrail(LimitedMotor guardRail){
+        this(guardRail, null);
+    }
+    
+    /**
+     * Constructs a {@link Guardrail} with the specified {@link LimitedMotor}
+     * and default command.
+     * @param guardRail the {@link LimitedMotor} that actuates this {@link Guardrail}
+     * @param defaultCommandSupplier a {@link Supplier} that supplies the default {@link Command}
+     *         that is executed
+     */
+    public Guardrail(LimitedMotor guardRail, Supplier<Command> defaultCommandSupplier) {
+        super(defaultCommandSupplier);
         this.guardRail = guardRail;
     }
     

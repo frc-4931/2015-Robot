@@ -6,17 +6,40 @@
  */
 package org.frc4931.robot.subsystem;
 
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.Solenoid;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The {@link Subsystem} that raises the ramp to the vertical position.
  */
-public class RampLifter extends Subsystem{
+public class RampLifter extends SubsystemBase{
     private final Solenoid lifter;
 
+    /**
+     * Constructs a new {@link RampLifter} with the specified {@link Solenoid} and no
+     * default command.
+     * 
+     * @param lifter the {@link Solenoid} that actuates this {@link RampLifter}
+     */
     public RampLifter(Solenoid lifter) {
+        this(lifter, null);
+    }
+    
+    /**
+     * Constructs a new {@link RampLifter} with the specified {@link Solenoid}
+     * and default command.
+     * 
+     * @param lifter the {@link Solenoid} that actuates this {@link RampLifter}
+     * 
+     * @param defaultCommandSupplier a {@link Supplier} that supplies the default {@link Command}
+     *                                to be executed by this {@link RampLifter}
+     */
+    public RampLifter(Solenoid lifter, Supplier<Command> defaultCommandSupplier) {
+        super(defaultCommandSupplier);
         this.lifter = lifter;
     }
 
