@@ -4,12 +4,14 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
+import org.frc4931.robot.command.SpeedCommandBase;
 import org.frc4931.robot.subsystem.LoaderArm;
 
 /**
  * Raise the grabber arm to tote/ground level.
+ * @see org.frc4931.robot.subsystem.LoaderArm
  */
 public class RaiseGrabber extends SpeedCommandBase {
 

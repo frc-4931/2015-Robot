@@ -1,6 +1,7 @@
 package org.frc4931.robot.command;
 
 import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.command.ramp.OpenGuardrail;
 import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,7 +10,7 @@ public class OpenGuardrailTest extends AbstractCommandTest {
 
     @Override
     protected Command createCommand(Systems systems) {
-        return new OpenGuardrail(systems.ramp);
+        return new OpenGuardrail(systems.ramp.guardrail);
     }
     
     @Test

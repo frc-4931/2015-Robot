@@ -6,16 +6,15 @@
  */
 package org.frc4931.robot.subsystem;
 
-import java.util.function.Supplier;
-
+import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.vision.MultiCameraServer;
 
-import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
 
 /**
  * A subsystem used to control the vision system.
  */
-public class VisionSystem extends SubsystemBase {
+public final class VisionSystem extends SubsystemBase {
     
     private final String frontCameraName;
     private final String rearCameraName;

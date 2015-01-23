@@ -13,14 +13,13 @@
  */
 package org.frc4931.robot.subsystem;
 
-import java.util.function.Supplier;
-
+import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Relay.State;
 import org.frc4931.utils.Operations;
 
-import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
 
 /**
  * A subsystem that can be used to control a {@link DriveTrain} using arcade, tank, or cheesy methods.
@@ -97,6 +96,7 @@ public final class DriveSystem extends SubsystemBase {
      * 
      * @param driveSpeed the value to use for forwards/backwards; must be -1 to 1, inclusive
      * @param turnSpeed the value to use for the rotate right/left; must be -1 to 1, inclusive
+     *                  Negative values turn right; positive values turn left.
      * @param squaredInputs if set, decreases the sensitivity at low speeds
      */
     public void arcade(double driveSpeed, double turnSpeed, boolean squaredInputs) {
@@ -199,6 +199,7 @@ public final class DriveSystem extends SubsystemBase {
      * 
      * @param throttle the value of the throttle; must be -1 to 1, inclusive
      * @param wheel the value of the steering wheel; must be -1 to 1, inclusive
+     *              Negative values turn right; positive values turn left.
      * @param isQuickTurn true if the quick-turn button is pressed
      * @see <a href="https://github.com/Team254/FRC-2014/blob/master/src/com/team254/frc2014/CheesyDriveHelper.java">Team 254 Cheesy Drive logic</a>
      */

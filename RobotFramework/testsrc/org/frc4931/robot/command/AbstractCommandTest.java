@@ -6,14 +6,13 @@
  */
 package org.frc4931.robot.command;
 
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.WrappedCommand;
 import org.frc4931.robot.MockRobot;
 import org.frc4931.robot.Robot.Systems;
 import org.junit.After;
 import org.junit.Before;
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.WrappedCommand;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -128,6 +127,22 @@ public abstract class AbstractCommandTest {
          * Check any post-conditions after the command was executed just once.
          */
         public void check();
+    }
+
+    protected boolean lastCommandInitialized() {
+        return lastCommand.wasInitialized();
+    }
+
+    protected boolean lastCommandEnded() {
+        return lastCommand.wasEnded();
+    }
+
+    protected boolean lastCommandInterrupted() {
+        return lastCommand.wasInterrupted();
+    }
+
+    protected int lastCommandExecutedCount() {
+        return lastCommand.executedCount();
     }
 
     protected void assertLastCommandInitialized() {

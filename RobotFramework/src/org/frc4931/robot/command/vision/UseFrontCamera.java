@@ -4,18 +4,20 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.vision;
 
+import org.frc4931.robot.command.OneShotCommand;
 import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
- * Switches to the rear camera.
+ * Switches to the front camera.
+ * @see org.frc4931.robot.subsystem.VisionSystem
  */
-public class UseRearCamera extends OneShotCommand {
+public class UseFrontCamera extends OneShotCommand {
 
     private final VisionSystem vision;
     
-    public UseRearCamera(VisionSystem vision ) {
+    public UseFrontCamera(VisionSystem vision ) {
         assert vision != null;
         this.vision = vision;
         requires(this.vision);
@@ -27,7 +29,7 @@ public class UseRearCamera extends OneShotCommand {
 
     @Override
     protected void execute() {
-        this.vision.useRearCamera();
+        this.vision.useFrontCamera();
     }
 
     @Override
