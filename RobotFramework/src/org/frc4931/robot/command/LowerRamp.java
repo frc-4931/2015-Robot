@@ -6,16 +6,16 @@
  */
 package org.frc4931.robot.command;
 
-import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.RampLifter;
 
 /**
  * Lowers the ramp.
  */
 public class LowerRamp extends OneShotCommand {
-    private Ramp ramp;
+    private RampLifter lifter;
 
-    public LowerRamp(Ramp ramp) {
-        this.ramp = ramp;
+    public LowerRamp(RampLifter lifter) {
+        this.lifter = lifter;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LowerRamp extends OneShotCommand {
 
     @Override
     protected void execute() {
-        ramp.lowerRamp();
+        lifter.lower();
     }
 
     @Override

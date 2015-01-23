@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PutDownTote extends CommandGroup {
     public PutDownTote(Systems systems){
-        addSequential(new LowerRamp(systems.ramp));
-        addSequential(new OpenGuardrail(systems.ramp));
+        addSequential(new LowerRamp(systems.ramp.rampLift));
+        addSequential(new OpenGuardrail(systems.ramp.guardrail));
         //TODO move back two feet
-        addSequential(new CloseGuardrail(systems.ramp));
-        addSequential(new RaiseRamp(systems.ramp));
+        addSequential(new CloseGuardrail(systems.ramp.guardrail));
+        addSequential(new RaiseRamp(systems.ramp.rampLift));
         
     }
 

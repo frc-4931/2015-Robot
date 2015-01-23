@@ -8,7 +8,6 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DriveTrain;
-import org.frc4931.robot.component.LeadScrew;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
@@ -22,8 +21,10 @@ import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
 import org.frc4931.robot.subsystem.DriveSystem;
+import org.frc4931.robot.subsystem.Guardrail;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.RampLifter;
 import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
@@ -76,21 +77,11 @@ public class RobotBuilder {
      * @return a new ramp instance; never null
      */
     public static Ramp buildRamp(Robot.Components components) {
-        LimitedMotor kickerMotor = new LimitedMotor(components.kickerActuator(),
-                                                    components.kickerUpperSwitch(),
-                                                    components.kickerLowerSwitch());
-        LeadScrew leadScrew = new LeadScrew(components.leadScrewActuator(),
-                                            components.leadScrewLowerSwitch(),
-                                            components.leadScrewStepSwitch(),
-                                            components.leadScrewToteSwitch(),
-                                            components.leadScrewToteOnStepSwitch());
-        LimitedMotor guardRailMotor = new LimitedMotor(components.guardRailActuator(),
-                                                       components.guardRailOpenSwitch(),
-                                                       components.guardRailClosedSwitch());
-        return new Ramp(components.rampLifterActuator(),
-                        leadScrew,
-                        kickerMotor,
-                        guardRailMotor);
+        RampLifter lifter = new RampLifter(components.rampLifterActuator());
+        Guardrail rail = new Guardrail(new LimitedMotor(components.guardRailActuator(),
+                                        components.guardRailOpenSwitch(),
+                                        components.guardRailClosedSwitch()));
+        return new Ramp(rail, lifter);
     }
     
     /**
