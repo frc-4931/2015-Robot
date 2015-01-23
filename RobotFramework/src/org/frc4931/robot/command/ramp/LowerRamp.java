@@ -1,23 +1,23 @@
 /*
  * FRC 4931 (http://www.evilletech.com)
- *
+ * 
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.ramp;
 
+import org.frc4931.robot.command.OneShotCommand;
 import org.frc4931.robot.subsystem.RampLifter;
 
 /**
- * Perpenticualrizes the ramp to the gorund.
+ * Lowers the ramp.
+ * @see org.frc4931.robot.subsystem.Ramp
  */
-public class RaiseRamp extends OneShotCommand {
+public class LowerRamp extends OneShotCommand {
+    private RampLifter lifter;
 
-    private final RampLifter lifter;
-    
-    public RaiseRamp(RampLifter lifter){
+    public LowerRamp(RampLifter lifter) {
         this.lifter = lifter;
-        requires(this.lifter);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RaiseRamp extends OneShotCommand {
 
     @Override
     protected void execute() {
-        lifter.raise();
+        lifter.lower();
     }
 
     @Override

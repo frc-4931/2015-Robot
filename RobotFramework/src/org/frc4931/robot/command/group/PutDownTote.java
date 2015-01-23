@@ -7,24 +7,23 @@
 package org.frc4931.robot.command.group;
 
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.LowerRamp;
-import org.frc4931.robot.command.OpenGuardrail;
-import org.frc4931.robot.command.RaiseRamp;
+import org.frc4931.robot.command.ramp.CloseGuardrail;
+import org.frc4931.robot.command.ramp.LowerRamp;
+import org.frc4931.robot.command.ramp.OpenGuardrail;
+import org.frc4931.robot.command.ramp.RaiseRamp;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * 
+ * Ejects the tote stack at ground level.
  */
+@Deprecated //TODO Re-do tote ejection
 public class PutDownTote extends CommandGroup {
     public PutDownTote(Systems systems){
-        addSequential(new LowerRamp(systems.ramp.rampLift));
-        addSequential(new OpenGuardrail(systems.ramp.guardrail));
-        //TODO move back two feet
-        addSequential(new CloseGuardrail(systems.ramp.guardrail));
         addSequential(new RaiseRamp(systems.ramp.rampLift));
-        
+        addSequential(new OpenGuardrail(systems.ramp.guardrail));
+        addSequential(new LowerRamp(systems.ramp.rampLift));
+        addSequential(new CloseGuardrail(systems.ramp.guardrail));
     }
 
 }

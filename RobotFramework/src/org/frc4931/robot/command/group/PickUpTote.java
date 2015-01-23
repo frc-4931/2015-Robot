@@ -7,16 +7,16 @@
 package org.frc4931.robot.command.group;
 
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.CloseGuardrail;
-import org.frc4931.robot.command.LowerGrabber;
-import org.frc4931.robot.command.OpenGrabber;
-import org.frc4931.robot.command.OpenGuardrail;
-import org.frc4931.robot.command.RaiseGrabber;
+import org.frc4931.robot.command.grabber.LowerGrabber;
+import org.frc4931.robot.command.grabber.OpenGrabber;
+import org.frc4931.robot.command.grabber.RaiseGrabber;
+import org.frc4931.robot.command.ramp.CloseGuardrail;
+import org.frc4931.robot.command.ramp.OpenGuardrail;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * 
+ * Picks up a tote with the grabber and loads it in the bottom of the stack.
  */
 public class PickUpTote extends CommandGroup {
     public PickUpTote(Systems systems){

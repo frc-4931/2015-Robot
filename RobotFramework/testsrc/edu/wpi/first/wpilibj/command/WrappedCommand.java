@@ -27,29 +27,30 @@ public class WrappedCommand extends Command {
     }
 
     @Override
-    protected void initialize() {
+    synchronized boolean run() {
         checkNeverAgain();
+        super.run();
+        return delegate.run();
+    }
+
+    @Override
+    protected void initialize() {
         initialized = true;
-        delegate.initialize();
     }
 
     @Override
     protected void execute() {
-        checkNeverAgain();
         ++executeCount;
-        delegate.execute();
     }
 
     @Override
     protected boolean isFinished() {
-        checkNeverAgain();
         finished = delegate.isFinished();
         return finished;
     }
 
     @Override
     protected void end() {
-        checkNeverAgain();
         ended = true;
         delegate.end();
     }
@@ -60,7 +61,13 @@ public class WrappedCommand extends Command {
         interrupted = true;
         delegate.interrupted();
     }
-    
+
+    @Override
+    public synchronized void cancel() {
+        super.cancel();
+        delegate.cancel();
+    }
+
     protected void checkNeverAgain() {
         if ( neverAgain ) {
             throw new AssertionFailedError("Unexpectedly called a method on " + getClass().getSimpleName() + ": " + delegate);

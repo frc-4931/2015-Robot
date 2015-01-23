@@ -6,9 +6,8 @@
  */
 package edu.wpi.first.wpilibj;
 
-import org.frc4931.robot.MockRobot;
-
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.frc4931.robot.MockRobot;
 
 
 /**
@@ -188,7 +187,7 @@ public class TestableRobotState extends RobotState {
      * @return Robot running time in seconds.
      */
     protected static double getFPGATime() {
-        return (System.currentTimeMillis() - startTime ) / 1000000.0;
+        return (System.currentTimeMillis() - startTime) / 1000.0;
     }
     
     public static void resetMatchTime() {

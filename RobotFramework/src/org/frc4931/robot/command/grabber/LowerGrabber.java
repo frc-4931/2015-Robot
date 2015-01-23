@@ -4,17 +4,20 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
+import org.frc4931.robot.command.SpeedCommandBase;
 import org.frc4931.robot.subsystem.LoaderArm;
 
 /**
- * Closes the grabber arm.
+ * Lowers the grabber arm to tote/ground level.
+ * @see org.frc4931.robot.subsystem.LoaderArm
  */
-public class CloseGrabber extends OneShotCommand {
+public class LowerGrabber extends SpeedCommandBase {
     private LoaderArm loaderArm;
 
-    public CloseGrabber(LoaderArm loaderArm) {
+    public LowerGrabber(LoaderArm loaderArm, double speed ) {
+        super(speed);
         this.loaderArm = loaderArm;
         requires(loaderArm);
     }
@@ -25,9 +28,14 @@ public class CloseGrabber extends OneShotCommand {
 
     @Override
     protected void execute() {
-        loaderArm.grab();
+        loaderArm.lower(speed);
     }
     
+    @Override
+    protected boolean isFinished() {
+        return loaderArm.isLowered();
+    }
+
     @Override
     protected void end() {
     }
