@@ -1,12 +1,18 @@
+/*
+ * This program uses the third-party library NeoPixel.
+ * You must download and install this library in order to compile and upload the code.
+ * You can download it for free at http://github.com/adafruit/Adafruit_NeoPixel
+ */
+
 #include <Adafruit_NeoPixel.h>
 #include <Wire.h>
 
 #define LED_PIN 8
 #define LED_COUNT 60
 
-#define DEVICE_ADDRESS 0
-#define STACK_HEIGHT_REGISTER 0
-#define ALLIANCE_REGISTER 1
+#define DEVICE_ADDRESS 1
+#define STACK_HEIGHT_REGISTER 1
+#define ALLIANCE_REGISTER 2
 
 #define BLUE_ALLIANCE 0
 #define RED_ALLIANCE 1
