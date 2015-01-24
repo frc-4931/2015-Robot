@@ -6,13 +6,12 @@
  */
 package org.frc4931.robot.command.group;
 
-import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.ramp.CloseGuardrail;
-import org.frc4931.robot.command.ramp.LowerRamp;
-import org.frc4931.robot.command.ramp.OpenGuardrail;
-import org.frc4931.robot.command.ramp.RaiseRamp;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.command.guardrail.CloseGuardrail;
+import org.frc4931.robot.command.guardrail.OpenGuardrail;
+import org.frc4931.robot.command.ramplifter.LowerRamp;
+import org.frc4931.robot.command.ramplifter.RaiseRamp;
 
 /**
  * Ejects the tote stack at ground level.

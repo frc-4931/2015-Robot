@@ -6,9 +6,8 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.AngleSensor;
-
 import edu.wpi.first.wpilibj.AnalogInput;
+import org.frc4931.robot.component.AngleSensor;
 
 /**
  * 

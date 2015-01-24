@@ -6,10 +6,9 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.Motor;
-
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SpeedController;
+import org.frc4931.robot.component.Motor;
 
 /**
  * Wrapper for WPILib {@link SpeedController}.

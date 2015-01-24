@@ -6,9 +6,8 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.Relay;
-
 import edu.wpi.first.wpilibj.Relay.Value;
+import org.frc4931.robot.component.Relay;
 
 /**
  * Wrapper for the WPILib <code>Relay</code>, and which has no delay and thus is only

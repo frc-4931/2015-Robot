@@ -6,11 +6,10 @@
  */
 package org.frc4931.robot.command;
 
+import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.command.grabber.CloseGrabber;
 import org.junit.Test;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 public class OpenGrabberTest extends AbstractCommandTest {
 

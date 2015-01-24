@@ -1,10 +1,9 @@
 package org.frc4931.robot.command;
 
-import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.ramp.RaiseRamp;
-import org.junit.Test;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.command.ramplifter.RaiseRamp;
+import org.junit.Test;
 
 public class RaiseRampTest extends AbstractCommandTest {
 

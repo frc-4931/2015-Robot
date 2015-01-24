@@ -6,14 +6,13 @@
  */
 package org.frc4931.robot.vision;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
+import edu.wpi.first.wpilibj.CameraServer;
+
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import com.ni.vision.NIVision;
-import com.ni.vision.NIVision.Image;
-
-import edu.wpi.first.wpilibj.CameraServer;
 
 /**
  * A server that will automatically capture images from one or more cameras and send the images to the SmartDashboard.

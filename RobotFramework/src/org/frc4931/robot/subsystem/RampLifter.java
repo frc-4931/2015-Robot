@@ -6,12 +6,11 @@
  */
 package org.frc4931.robot.subsystem;
 
-import java.util.function.Supplier;
-
-import org.frc4931.robot.component.Solenoid;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.frc4931.robot.component.Solenoid;
+
+import java.util.function.Supplier;
 
 /**
  * The {@link Subsystem} that raises the ramp to the vertical position.

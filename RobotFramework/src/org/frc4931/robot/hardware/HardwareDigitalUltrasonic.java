@@ -6,9 +6,8 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.DistanceSensor;
-
 import edu.wpi.first.wpilibj.Ultrasonic;
+import org.frc4931.robot.component.DistanceSensor;
 
 /**
  * Wrapper for WPILib {@link Ultrasonic}. Should be constructed by

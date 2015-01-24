@@ -6,9 +6,8 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.DistanceSensor;
-
 import edu.wpi.first.wpilibj.AnalogInput;
+import org.frc4931.robot.component.DistanceSensor;
 
 /**
  * Wraps an  and provides the conversion to convert voltage

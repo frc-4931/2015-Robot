@@ -6,14 +6,13 @@
  */
 package org.frc4931.robot.command.group;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.command.grabber.LowerGrabber;
 import org.frc4931.robot.command.grabber.OpenGrabber;
 import org.frc4931.robot.command.grabber.RaiseGrabber;
-import org.frc4931.robot.command.ramp.CloseGuardrail;
-import org.frc4931.robot.command.ramp.OpenGuardrail;
-
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.frc4931.robot.command.guardrail.CloseGuardrail;
+import org.frc4931.robot.command.guardrail.OpenGuardrail;
 
 /**
  * Picks up a tote with the grabber and loads it in the bottom of the stack.
