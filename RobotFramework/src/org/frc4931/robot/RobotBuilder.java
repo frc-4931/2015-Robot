@@ -7,12 +7,7 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.component.DriveTrain;
-import org.frc4931.robot.component.LimitedMotor;
-import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.Relay;
-import org.frc4931.robot.component.Solenoid;
-import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.component.*;
 import org.frc4931.robot.driver.Joystick;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
@@ -20,12 +15,7 @@ import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
-import org.frc4931.robot.subsystem.DriveSystem;
-import org.frc4931.robot.subsystem.Guardrail;
-import org.frc4931.robot.subsystem.LoaderArm;
-import org.frc4931.robot.subsystem.Ramp;
-import org.frc4931.robot.subsystem.RampLifter;
-import org.frc4931.robot.subsystem.VisionSystem;
+import org.frc4931.robot.subsystem.*;
 
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.
@@ -42,7 +32,12 @@ public class RobotBuilder {
         LoaderArm arm = buildLoaderArm(components);
         Ramp ramp = buildRamp(components);
         VisionSystem vision = buildVision(components);
-        return new Systems(driveSystem, arm, ramp, vision);
+        StackIndicatorLight stackIndicator = buildStackIndicator(components);
+        return new Systems(driveSystem, arm, ramp, vision, stackIndicator);
+    }
+
+    private static StackIndicatorLight buildStackIndicator(Robot.Components components) {
+        return new StackIndicatorLight(components.arduino());
     }
 
     /**
@@ -141,6 +136,8 @@ public class RobotBuilder {
         
         String frontCameraName = Properties.FRONT_CAMERA_NAME;
         String rearCameraName = Properties.REAR_CAMERA_NAME;
+
+        RIODuino arduino = new RIODuino(Properties.RIODUINO_I2C_ADDRESS);
 
         return new Robot.Components() {
 
@@ -258,6 +255,11 @@ public class RobotBuilder {
             public String rearCameraName() {
                 return rearCameraName;
             }
+
+            @Override
+            public RIODuino arduino() {
+                return arduino;
+            }
         };
     }
     
@@ -307,5 +309,8 @@ public class RobotBuilder {
         /*-------VISION-------*/
         private static final String FRONT_CAMERA_NAME = "cam1";
         private static final String REAR_CAMERA_NAME = "cam2";
+
+        /*-------RIODUINO-------*/
+        private static final int RIODUINO_I2C_ADDRESS = 1;
     }
 }
