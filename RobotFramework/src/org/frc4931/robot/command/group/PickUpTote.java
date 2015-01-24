@@ -10,8 +10,8 @@ import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.command.grabber.LowerGrabber;
 import org.frc4931.robot.command.grabber.OpenGrabber;
 import org.frc4931.robot.command.grabber.RaiseGrabber;
-import org.frc4931.robot.command.ramp.CloseGuardrail;
-import org.frc4931.robot.command.ramp.OpenGuardrail;
+import org.frc4931.robot.command.guardrail.CloseGuardrail;
+import org.frc4931.robot.command.guardrail.OpenGuardrail;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

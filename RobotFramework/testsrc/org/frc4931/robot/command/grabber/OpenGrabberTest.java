@@ -4,10 +4,10 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.grabber.CloseGrabber;
+import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
