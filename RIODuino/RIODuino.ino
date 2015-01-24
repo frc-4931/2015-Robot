@@ -40,14 +40,17 @@ void setup()
 
 void loop()
 {
-  if (Wire.available() >= 2) {
+  if (Wire.available() >= 2) 
+  {
     byte regId = Wire.read();
     byte data = Wire.read();
     
-    if (regId == STACK_HEIGHT_REGISTER) {
+    if (regId == STACK_HEIGHT_REGISTER) 
+    {
       height = data;
     }
-    if (regId == ALLIANCE_REGISTER) {
+    if (regId == ALLIANCE_REGISTER) 
+    i{
       alliance = data;
     }
   }
