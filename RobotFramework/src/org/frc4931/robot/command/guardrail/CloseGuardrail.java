@@ -4,34 +4,34 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command.ramp;
+package org.frc4931.robot.command.guardrail;
 
 import org.frc4931.robot.command.CommandBase;
 import org.frc4931.robot.subsystem.Guardrail;
 
 /**
- * Opens the guardrail.
+ * Closes the guardrail.
  * @see org.frc4931.robot.subsystem.Ramp
  */
-public class OpenGuardrail extends CommandBase {
+public class CloseGuardrail extends CommandBase {
+    
     private Guardrail rail;
-    public OpenGuardrail(Guardrail rail){
+    public CloseGuardrail(Guardrail rail){
         this.rail = rail;
         requires(rail);
     }
-
     @Override
     protected void initialize() {
     }
 
     @Override
     protected void execute() {
-        
+        rail.close();
     }
 
     @Override
     protected boolean isFinished() {
-        return rail.isOpen();
+        return rail.isClosed();
     }
 
     @Override
