@@ -1,8 +1,8 @@
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.grabber.LowerGrabber;
+import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
 public class LowerGrabberTest extends AbstractCommandTest {

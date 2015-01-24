@@ -18,11 +18,11 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot;
-import org.frc4931.robot.command.drive.TurnRightWithDuration;
+import org.frc4931.robot.command.AbstractDriveSystemCommandTest;
 import org.junit.Test;
 
 public class TurnRightWithDurationTest extends AbstractDriveSystemCommandTest {

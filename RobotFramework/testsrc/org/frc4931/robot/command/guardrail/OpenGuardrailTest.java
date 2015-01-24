@@ -1,8 +1,8 @@
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.guardrail;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.guardrail.OpenGuardrail;
+import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
 public class OpenGuardrailTest extends AbstractCommandTest {

@@ -4,14 +4,14 @@
  * Open source software. Licensed under the FIRST BSD license file in the
  * root directory of this project's Git repository.
  */
-package org.frc4931.robot.command;
+package org.frc4931.robot.command.grabber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.command.grabber.CloseGrabber;
+import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
-public class CloseGrabberTest extends AbstractCommandTest {
+public class OpenGrabberTest extends AbstractCommandTest {
 
     @Override
     protected Command createCommand(Systems systems) {
@@ -19,20 +19,20 @@ public class CloseGrabberTest extends AbstractCommandTest {
     }
     
     @Test
-    public void shouldCloseGrabberWhenGrabberIsOpen() {
-        // Preconditions ...
-        robot.grabberActuator().extend();
-        robot.assertGrabberSolenoidExtended();
-        // Create and execute the command multiple times ...
-        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidRetracted));
-    }
-        
-    @Test
-    public void shouldCloseGrabberWhenGrabberIsAlreadyClosed() {
+    public void shouldOpenGrabberWhenGrabberIsClosed() {
         // Preconditions ...
         robot.grabberActuator().retract();
         robot.assertGrabberSolenoidRetracted();
         // Create and execute the command multiple times ...
-        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidRetracted));
+        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidExtended));
+    }
+        
+    @Test
+    public void shouldOpenGrabberWhenGrabberIsAlreadyOpen() {
+        // Preconditions ...
+        robot.grabberActuator().extend();
+        robot.assertGrabberSolenoidExtended();
+        // Create and execute the command multiple times ...
+        repeat(10,()->runCommandAnd(robot::assertGrabberSolenoidExtended));
     }
 }
