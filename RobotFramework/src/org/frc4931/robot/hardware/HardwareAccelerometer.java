@@ -6,11 +6,12 @@
  */
 package org.frc4931.robot.hardware;
 
+import org.frc4931.robot.component.Accelerometer;
+import org.frc4931.utils.Triple;
+
 import edu.wpi.first.wpilibj.ADXL345_I2C;
 import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
 import edu.wpi.first.wpilibj.I2C;
-import org.frc4931.robot.component.Accelerometer;
-import org.frc4931.utils.Triple;
 
 /**
  * Wrapper for the WPILib {@link ADXL345_I2C}.

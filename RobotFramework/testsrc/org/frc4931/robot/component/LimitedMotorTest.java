@@ -6,6 +6,8 @@
  */
 package org.frc4931.robot.component;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import org.frc4931.robot.component.LimitedMotor.Position;
 import org.frc4931.robot.component.Motor.Direction;
 import org.frc4931.robot.mock.MockMotor;
@@ -13,8 +15,6 @@ import org.frc4931.robot.mock.MockSwitch;
 import org.frc4931.utils.Operations;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 public class LimitedMotorTest {
     private MockMotor motor;

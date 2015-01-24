@@ -6,8 +6,9 @@
  */
 package org.frc4931.robot.hardware;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import org.frc4931.robot.component.Switch;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Wrapper for <code>DigitalInput</code> in WPILib. This class is used for

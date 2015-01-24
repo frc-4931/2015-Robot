@@ -6,11 +6,12 @@
  */
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.LimitedMotor;
 
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The {@link Subsystem} that controls the ramp guardrails.

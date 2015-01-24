@@ -6,8 +6,9 @@
  */
 package org.frc4931.robot.driver;
 
-import edu.wpi.first.wpilibj.Joystick;
 import org.frc4931.robot.component.Switch;
+
+import edu.wpi.first.wpilibj.Joystick;
 
 
 /**

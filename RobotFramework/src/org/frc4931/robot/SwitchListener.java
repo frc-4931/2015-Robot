@@ -6,10 +6,10 @@
  */
 package org.frc4931.robot;
 
-import org.frc4931.robot.component.Switch;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.frc4931.robot.component.Switch;
 
 /**
  * A class that allows {@link ListenerFunction}s to be registered with {@link Switch}es

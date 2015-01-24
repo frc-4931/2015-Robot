@@ -20,10 +20,11 @@
  */
 package org.frc4931.robot.command.drive;
 
-import edu.wpi.first.wpilibj.command.Command;
 import org.frc4931.robot.Robot;
 import org.frc4931.robot.command.AbstractDriveSystemStoppableCommandTest;
 import org.junit.Test;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 public class TurnRightUntilTriggeredTest extends AbstractDriveSystemStoppableCommandTest {
 

@@ -6,11 +6,11 @@
  */
 package org.frc4931.robot.mock;
 
-import org.frc4931.robot.driver.Joystick;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Supplier;
+
+import org.frc4931.robot.driver.Joystick;
 
 /**
  * A implementation of {@link Joystick} for testing that does not require any hardware to use.

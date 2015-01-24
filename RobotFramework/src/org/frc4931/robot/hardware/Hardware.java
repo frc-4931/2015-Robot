@@ -6,10 +6,19 @@
  */
 package org.frc4931.robot.hardware;
 
-import edu.wpi.first.wpilibj.*;
-import org.frc4931.robot.component.*;
+import org.frc4931.robot.component.Accelerometer;
+import org.frc4931.robot.component.DistanceSensor;
+import org.frc4931.robot.component.Gyroscope;
+import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
+import org.frc4931.robot.component.Switch;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * The factory for all devices that directly interface with robot hardware.

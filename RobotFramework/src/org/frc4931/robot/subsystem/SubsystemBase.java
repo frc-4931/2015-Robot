@@ -14,11 +14,12 @@
 
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import java.util.function.Supplier;
+
 import org.frc4931.utils.Lifecycle;
 
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * A base subsystem that implements commonly-used features.

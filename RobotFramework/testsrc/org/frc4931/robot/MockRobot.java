@@ -6,13 +6,14 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.TestableRobotState;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc4931.robot.mock.MockMotor;
 import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
 import org.frc4931.robot.mock.MockSwitch;
+
+import edu.wpi.first.wpilibj.TestableRobotState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import static org.fest.assertions.Assertions.assertThat;
 

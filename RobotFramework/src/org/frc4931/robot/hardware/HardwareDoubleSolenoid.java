@@ -6,9 +6,10 @@
  */
 package org.frc4931.robot.hardware;
 
+import org.frc4931.robot.component.Solenoid;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import org.frc4931.robot.component.Solenoid;
 
 /**
  * Wrapper for WPILib <code>DoubleSolenoid</code>. This class should be

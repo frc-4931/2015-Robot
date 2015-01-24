@@ -14,13 +14,14 @@
 
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
+
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.utils.Operations;
 
-import java.util.function.Supplier;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * A subsystem used to control the grabbing arms that load totes onto the Ramp.

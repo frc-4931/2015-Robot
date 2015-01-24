@@ -6,9 +6,10 @@
  */
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.PIDController;
 import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.Motor;
+
+import edu.wpi.first.wpilibj.PIDController;
 
 /**
  * 

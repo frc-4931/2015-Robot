@@ -6,8 +6,9 @@
  */
 package org.frc4931.robot.hardware;
 
-import edu.wpi.first.wpilibj.Gyro;
 import org.frc4931.robot.component.Gyroscope;
+
+import edu.wpi.first.wpilibj.Gyro;
 
 /**
  * Wrapper for WPILib {@link Gyro}. Should be constructed by
