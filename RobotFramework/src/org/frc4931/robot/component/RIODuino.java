@@ -30,10 +30,10 @@ public final class RIODuino implements Lifecycle {
      * @param register The register address to read from.
      * @param buffer   The buffer to save data to.
      * @param count    The number of bytes to read.
-     * @return Whether read was aborted; false if successful.
+     * @return true if successful; false otherwise.
      */
     public boolean read(int register, byte[] buffer, int count) {
-        return i2c.read(register, count, buffer);
+        return !i2c.read(register, count, buffer);
     }
 
     /**
@@ -41,15 +41,12 @@ public final class RIODuino implements Lifecycle {
      *
      * @param register The register address to write to.
      * @param data     The data to write to the register.
-     * @return Whether write was aborted; false if successful.
+     * @return true if successful; false otherwise.
      */
     public boolean write(int register, int data) {
-        return i2c.write(register, data);
+        return !i2c.write(register, data);
     }
 
-    /**
-     * Closes and frees resources used by the I2C connection.
-     */
     public void close() {
         i2c.free();
     }
@@ -61,6 +58,6 @@ public final class RIODuino implements Lifecycle {
 
     @Override
     public void shutdown() {
-        close();
+        i2c.free();
     }
 }
