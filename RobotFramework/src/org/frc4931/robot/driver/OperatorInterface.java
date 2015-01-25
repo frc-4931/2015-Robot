@@ -26,6 +26,8 @@ public class OperatorInterface {
     public final Switch toggleLift;
     public final Switch toggleRamp;
     public final Switch toggleRails;
+
+    public final Switch writeData;
     
     // Modified to fit driver preference
     public OperatorInterface(Joystick joy){
@@ -34,6 +36,8 @@ public class OperatorInterface {
 
         driveSpeed = joy.getPitch();
         turnSpeed = joy.getYaw();
+        
+        writeData = joy.getButton(6);
         
         toggleClaw = joy.getButton(0);
         toggleLift = joy.getButton(1);
