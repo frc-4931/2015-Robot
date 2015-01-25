@@ -6,11 +6,7 @@
  */
 package org.frc4931.robot;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.Thread.State;
-import java.nio.ShortBuffer;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.function.IntSupplier;
@@ -30,18 +26,17 @@ public class Logger implements LiveWindowSendable{
     private static final Logger INSTANCE = new Logger();
     public static Logger getInstance(){ return INSTANCE; }
     
+    public static final int WRITE_FREQUENCY = (int) (1000.0/30.0); // milliseconds per writes
+    public static final int RUNNING_TIME = 200;
+    
     private final Stack<IntSupplier> suppliers = new Stack<>();
     private final Stack<String> names = new Stack<>();
     
-    private Mode mode = Mode.NETWORK_TABLES;
+    private Mode mode = Mode.LOCAL_FILE;
     private volatile boolean running = false;
-    private Thread updateThread;
     
-    //File Output
-    private static final short FRAMES_PER_FLUSH = 15;
-    private short sinceFlush = 0;
-    private ShortBuffer buffer;
-    private BufferedWriter writer;
+    private long recordLength;
+    private MappedWriter writer;
     private Thread writerThread;
     
     /**
@@ -51,78 +46,90 @@ public class Logger implements LiveWindowSendable{
     public void start() {
         if(running) return;
         running = true;
-        
-        // Create the monitor thread
-        updateThread = new Thread(()->{while(running) update();});
-        updateThread.setName("loggerupdater");
-        
-        // If we start in file write mode, we need to initalize the writers
+
+        // If we start in file write mode, we need to initialize the writer
         if(mode == Mode.LOCAL_FILE) {
-            // Initalize the writer
             try {
-                writer = new BufferedWriter(new FileWriter("Log.csv"));
-                for(String name : names) {
-                    writer.write(name+", ");
+                // Estimate minimum file size needed to run at WRITE_FREQUENCY for RUNNING_TIME
+                // Reciprocal of WRITE_FREQUENCY is frames per millisecond, time is seconds
+                int numWrites = (int) ((1.0 / WRITE_FREQUENCY) * (RUNNING_TIME * 1000));
+                
+                // Infrastructure for variable element length
+                recordLength = Integer.BYTES;
+                for(IntSupplier supplier : suppliers)
+                    recordLength += Short.BYTES;
+                
+                long minSize = numWrites * recordLength;
+                
+                writer = new MappedWriter("robot.log", minSize + 1024); // Extra KB of room
+                
+                // Write the header
+                writer.write("log".getBytes());
+                
+                // Write the number of elements
+                writer.write((byte)(suppliers.size()+1));
+                
+                // Write the size of each element (Infrastructure for variable length element)
+                writer.write((byte)Integer.BYTES);
+                
+                for(IntSupplier supplier : suppliers)
+                    writer.write((byte)Short.BYTES);
+                
+                // Write length of each element name and the name itself
+                writer.write((byte)4);
+                writer.write(("Time").getBytes());
+                
+                for(String name : names){
+                    writer.write((byte)name.length());
+                    writer.write(name.getBytes());
                 }
-                writer.newLine();
-                writer.flush();
-            } catch (IOException e) {
+                
+                // Initialize the thread that does the actual output
+                writerThread = new Thread(()->{
+                    while(running) {
+                        update();
+                        try {
+                            Thread.sleep(WRITE_FREQUENCY);
+                        } catch (Exception e) {
+                        }
+                    }
+                    if(mode==Mode.LOCAL_FILE){
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            System.err.println("Failed to close writer.");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                writerThread.setName("writer");
+                writerThread.start();
+            } catch(IOException e){
+                System.err.println("Failed to open log file.");
                 e.printStackTrace();
             }
-            
-            // Initialize the buffer
-            buffer = ShortBuffer.allocate(names.size());
-            
-            // Initialize the thread that does the actual file output
-            writerThread = new Thread(()->{
-                while(running) {
-                    // Wait for permission before we start writing
-                    synchronized(writerThread){
-                        try {
-                            writerThread.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    for(int i = 0; i < buffer.limit();i++){
-                        try {
-                            writer.write(buffer.get(i)+", ");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    try {
-                        writer.newLine();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    sinceFlush++;
-                    if(sinceFlush==FRAMES_PER_FLUSH) {
-                        try {
-                            writer.flush();
-                            sinceFlush=0;
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+        }
+    }
+    
+    private void update() {
+        if(mode==Mode.LOCAL_FILE) {
+            if(writer.getRemaining()<recordLength){
+                System.err.println("Insuffient space to write next all of next record, closing file");
                 try {
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                buffer = null;
-            });
-            writerThread.setName("writer");
-            
-            // The writer will immediately wait for permission to write
-            writerThread.start();
+            }
+            writer.writeInt((int)(Robot.time()/1e6));
+            suppliers.forEach((supplier)->writer.writeShort((short)supplier.getAsInt()));
+        } else if(mode==Mode.NETWORK_TABLES) {
+            SmartDashboard.putData("Logger Data",this);
         }
-        updateThread.start();
     }
     
     /**
-     * Stops logging data, kills both threads, flushes buffers if neccassary, and frees resources.
+     * Stops logging data, kills the thread, closes files, and frees resources.
      */
     public void stop() {
         running = false;
@@ -140,40 +147,43 @@ public class Logger implements LiveWindowSendable{
             this.mode = mode;
         else throw new IllegalUseOfCommandException("Cannot change modes while running");
     }
-    
-    private void update() {
-        if(mode==Mode.LOCAL_FILE) {
-            // Put all of the data into a buffer
-            buffer.clear();
-            suppliers.forEach((supplier)->buffer.put((short) supplier.getAsInt()));
-            
-            // Tell the writer that the next buffer is ready
-            synchronized(writerThread) {
-                // If the writer is waiting, flip the buffer and then tell writer to write
-                // The buffer is flipped before the lock is released to writerThread
-                // If not, we start updating the next buffer and this frame is lost
-                if(writerThread.getState()==State.WAITING) {
-                    buffer.flip();
-                    writerThread.notify();
-                }
-            }
-        } else if(mode==Mode.NETWORK_TABLES) {
-            SmartDashboard.putData("Logger Data",this);
-        }
-        
+
+    //TODO Consider registering byte arrays instead of specific integer primitives
+    /**
+     * Registers the value of the specified {@link IntSupplier} to be logged
+     * @param supplier the {@link IntSupplier} of the value to be logged
+     * @param name the name of this data point
+     */
+    public void register(IntSupplier supplier, String name) {
+        names.push(name);
+        suppliers.push(supplier);
     }
 
+    /**
+     * Registers a {@link Switch} to be logged.
+     * @param swtch the {@link Switch} to be logged
+     * @param name the name of the {@link Switch}
+     */
     public void registerSwitch(Switch swtch, String name) {
         names.push(name);
         suppliers.push(()->swtch.isTriggered() ? 1 : 0);
     }
     
+    /**
+     * Registers a {@link Motor} to be logged.
+     * @param motor the {@link Motor} to be logged
+     * @param name the name of the {@link Motor}
+     */
     public void registerMotor(Motor motor, String name) {
         names.push(name+" speed");
         suppliers.push(()->(short)(motor.getSpeed()*1000));
     }
     
-    
+    /**
+     * Combines an array of {@code boolean}s into a single {@code short}.
+     * @param values the {@code boolean}s to be combined
+     * @return a {@code short} where the value of each byte represents a single boolean
+     */
     public static short bitmask(boolean[] values){
         if(values.length>15)
             throw new IllegalArgumentException("Cannot combine more than 15 booleans");
@@ -183,6 +193,7 @@ public class Logger implements LiveWindowSendable{
         return value;
     }
 
+    // SmartDashboard stuff
     private ITable table;
     
     @Override
@@ -214,6 +225,7 @@ public class Logger implements LiveWindowSendable{
     
     @Override
     public void stopLiveWindowMode() {}
+    // End SmartDashboard
     
     public enum Mode{
         LOCAL_FILE, NETWORK_TABLES

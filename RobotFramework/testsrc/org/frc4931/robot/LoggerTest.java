@@ -62,19 +62,19 @@ public class LoggerTest {
         Logger.getInstance().start();
         
         try{
-            Thread.sleep(2);
+            Thread.sleep(10);
             dummy1.setTriggered();
             
-            Thread.sleep(2);
+            Thread.sleep(10);
             dummy2.setTriggered();
             
-            Thread.sleep(2);
+            Thread.sleep(10);
             dummy3.setTriggered();
             
-            Thread.sleep(2);
+            Thread.sleep(10);
             Logger.getInstance().stop();
             
-            Thread.sleep(2);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {}
         
     }
