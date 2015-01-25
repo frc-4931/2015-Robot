@@ -25,7 +25,7 @@ public class LogitechAttack3D extends org.frc4931.robot.driver.Joystick{
 
     @Override
     public AnalogAxis getPitch(){
-        return ()->joy.getY();
+        return ()->joy.getY()*-1;
     }
     
     @Override
