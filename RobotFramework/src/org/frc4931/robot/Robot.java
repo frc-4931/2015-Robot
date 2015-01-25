@@ -57,8 +57,10 @@ public class Robot extends IterativeRobot {
         double driveSpeed = operatorInterface.driveSpeed.read();
         double turnSpeed = operatorInterface.turnSpeed.read();
 
-        systems.drive.arcade(driveSpeed, turnSpeed);
-//        systems.drive.cheesy(throttle, wheel, false);
+        boolean quickTurn = operatorInterface.quickTurn.isTriggered();
+        if(Math.abs(driveSpeed)<0.05)
+            quickTurn = true;
+        systems.drive.cheesy(throttle*0.5, wheel*0.5, quickTurn);
         if(operatorInterface.writeData.isTriggered())
             Logger.getInstance().shutdown();
     }

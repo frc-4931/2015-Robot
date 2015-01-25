@@ -28,6 +28,7 @@ public class OperatorInterface {
     public final Switch toggleRails;
 
     public final Switch writeData;
+    public final Switch quickTurn;
     
     // Modified to fit driver preference
     public OperatorInterface(Joystick joy){
@@ -35,7 +36,9 @@ public class OperatorInterface {
         throttle = joy.getPitch();
 
         driveSpeed = joy.getPitch();
-        turnSpeed = joy.getYaw();
+        turnSpeed = joy.getRoll();
+        
+        quickTurn = joy.getButton(5);
         
         writeData = joy.getButton(6);
         
