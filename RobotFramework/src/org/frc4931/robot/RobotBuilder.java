@@ -134,14 +134,6 @@ public class RobotBuilder {
         Solenoid rampLifter = Solenoids.doubleSolenoid(Properties.RAMP_LIFTER_EXTEND,
                                                        Properties.RAMP_LIFTER_RETRACT,
                                                        Solenoid.Direction.RETRACTING);
-        Motor leadScrewMotor = Motors.talon(Properties.STACK_LIFTER_MOTOR);
-        Switch leadScrewLowerSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_LOWER_SWITCH);
-        Switch leadScrewStepSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_STEP_SWITCH);
-        Switch leadScrewToteSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_TOTE_SWITCH);
-        Switch leadScrewToteOnStepSwitch = Switches.normallyClosed(Properties.LEAD_SCREW_TOTE_ON_STEP_SWITCH);
-        Motor kickerMotor = Motors.talon(Properties.KICKER_MOTOR);
-        Switch kickerLowerSwitch = Switches.normallyClosed(Properties.KICKER_LOWER_SWITCH);
-        Switch kickerUpperSwitch = Switches.normallyClosed(Properties.KICKER_UPPER_SWITCH);
         Motor guardRailMotor = Motors.talon(Properties.GUARDRAIL_MOTOR);
         Switch guardRailOpenSwitch = Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH);
         Switch guardRailClosedSwitch = Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH);
@@ -201,46 +193,6 @@ public class RobotBuilder {
             @Override
             public Solenoid rampLifterActuator() {
                 return rampLifter;
-            }
-            
-            @Override
-            public Motor leadScrewActuator() {
-                return leadScrewMotor;
-            }
-            
-            @Override
-            public Switch leadScrewLowerSwitch() {
-                return leadScrewLowerSwitch;
-            }
-            
-            @Override
-            public Switch leadScrewStepSwitch() {
-                return leadScrewStepSwitch;
-            }
-            
-            @Override
-            public Switch leadScrewToteSwitch() {
-                return leadScrewToteSwitch;
-            }
-            
-            @Override
-            public Switch leadScrewToteOnStepSwitch() {
-                return leadScrewToteOnStepSwitch;
-            }
-
-            @Override
-            public Motor kickerActuator() {
-                return kickerMotor;
-            }
-            
-            @Override
-            public Switch kickerLowerSwitch() {
-                return kickerLowerSwitch;
-            }
-            
-            @Override
-            public Switch kickerUpperSwitch() {
-                return kickerUpperSwitch;
             }
 
             @Override
@@ -303,16 +255,6 @@ public class RobotBuilder {
         /*-------RAMP------*/
         private static final int RAMP_LIFTER_EXTEND = 4;
         private static final int RAMP_LIFTER_RETRACT = 5;
-
-        private static final int STACK_LIFTER_MOTOR = 5;
-        private static final int LEAD_SCREW_LOWER_SWITCH = 2;
-        private static final int LEAD_SCREW_STEP_SWITCH = 3;
-        private static final int LEAD_SCREW_TOTE_SWITCH = 4;
-        private static final int LEAD_SCREW_TOTE_ON_STEP_SWITCH = 5;
-
-        private static final int KICKER_MOTOR = 6;
-        private static final int KICKER_LOWER_SWITCH = 6;
-        private static final int KICKER_UPPER_SWITCH = 7;
 
         private static final int GUARDRAIL_MOTOR = 7;
         private static final int GUARDRAIL_OPEN_SWITCH = 8;

@@ -44,14 +44,6 @@ public class MockRobot implements Robot.Components {
     private final MockSwitch capturable = MockSwitch.createNotTriggeredSwitch();
     private final MockSwitch captured = MockSwitch.createNotTriggeredSwitch();
     private final MockSolenoid rampLifter = MockSolenoid.retracting();
-    private final MockMotor leadScrewMotor = MockMotor.stopped();
-    private final MockSwitch leadScrewLowerSwitch = MockSwitch.createTriggeredSwitch();
-    private final MockSwitch leadScrewStepSwitch = MockSwitch.createNotTriggeredSwitch();
-    private final MockSwitch leadScrewToteSwitch = MockSwitch.createNotTriggeredSwitch();
-    private final MockSwitch leadScrewToteOnStepSwitch = MockSwitch.createNotTriggeredSwitch();
-    private final MockMotor kickerMotor = MockMotor.stopped();
-    private final MockSwitch kickerLowerSwitch = MockSwitch.createTriggeredSwitch();
-    private final MockSwitch kickerUpperSwitch = MockSwitch.createNotTriggeredSwitch();
     private final MockMotor guardRailMotor = MockMotor.stopped();
     private final MockSwitch guardRailOpenSwitch = MockSwitch.createTriggeredSwitch();
     private final MockSwitch guardRailClosedSwitch = MockSwitch.createNotTriggeredSwitch();
@@ -118,45 +110,6 @@ public class MockRobot implements Robot.Components {
         return rampLifter;
     }
     
-    @Override
-    public MockMotor leadScrewActuator() {
-        return leadScrewMotor;
-    }
-    
-    @Override
-    public MockSwitch leadScrewLowerSwitch() {
-        return leadScrewLowerSwitch;
-    }
-    
-    @Override
-    public MockSwitch leadScrewStepSwitch() {
-        return leadScrewStepSwitch;
-    }
-    
-    @Override
-    public MockSwitch leadScrewToteSwitch() {
-        return leadScrewToteSwitch;
-    }
-    
-    @Override
-    public MockSwitch leadScrewToteOnStepSwitch() {
-        return leadScrewToteOnStepSwitch;
-    }
-    
-    @Override
-    public MockMotor kickerActuator() {
-        return kickerMotor;
-    }
-    
-    @Override
-    public MockSwitch kickerLowerSwitch() {
-        return kickerLowerSwitch;
-    }
-    
-    @Override
-    public MockSwitch kickerUpperSwitch() {
-        return kickerUpperSwitch;
-    }
 
     @Override
     public MockMotor guardRailActuator() {

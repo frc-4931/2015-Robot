@@ -139,14 +139,7 @@ public class Robot extends IterativeRobot {
         Switch capturedSwitch();
 
         Solenoid rampLifterActuator();
-        Motor leadScrewActuator();
-        Switch leadScrewLowerSwitch();
-        Switch leadScrewStepSwitch();
-        Switch leadScrewToteSwitch();
-        Switch leadScrewToteOnStepSwitch();
-        Motor kickerActuator();
-        Switch kickerLowerSwitch();
-        Switch kickerUpperSwitch();
+
         Motor guardRailActuator();
 
         Switch guardRailOpenSwitch();
