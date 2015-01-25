@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
  */
 public final class CompositeCamera extends Camera {
 
-    private final Map<String, Camera> cameras = new HashMap<>();
+    private final Map<String, Camera> camerasByName = new HashMap<>();
     private final AtomicReference<Camera> current = new AtomicReference<>();
     private final Lock lock = new ReentrantLock();
 
@@ -38,9 +38,11 @@ public final class CompositeCamera extends Camera {
     public CompositeCamera(String... cameraNames) {
         assert cameraNames.length > 0;
         for (String cameraName : cameraNames) {
-            Camera camera = Camera.getCamera(cameraName);
-            cameras.put(cameraName, camera);
-            current.compareAndSet(null, camera); // sets the first camera
+            if (cameraName != null) {
+                Camera camera = Camera.getNamedCamera(cameraName);
+                camerasByName.put(cameraName, camera);
+                current.compareAndSet(null, camera); // sets the first camera
+            }
         }
     }
 
@@ -49,11 +51,13 @@ public final class CompositeCamera extends Camera {
      * 
      * @param cameras the USB cameras; may not be null and must have at least one value
      */
-    public CompositeCamera(Camera... cameras) {
+    protected CompositeCamera(Camera... cameras) {
         assert cameras.length > 0;
         for (Camera camera : cameras) {
-            this.cameras.put(camera.getName(), camera);
-            current.compareAndSet(null, camera); // sets the first camera
+            if ( camera != null ) {
+                camerasByName.put(camera.getName(), camera);
+                current.compareAndSet(null, camera); // sets the first camera
+            }
         }
     }
 
@@ -67,7 +71,7 @@ public final class CompositeCamera extends Camera {
      *         the camera did not exist or because the camera was already being used
      */
     public synchronized boolean switchToCamera(String name) {
-        Camera camera = cameras.get(name);
+        Camera camera = camerasByName.get(name);
         if (camera != null) {
             try {
                 lock.lock();
@@ -90,9 +94,24 @@ public final class CompositeCamera extends Camera {
         }
         return false;
     }
-    
-    protected Camera currentCamera() {
+
+    /**
+     * Get the current camera.
+     * 
+     * @return the current camera; never null
+     */
+    public Camera getCurrentCamera() {
         return current.get();
+    }
+
+    /**
+     * Get the camera with the given name.
+     * 
+     * @param name the name of the camera
+     * @return the camera, or null if no camera exists for the specified name
+     */
+    public Camera getCamera(String name) {
+        return camerasByName.get(name);
     }
 
     /**
@@ -152,9 +171,8 @@ public final class CompositeCamera extends Camera {
         onEachCamera(camera -> camera.setSize(width, height));
     }
 
-    
     @Override
-    public synchronized void setSize( Size size ) {
+    public synchronized void setSize(Size size) {
         onEachCamera(camera -> camera.setSize(size));
     }
 
@@ -314,7 +332,7 @@ public final class CompositeCamera extends Camera {
      */
     @Override
     public synchronized void getImage(Image image) {
-        onCurrentCamera(camera->camera.getImage(image));
+        onCurrentCamera(camera -> camera.getImage(image));
     }
 
     /**
@@ -324,7 +342,7 @@ public final class CompositeCamera extends Camera {
      */
     @Override
     public synchronized void getImageData(ByteBuffer data) {
-        onCurrentCamera(camera->camera.getImageData(data));
+        onCurrentCamera(camera -> camera.getImageData(data));
     }
 
     /**
@@ -332,7 +350,7 @@ public final class CompositeCamera extends Camera {
      */
     @Override
     public synchronized int getBrightness() {
-        return onCurrentCamera(Camera::getBrightness,0);
+        return onCurrentCamera(Camera::getBrightness, 0);
     }
 
     /**
@@ -352,39 +370,39 @@ public final class CompositeCamera extends Camera {
     }
 
     protected void onEachCamera(Consumer<Camera> consumer) {
-        cameras.values().stream().forEach(consumer);
+        camerasByName.values().stream().forEach(consumer);
     }
 
-    protected void onCurrentCamera( Consumer<Camera> consumer ) {
-        if ( this.current == null ) {
+    protected void onCurrentCamera(Consumer<Camera> consumer) {
+        if (this.current == null) {
             // Still initializing this object ...
             return;
         }
         Camera camera = this.current.get();
-        if ( camera != null ) {
+        if (camera != null) {
             consumer.accept(camera);
         }
     }
 
-    protected int onCurrentCamera( Function<Camera,Integer> function, int defaultValue ) {
-        if ( this.current == null ) {
+    protected int onCurrentCamera(Function<Camera, Integer> function, int defaultValue) {
+        if (this.current == null) {
             // Still initializing this object ...
             return defaultValue;
         }
         Camera camera = this.current.get();
-        if ( camera != null ) {
+        if (camera != null) {
             return function.apply(camera);
         }
         return defaultValue;
     }
-    
+
     protected boolean onNamedCamera(String cameraName, Consumer<Camera> consumer) {
-        Camera camera = cameras.get(cameraName);
+        Camera camera = camerasByName.get(cameraName);
         if (camera != null) {
             consumer.accept(camera);
             return true;
         }
         return false;
     }
-    
+
 }

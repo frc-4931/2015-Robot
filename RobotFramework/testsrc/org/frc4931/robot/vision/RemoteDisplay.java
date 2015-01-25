@@ -21,7 +21,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * Acts as the display for a remote device consuming images from the {@link CameraServer}'s M-JPEG server.
  */
-public class RemoteDisplay {
+class RemoteDisplay {
 
     private volatile Size desiredSize = Size.SMALL;
     private volatile int framesPerSecond = 5;

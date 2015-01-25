@@ -64,6 +64,13 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
  * before the server thread has a chance to send even one. This is perfectly acceptable, since the server will always attempt
  * to send the image in the buffer at the front of the deque. A higher capture rate simply requires more CPU on
  * the robot without any tangible benefit for sending images to the client.
+ * <p>
+ * Note: This is a re-implementation of the WPILib {@link edu.wpi.first.wpilibj.CameraServer} with that dramatically reduces
+ * thread contention by eliminating most locking/blocking, while using much simpler multi-threaded logic through the use of
+ * the {@link BlockingDeque} rather than arrays that have to be managed correctly (and which didn't seem to behave correctly
+ * in WPILib's {@link edu.wpi.first.wpilibj.CameraServer}). This class provides almost identical functionality, though this
+ * class exposes a method to {@link #stopServer() stop the server} that makes possible unit testing.
+ * and blocking
  */
 public final class CameraServer {
 
@@ -178,9 +185,10 @@ public final class CameraServer {
     }
 
     /**
-     * Stop the M-JPEG server.
+     * Stop the M-JPEG server. This method does nothing if the server is not already running.
      * <p>
-     * This method does nothing if the server is not already running.
+     * This method does stop the server, but after this method is called the server cannot be restarted and the client
+     * will not be able to reconnect.
      * 
      * @see #startServer()
      */

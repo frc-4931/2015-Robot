@@ -23,11 +23,10 @@ import org.junit.runners.MethodSorters;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test the {@link MultiCameraServer} and our {@link CameraServer} that is a customization of WPILib's
- * {@link edu.wpi.first.wpilibj.CameraServer}.
+ * Test the {@link CameraServer} that is a customization of WPILib's {@link edu.wpi.first.wpilibj.CameraServer}.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MultiCameraServerTest {
+public class CameraServerTest {
 
     private static final int PORT = 1180; // See CameraServer.serve()
 
@@ -51,8 +50,8 @@ public class MultiCameraServerTest {
         camera = new CompositeCamera(camera1, camera2);
 
         // Start the server and start automatically capturing images from our camera(s) ...
-        MultiCameraServer.startServer();
-        MultiCameraServer.startAutomaticCapture(camera);
+        CameraServer.getInstance().startServer();
+        CameraServer.getInstance().startAutomaticCapture(camera);
 
         // Set up the "remote display" that receives images from the server ...
         display = new RemoteDisplay(InetAddress.getByName("localhost"), PORT);
@@ -67,10 +66,10 @@ public class MultiCameraServerTest {
             display.disconnect();
         } finally {
             try {
-                MultiCameraServer.stopAutomaticCapture();
+                CameraServer.getInstance().stopAutomaticCapture();
             } finally {
                 lastImage = null;
-                MultiCameraServer.stopServer();
+                CameraServer.getInstance().stopServer();
             }
         }
     }
@@ -84,7 +83,7 @@ public class MultiCameraServerTest {
     }
 
     protected void assertConsumedMessageMatchesCameraImage() {
-        MockCamera current = (MockCamera) camera.currentCamera();
+        MockCamera current = (MockCamera) camera.getCurrentCamera();
         for (int i = 0; i != 500; ++i) {
             if (current.matches(lastImage)) {
                 // System.out.println("Found correct image from camera '" + current.getName() + "' after " + (i+1) + " images");

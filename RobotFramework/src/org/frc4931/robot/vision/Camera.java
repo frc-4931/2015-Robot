@@ -14,10 +14,13 @@ import java.util.concurrent.locks.ReentrantLock;
 import edu.wpi.first.wpilibj.vision.USBCamera;
 
 /**
- * A {@link USBCamera} that exposes the camera name.
+ * A {@link USBCamera} that exposes the camera name and standard sizes used by the {@link CameraServer}.
  */
 public class Camera extends USBCamera {
     
+    /**
+     * Some standard sizes for images as used by the Smart Dashboard.
+     */
     public static enum Size {
         LARGE(0,640, 480), MEDIUM(1,320, 240), SMALL(2,160, 120);
         private int option;
@@ -30,14 +33,26 @@ public class Camera extends USBCamera {
             this.height = height;
         }
 
+        /**
+         * Get the code value for this size, as used by the Smart Dashboard.
+         * @return the code
+         */
         public int getCode() {
             return option;
         }
         
+        /**
+         * Get the height of the image in number of pixels.
+         * @return the height in pixels
+         */
         public int getHeight() {
             return height;
         }
         
+        /**
+         * Get the width of the image in number of pixels.
+         * @return the width in pixels
+         */
         public int getWidth() {
             return width;
         }
@@ -63,7 +78,7 @@ public class Camera extends USBCamera {
      * @param name the name of the camera; may not be null
      * @return the camera; never null
      */
-    public static Camera getCamera( String name ) {
+    public static Camera getNamedCamera( String name ) {
         assert name != null;
         Camera camera = INSTANCES.get(name);
         if ( camera == null ) {
@@ -82,7 +97,7 @@ public class Camera extends USBCamera {
     }
 
     public static Camera getDefaultCamera() {
-        return getCamera(USBCamera.kDefaultCameraName);
+        return getNamedCamera(USBCamera.kDefaultCameraName);
     }
 
     private final String name;
