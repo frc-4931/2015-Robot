@@ -7,7 +7,13 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.Robot.Systems;
-import org.frc4931.robot.component.*;
+import org.frc4931.robot.component.DriveTrain;
+import org.frc4931.robot.component.LimitedMotor;
+import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.RIODuino;
+import org.frc4931.robot.component.Relay;
+import org.frc4931.robot.component.Solenoid;
+import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.driver.Joystick;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
@@ -15,7 +21,13 @@ import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
-import org.frc4931.robot.subsystem.*;
+import org.frc4931.robot.subsystem.DriveSystem;
+import org.frc4931.robot.subsystem.Guardrail;
+import org.frc4931.robot.subsystem.LoaderArm;
+import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.RampLifter;
+import org.frc4931.robot.subsystem.StackIndicatorLight;
+import org.frc4931.robot.subsystem.VisionSystem;
 
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.

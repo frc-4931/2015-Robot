@@ -47,10 +47,6 @@ public final class RIODuino implements Lifecycle {
         return !i2c.write(register, data);
     }
 
-    public void close() {
-        i2c.free();
-    }
-
     @Override
     public void startup() {
 

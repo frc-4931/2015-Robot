@@ -7,9 +7,17 @@
 package org.frc4931.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import org.frc4931.robot.component.*;
+import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.RIODuino;
+import org.frc4931.robot.component.Relay;
+import org.frc4931.robot.component.Solenoid;
+import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.driver.OperatorInterface;
-import org.frc4931.robot.subsystem.*;
+import org.frc4931.robot.subsystem.DriveSystem;
+import org.frc4931.robot.subsystem.LoaderArm;
+import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.StackIndicatorLight;
+import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
 
 public class Robot extends IterativeRobot {
