@@ -14,9 +14,7 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
-import org.frc4931.robot.vision.MockCamera.Size;
-
-import edu.wpi.first.wpilibj.CameraServer;
+import org.frc4931.robot.vision.Camera.Size;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -88,10 +86,10 @@ public class RemoteDisplay {
         // Read 4 bytes that StoppableCameraServer.send() includes ...
         byte[] wpiHeader = new byte[4];
         input.read(wpiHeader);
-        assertThat(wpiHeader[0]).isEqualTo(StoppableCameraServer.kMagicNumber[0]);
-        assertThat(wpiHeader[1]).isEqualTo(StoppableCameraServer.kMagicNumber[1]);
-        assertThat(wpiHeader[2]).isEqualTo(StoppableCameraServer.kMagicNumber[2]);
-        assertThat(wpiHeader[3]).isEqualTo(StoppableCameraServer.kMagicNumber[3]);
+        assertThat(wpiHeader[0]).isEqualTo(CameraServer.MAGIC_HEADER[0]);
+        assertThat(wpiHeader[1]).isEqualTo(CameraServer.MAGIC_HEADER[1]);
+        assertThat(wpiHeader[2]).isEqualTo(CameraServer.MAGIC_HEADER[2]);
+        assertThat(wpiHeader[3]).isEqualTo(CameraServer.MAGIC_HEADER[3]);
 
         // and the length of the image ...
         int length = input.readInt();

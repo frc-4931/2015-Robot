@@ -27,19 +27,6 @@ public class MockCamera extends Camera {
         SPACE, GRID
     }
 
-    public static enum Size {
-        LARGE(0), MEDIUM(1), SMALL(2);
-        private int option;
-
-        private Size(int option) {
-            this.option = option;
-        }
-
-        public int getCode() {
-            return option;
-        }
-    }
-
     private static final String IMAGE_PATH = "org/frc4931/robot/vision/";
     private static final String IMAGE1_SMALL = IMAGE_PATH + "sample1-160x120.jpg";
     private static final String IMAGE1_MEDIUM = IMAGE_PATH + "sample1-320x240.jpg";
@@ -54,13 +41,13 @@ public class MockCamera extends Camera {
         space.put(Size.SMALL, IMAGE1_SMALL);
         space.put(Size.MEDIUM, IMAGE1_MEDIUM);
         space.put(Size.LARGE, IMAGE1_LARGE);
-        Map<Size, String> test = new HashMap<>();
-        test.put(Size.SMALL, IMAGE2_SMALL);
-        test.put(Size.MEDIUM, IMAGE2_MEDIUM);
-        test.put(Size.LARGE, IMAGE2_LARGE);
+        Map<Size, String> grid = new HashMap<>();
+        grid.put(Size.SMALL, IMAGE2_SMALL);
+        grid.put(Size.MEDIUM, IMAGE2_MEDIUM);
+        grid.put(Size.LARGE, IMAGE2_LARGE);
         Map<Content, Map<Size, String>> map = new HashMap<>();
         map.put(Content.SPACE, space);
-        map.put(Content.GRID, test);
+        map.put(Content.GRID, grid);
         PATHS_BY_IMAGE_AND_SIZE = Collections.unmodifiableMap(map);
     }
 
@@ -114,6 +101,7 @@ public class MockCamera extends Camera {
         this.content = content;
     }
 
+    @Override
     public void setSize(Size size) {
         assert size != null;
         this.size = size;

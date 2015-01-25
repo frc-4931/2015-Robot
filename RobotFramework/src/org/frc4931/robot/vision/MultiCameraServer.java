@@ -6,8 +6,6 @@
  */
 package org.frc4931.robot.vision;
 
-import edu.wpi.first.wpilibj.CameraServer;
-
 /**
  * A server that will automatically capture images from one or more cameras and send the images to the SmartDashboard.
  * This class wraps the WPILib {@link CameraServer} class, which can only handle one camera at a time.
@@ -19,7 +17,7 @@ import edu.wpi.first.wpilibj.CameraServer;
  */
 public final class MultiCameraServer {
 
-    private static final StoppableCameraServer SERVER = StoppableCameraServer.getInstance(); // starts the server
+    private static final CameraServer SERVER = CameraServer.getInstance(); // starts the server
 
     private static volatile CompositeCamera composite;
 

@@ -12,19 +12,21 @@ import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
 import org.fest.assertions.Fail;
+import org.frc4931.robot.vision.Camera.Size;
 import org.frc4931.robot.vision.MockCamera.Content;
-import org.frc4931.robot.vision.MockCamera.Size;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-
-import edu.wpi.first.wpilibj.CameraServer;
+import org.junit.runners.MethodSorters;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Test the {@link MultiCameraServer} and WPILib's {@link CameraServer} (really, our custom {@link StoppableCameraServer}).
+ * Test the {@link MultiCameraServer} and our {@link CameraServer} that is a customization of WPILib's
+ * {@link edu.wpi.first.wpilibj.CameraServer}.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MultiCameraServerTest {
 
     private static final int PORT = 1180; // See CameraServer.serve()
@@ -45,8 +47,8 @@ public class MultiCameraServerTest {
         camera2 = new MockCamera("Camera2");
         camera2.setContent(Content.GRID);
         camera2.setSize(Size.SMALL);
-        
-        camera = new CompositeCamera(camera1,camera2);
+
+        camera = new CompositeCamera(camera1, camera2);
 
         // Start the server and start automatically capturing images from our camera(s) ...
         MultiCameraServer.startServer();
@@ -82,44 +84,43 @@ public class MultiCameraServerTest {
     }
 
     protected void assertConsumedMessageMatchesCameraImage() {
-        MockCamera current = (MockCamera)camera.currentCamera();
-        for ( int i=0; i!=500; ++i ) {
-            if ( current.matches(lastImage) ) {
-                System.out.println("Found correct image from camera '" + current.getName() + "' after " + (i+1) + " images");
+        MockCamera current = (MockCamera) camera.currentCamera();
+        for (int i = 0; i != 500; ++i) {
+            if (current.matches(lastImage)) {
+                // System.out.println("Found correct image from camera '" + current.getName() + "' after " + (i+1) + " images");
                 return;
             }
         }
-        System.out.println("Failed to find correct image from camera '" + current.getName() + "' after " + 500 + " images");
+        // System.out.println("Failed to find correct image from camera '" + current.getName() + "' after " + 500 + " images");
         assertThat(current.matches(lastImage)).isEqualTo(true);
     }
 
     @Test
-    public void shouldTransferImageFromSingleCamera() {
+    public void shouldTransferImageFromCamera() {
         consumeImages(1);
     }
 
     @Test
-    public void shouldTransferMultipleImagesFromSingleCamera() {
+    public void shouldTransferMultipleImagesFromCamera() {
         consumeImages(8);
     }
 
     @Test
-    public void shouldTransferImagesAfterChangingCamera() {
+    public void shouldTransferMultipleImagesFromCameraAndThenDifferentCamera() {
         camera.switchToCamera(camera1.getName());
         consumeImages(8);
         camera.switchToCamera(camera2.getName());
         consumeImages(8);
     }
-    
-    protected void consumeImages( int count ) {
+
+    protected void consumeImages(int count) {
         try {
             for (int i = 0; i != count; ++i) {
                 display.consumeImage(toBuffer());
-                System.out.println("image[155] = " + lastImage.get(155));
             }
             assertConsumedMessageMatchesCameraImage();
-        } catch ( IOException e ) {
-            Fail.fail("Failed while consuming messages",e);
+        } catch (IOException e) {
+            Fail.fail("Failed while consuming messages", e);
         }
     }
 

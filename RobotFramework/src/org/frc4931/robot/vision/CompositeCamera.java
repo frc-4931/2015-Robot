@@ -152,6 +152,12 @@ public final class CompositeCamera extends Camera {
         onEachCamera(camera -> camera.setSize(width, height));
     }
 
+    
+    @Override
+    public synchronized void setSize( Size size ) {
+        onEachCamera(camera -> camera.setSize(size));
+    }
+
     /**
      * Set the auto white balance on all of the cameras.
      */
@@ -318,7 +324,6 @@ public final class CompositeCamera extends Camera {
      */
     @Override
     public synchronized void getImageData(ByteBuffer data) {
-        System.out.println("**** serving image from '" + current.get().getName() + "'");
         onCurrentCamera(camera->camera.getImageData(data));
     }
 

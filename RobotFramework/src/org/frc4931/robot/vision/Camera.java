@@ -18,6 +18,43 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
  */
 public class Camera extends USBCamera {
     
+    public static enum Size {
+        LARGE(0,640, 480), MEDIUM(1,320, 240), SMALL(2,160, 120);
+        private int option;
+        private int width;
+        private int height;
+
+        private Size(int option, int width, int height) {
+            this.option = option;
+            this.width = width;
+            this.height = height;
+        }
+
+        public int getCode() {
+            return option;
+        }
+        
+        public int getHeight() {
+            return height;
+        }
+        
+        public int getWidth() {
+            return width;
+        }
+        
+        /**
+         * Obtain the size enum for the given option.
+         * @param option the option
+         * @return the size for the given option, or {@link #SMALL} if there is no enum with the given option value; never null
+         */
+        public static Size forOption( int option ) {
+            for ( Size size : Size.values() ) {
+                if ( size.option == option ) return size;
+            }
+            return SMALL;
+        }
+    }
+
     private static final ConcurrentMap<String,Camera> INSTANCES = new ConcurrentHashMap<>();
     private static final Lock LOCK = new ReentrantLock();
 
@@ -59,7 +96,21 @@ public class Camera extends USBCamera {
         this.name = name;
     }
     
+    /**
+     * Get the name of the camera.
+     * @return the camera name; never null
+     */
     public String getName() {
         return this.name;
+    }
+    
+    /**
+     * Set the image size for the camera to one of the {@link Size predefined sizes}. This method does nothing if the
+     * specified size is null.
+     * 
+     * @param size the predefined size
+     */
+    public void setSize( Size size ) {
+        if ( size != null ) super.setSize(size.getWidth(), size.getHeight());
     }
 }
