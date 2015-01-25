@@ -134,6 +134,7 @@ public class RobotBuilder {
         Solenoid rampLifter = Solenoids.doubleSolenoid(Properties.RAMP_LIFTER_EXTEND,
                                                        Properties.RAMP_LIFTER_RETRACT,
                                                        Solenoid.Direction.RETRACTING);
+        
         Motor guardRailMotor = Motors.talon(Properties.GUARDRAIL_MOTOR);
         Switch guardRailOpenSwitch = Switches.normallyClosed(Properties.GUARDRAIL_OPEN_SWITCH);
         Switch guardRailClosedSwitch = Switches.normallyClosed(Properties.GUARDRAIL_CLOSE_SWITCH);
@@ -261,8 +262,8 @@ public class RobotBuilder {
         private static final int GUARDRAIL_CLOSE_SWITCH = 9;
         
         /*-------VISION-------*/
-        private static final String FRONT_CAMERA_NAME = "cam1";
-        private static final String REAR_CAMERA_NAME = "cam2";
+        private static final String FRONT_CAMERA_NAME = "cam0";
+        private static final String REAR_CAMERA_NAME = "cam1";
 
         /*-------RIODUINO-------*/
         private static final int RIODUINO_I2C_ADDRESS = 1;
