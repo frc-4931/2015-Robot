@@ -74,7 +74,7 @@ public class Camera extends USBCamera {
     private static final Lock LOCK = new ReentrantLock();
 
     /**
-     * Obtain the camera with the given name. CAlling this method with the same camera name will always return the same {@link Camera} instance.
+     * Obtain the camera with the given name. Calling this method with the same camera name will always return the same {@link Camera} instance.
      * @param name the name of the camera; may not be null
      * @return the camera; never null
      */
