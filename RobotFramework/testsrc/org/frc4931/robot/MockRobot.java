@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot;
 
+import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.mock.MockMotor;
 import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
@@ -180,6 +181,11 @@ public class MockRobot implements Robot.Components {
     @Override
     public String rearCameraName() {
         return rearCameraName;
+    }
+    
+    @Override
+    public RIODuino arduino() {
+        return null;
     }
 
     public MockRobot enableRobot() {
