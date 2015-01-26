@@ -8,6 +8,7 @@ package org.frc4931.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -15,6 +16,7 @@ import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
+import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
 
@@ -69,12 +71,14 @@ public class Robot extends IterativeRobot {
         public final LoaderArm grabber;
         public final Ramp ramp;
         public final VisionSystem vision;
+        public final StackIndicatorLight stackIndicator;
 
-        public Systems(DriveSystem drive, LoaderArm arm, Ramp ramp, VisionSystem vision) {
+        public Systems(DriveSystem drive, LoaderArm arm, Ramp ramp, VisionSystem vision, StackIndicatorLight stackIndicator) {
             this.drive = drive;
             this.grabber = arm;
             this.ramp = ramp;
             this.vision = vision;
+            this.stackIndicator = stackIndicator;
         }
 
         @Override
@@ -83,6 +87,7 @@ public class Robot extends IterativeRobot {
             grabber.startup();
             ramp.startup();
             vision.startup();
+            stackIndicator.startup();
         }
 
         @Override
@@ -96,7 +101,11 @@ public class Robot extends IterativeRobot {
                     try {
                         ramp.shutdown();
                     } finally {
-                        vision.shutdown();
+                        try {
+                            vision.shutdown();
+                        } finally {
+                            stackIndicator.shutdown();
+                        }
                     }
                 }
             }
@@ -136,5 +145,7 @@ public class Robot extends IterativeRobot {
         String frontCameraName();
 
         String rearCameraName();
+
+        RIODuino arduino();
     }
 }
