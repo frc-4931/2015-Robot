@@ -1,0 +1,126 @@
+/*
+ * FRC 4931 (http://www.evilletech.com)
+ * 
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ */
+package org.frc4931.robot.vision;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
+import java.util.function.Consumer;
+
+import org.fest.assertions.Fail;
+import org.frc4931.robot.vision.Camera.Size;
+import org.frc4931.robot.vision.MockCamera.Content;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import static org.fest.assertions.Assertions.assertThat;
+
+/**
+ * Test the {@link CameraServer} that is a customization of WPILib's {@link edu.wpi.first.wpilibj.CameraServer}.
+ */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class CameraServerTest {
+
+    private static final int PORT = 1180; // See CameraServer.serve()
+
+    private static MockCamera camera1;
+    private static MockCamera camera2;
+    private static CompositeCamera camera;
+    private static RemoteDisplay display;
+    private static ByteBuffer lastImage;
+
+    @BeforeClass
+    public static void beforeAll() throws IOException {
+        // Set up the camera ...
+        camera1 = new MockCamera("Camera1");
+        camera1.setContent(Content.SPACE);
+        camera1.setSize(Size.SMALL);
+
+        camera2 = new MockCamera("Camera2");
+        camera2.setContent(Content.GRID);
+        camera2.setSize(Size.SMALL);
+
+        camera = new CompositeCamera(camera1, camera2);
+
+        // Start the server and start automatically capturing images from our camera(s) ...
+        CameraServer.getInstance().startServer();
+        CameraServer.getInstance().startAutomaticCapture(camera);
+
+        // Set up the "remote display" that receives images from the server ...
+        display = new RemoteDisplay(InetAddress.getByName("localhost"), PORT);
+        display.setImageSize(Size.SMALL);
+        display.setFramesPerSecond(500);
+        display.connect();
+    }
+
+    @AfterClass
+    public static void afterAll() throws IOException {
+        try {
+            display.disconnect();
+        } finally {
+            try {
+                CameraServer.getInstance().stopAutomaticCapture();
+            } finally {
+                lastImage = null;
+                CameraServer.getInstance().stopServer();
+            }
+        }
+    }
+
+    protected static void debug(Object msg) {
+        System.out.println(msg);
+    }
+
+    protected static Consumer<ByteBuffer> toBuffer() {
+        return (buffer) -> lastImage = buffer;
+    }
+
+    protected void assertConsumedMessageMatchesCameraImage() {
+        MockCamera current = (MockCamera) camera.getCurrentCamera();
+        for (int i = 0; i != 500; ++i) {
+            if (current.matches(lastImage)) {
+                // System.out.println("Found correct image from camera '" + current.getName() + "' after " + (i+1) + " images");
+                return;
+            }
+        }
+        // System.out.println("Failed to find correct image from camera '" + current.getName() + "' after " + 500 + " images");
+        assertThat(current.matches(lastImage)).isEqualTo(true);
+    }
+
+    @Test
+    public void shouldTransferImageFromCamera() {
+        consumeImages(1);
+    }
+
+    @Test
+    public void shouldTransferMultipleImagesFromCamera() {
+        consumeImages(8);
+    }
+
+    @Test
+    public void shouldTransferMultipleImagesFromCameraAndThenDifferentCamera() {
+        camera.switchToCamera(camera1.getName());
+        consumeImages(8);
+        camera.switchToCamera(camera2.getName());
+        consumeImages(8);
+    }
+
+    protected void consumeImages(int count) {
+        try {
+            for (int i = 0; i != count; ++i) {
+                display.consumeImage(toBuffer());
+            }
+            assertConsumedMessageMatchesCameraImage();
+        } catch (IOException e) {
+            Fail.fail("Failed while consuming messages", e);
+        }
+    }
+
+}

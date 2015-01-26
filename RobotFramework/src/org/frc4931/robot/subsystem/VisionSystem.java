@@ -6,10 +6,12 @@
  */
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.command.Command;
-import org.frc4931.robot.vision.MultiCameraServer;
-
 import java.util.function.Supplier;
+
+import org.frc4931.robot.vision.CameraServer;
+import org.frc4931.robot.vision.CompositeCamera;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * A subsystem used to control the vision system.
@@ -18,11 +20,12 @@ public final class VisionSystem extends SubsystemBase {
     
     private final String frontCameraName;
     private final String rearCameraName;
+    private final CompositeCamera cameras;
 
     /**
      * Create the vision system with no default command.
      * @param frontCameraName the name of the front camera; may be null if there is no front camera
-     * @param rearCameraName the name of the front camera; may be null if there is no front camera
+     * @param rearCameraName the name of the front camera; may be null if there is no rear camera
      */
     public VisionSystem( String frontCameraName, String rearCameraName ) {
         this(frontCameraName,rearCameraName,null);
@@ -31,13 +34,14 @@ public final class VisionSystem extends SubsystemBase {
     /**
      * Create the vision system with a default command supplier.
      * @param frontCameraName the name of the front camera; may be null if there is no front camera
-     * @param rearCameraName the name of the front camera; may be null if there is no front camera
+     * @param rearCameraName the name of the front camera; may be null if there is no rear camera
      * @param defaultCommandSupplier the supplier for this subsystem's default command; may be null if there is no default command
      */
     public VisionSystem( String frontCameraName, String rearCameraName, Supplier<Command> defaultCommandSupplier) {
         super(defaultCommandSupplier);
         this.frontCameraName = frontCameraName;
         this.rearCameraName = rearCameraName;
+        this.cameras = new CompositeCamera(this.frontCameraName,this.rearCameraName);
     }
     
     /**
@@ -47,7 +51,7 @@ public final class VisionSystem extends SubsystemBase {
     public void startup() {
         super.startup();
         if ( frontCameraName != null && rearCameraName != null ) {
-            MultiCameraServer.startAutomaticCapture(frontCameraName);
+            CameraServer.getInstance().startServer();
         }
     }
     
@@ -58,7 +62,8 @@ public final class VisionSystem extends SubsystemBase {
     public void shutdown() {
         super.shutdown();
         if ( frontCameraName != null && rearCameraName != null ) {
-            MultiCameraServer.stopAutomaticCapture();
+            CameraServer.getInstance().stopAutomaticCapture();
+            CameraServer.getInstance().startServer();
         }
     }
 
@@ -67,7 +72,7 @@ public final class VisionSystem extends SubsystemBase {
      */
     public void useFrontCamera() {
         if ( frontCameraName != null ) {
-            MultiCameraServer.useCamera(frontCameraName);
+            cameras.switchToCamera(frontCameraName);
         }
     }
 
@@ -76,7 +81,18 @@ public final class VisionSystem extends SubsystemBase {
      */
     public void useRearCamera() {
         if ( rearCameraName != null ) {
-            MultiCameraServer.useCamera(rearCameraName);
+            cameras.switchToCamera(rearCameraName);
         }
     }
+    
+    /**
+     * Start automatically capturing images from the camera(s).
+     */
+    public void startAutomaticCapture() {
+        CameraServer.getInstance().startAutomaticCapture(cameras);
+    }
+    
+    // TODO: Add methods that will do the processing of the front camera for autonomous mode. For instance, it might include a method
+    // to find the center of the tote relative to the center of the camera; this might be used by a command that moves the robot left
+    // or right so that the yellow tote is centered on the camera.
 }
