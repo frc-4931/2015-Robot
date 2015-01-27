@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
         PowerDistributionPanel pdp = new PowerDistributionPanel();
         Logger.getInstance().register(()-> (short)(pdp.getCurrent(15)*1000), "Channel 15 Current");
         Logger.getInstance().register(()-> (short)(pdp.getCurrent(14)*1000), "Channel 14 Current");
-        Logger.getInstance().start();
+        Logger.getInstance().startup();
         // Start each of the subsystems and other objects that need initializing ...
         systems.startup();
     }
@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
         systems.drive.arcade(driveSpeed, turnSpeed);
 //        systems.drive.cheesy(throttle, wheel, false);
         if(operatorInterface.writeData.isTriggered())
-            Logger.getInstance().stop();
+            Logger.getInstance().shutdown();
     }
 
     @Override

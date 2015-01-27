@@ -51,7 +51,7 @@ public class LoggerTest {
     }
     
     @Test
-    public void shouldRegisterSeveralSwitchesToLog() {
+    public void shouldRegisterSeveralSwitchesToLog() throws InterruptedException {
         Logger.getInstance().setMode(Mode.LOCAL_FILE);
         MockSwitch dummy1 = MockSwitch.createNotTriggeredSwitch();
         MockSwitch dummy2 = MockSwitch.createNotTriggeredSwitch();
@@ -59,23 +59,21 @@ public class LoggerTest {
         Logger.getInstance().registerSwitch(dummy1, "Dummy1");
         Logger.getInstance().registerSwitch(dummy2, "Dummy2");
         Logger.getInstance().registerSwitch(dummy3, "Dummy3");
-        Logger.getInstance().start();
+        Logger.getInstance().startup();
+
+        Thread.sleep(10);
+        dummy1.setTriggered();
         
-        try{
-            Thread.sleep(10);
-            dummy1.setTriggered();
-            
-            Thread.sleep(10);
-            dummy2.setTriggered();
-            
-            Thread.sleep(10);
-            dummy3.setTriggered();
-            
-            Thread.sleep(10);
-            Logger.getInstance().stop();
-            
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        Thread.sleep(10);
+        dummy2.setTriggered();
+        
+        Thread.sleep(10);
+        dummy3.setTriggered();
+        
+        Thread.sleep(10);
+        Logger.getInstance().shutdown();
+        
+        Thread.sleep(1000);
         
     }
 }
