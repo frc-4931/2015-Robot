@@ -5,20 +5,17 @@
  */
 
 #include <Adafruit_NeoPixel.h>
-#include <Wire.h>
 
 #define LED_PIN 8
 #define LED_COUNT 60
 
-#define DEVICE_ADDRESS 1
-#define STACK_HEIGHT_REGISTER 1
-#define ALLIANCE_REGISTER 2
-
-#define BLUE_ALLIANCE 0
-#define RED_ALLIANCE 1
+#define UNKNOWN_ALLIANCE 0
+#define BLUE_ALLIANCE 1
+#define RED_ALLIANCE 2
+#define MAX_STACK_HEIGHT 5
+#define UNKNOWN_COLOR 0x00FF00
 #define BLUE_COLOR 0x0000FF
 #define RED_COLOR 0xFF0000
-#define MAX_STACK_HEIGHT 5
 
 Adafruit_NeoPixel controller = Adafruit_NeoPixel
 (
@@ -32,43 +29,36 @@ byte alliance = 0;
 
 void setup()
 {
-  Wire.begin(DEVICE_ADDRESS);
-  controller.begin();
+  Serial.begin(9600);
   clearAll();
   update();
 }
 
 void loop()
 {
-  if (Wire.available() >= 2) 
+  if (Serial.available())
   {
-    
+    byte data = Serial.read();
+    alliance = (byte) (data & 0xF);
+    height = (byte) (data >> 4);
   }
   
-  update();
-}
-
-void hRequest()
-{
-  byte regId = Wire.read();
-}
-
-void hReceive(int count)
-{
-  if (count == 2) // Byte reading
-  {  
-    byte regId = Wire.read();
-    byte data = Wire.read();
-      
-    if (regId == STACK_HEIGHT_REGISTER) 
-    {
-      height = data;
-    }
-    if (regId == ALLIANCE_REGISTER) 
-    {
-      alliance = data;
-    }
+  int lightCount = (float) height / MAX_STACK_HEIGHT * LED_COUNT;
+  long lightColor = UNKNOWN_COLOR;
+  if (alliance == BLUE_ALLIANCE)
+  {
+    lightColor = BLUE_COLOR;
   }
+  else if (alliance == RED_ALLIANCE)
+  {
+    lightColor = RED_COLOR;
+  }
+  
+  for (int i = 0; i < lightCount; i++)
+  {
+    setColor(i, lightColor);
+  }
+  update();
 }
 
 void setColor(int led, long color)
@@ -95,18 +85,7 @@ void clearAll()
 }
 
 void update()
-{
-  int lightCount = (float) height / MAX_STACK_HEIGHT * LED_COUNT;
-  long lightColor = alliance ? BLUE_COLOR : RED_COLOR;
-  
-  for (int i = 0; i < lightCount; i++)
-  {
-    setColor(i, lightColor);
-  }
-  
+{  
   controller.show();
 }
-
-
-
 
