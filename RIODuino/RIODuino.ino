@@ -1,4 +1,9 @@
 /*
+ * FRC 4931 (http://www.evilletech.com)
+ *
+ * Open source software. Licensed under the FIRST BSD license file in the
+ * root directory of this project's Git repository.
+ *
  * This program uses the third-party library NeoPixel.
  * You must download and install this library in order to compile and upload the code.
  * You can download it for free at http://github.com/adafruit/Adafruit_NeoPixel
@@ -30,6 +35,7 @@ byte alliance = 0;
 void setup()
 {
   Serial.begin(9600);
+  controller.begin();
   clearAll();
   update();
 }
@@ -88,4 +94,3 @@ void update()
 {  
   controller.show();
 }
-
