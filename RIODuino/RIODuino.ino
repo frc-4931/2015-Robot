@@ -30,6 +30,7 @@ byte alliance = 0;
 void setup()
 {
   Serial.begin(9600);
+  controller.begin();
   clearAll();
   update();
 }
