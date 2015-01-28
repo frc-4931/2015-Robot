@@ -7,8 +7,8 @@
 package org.frc4931.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -146,6 +146,6 @@ public class Robot extends IterativeRobot {
 
         String rearCameraName();
 
-        RIODuino arduino();
+        DataStream arduino();
     }
 }

@@ -6,54 +6,18 @@
  */
 package org.frc4931.robot.component;
 
-import edu.wpi.first.wpilibj.I2C;
-import org.frc4931.utils.Lifecycle;
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
- * A component representing a RIODuino, an Arduino connected to the roboRIO via MXP/I2C.
+ * A component representing a RIODuino, an Arduino connected to the roboRIO via MXP.
  */
-public final class RIODuino implements Lifecycle {
-    private I2C i2c;
-
+public final class RIODuino extends SerialDataStream {
     /**
      * Create a new connection over I2C to the RIODuino.
      *
-     * @param address The I2C device addresss to use.
+     * @param baudRate The rate at which to send data over the serial port.
      */
-    public RIODuino(int address) {
-        this.i2c = new I2C(I2C.Port.kMXP, address);
-    }
-
-    /**
-     * Read bytes from a remote register.
-     *
-     * @param register The register address to read from.
-     * @param buffer   The buffer to save data to.
-     * @param count    The number of bytes to read.
-     * @return true if successful; false otherwise.
-     */
-    public boolean read(int register, byte[] buffer, int count) {
-        return !i2c.read(register, count, buffer);
-    }
-
-    /**
-     * Write bytes to a remote register.
-     *
-     * @param register The register address to write to.
-     * @param data     The data to write to the register.
-     * @return true if successful; false otherwise.
-     */
-    public boolean write(int register, int data) {
-        return !i2c.write(register, data);
-    }
-
-    @Override
-    public void startup() {
-
-    }
-
-    @Override
-    public void shutdown() {
-        i2c.free();
+    public RIODuino(int baudRate) {
+        super(new SerialPort(baudRate, SerialPort.Port.kMXP));
     }
 }

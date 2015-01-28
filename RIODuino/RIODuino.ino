@@ -42,20 +42,33 @@ void loop()
 {
   if (Wire.available() >= 2) 
   {
+    
+  }
+  
+  update();
+}
+
+void hRequest()
+{
+  byte regId = Wire.read();
+}
+
+void hReceive(int count)
+{
+  if (count == 2) // Byte reading
+  {  
     byte regId = Wire.read();
     byte data = Wire.read();
-    
+      
     if (regId == STACK_HEIGHT_REGISTER) 
     {
       height = data;
     }
     if (regId == ALLIANCE_REGISTER) 
-    i{
+    {
       alliance = data;
     }
   }
-  
-  update();
 }
 
 void setColor(int led, long color)

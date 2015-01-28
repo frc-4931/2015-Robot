@@ -7,24 +7,42 @@
 package org.frc4931.robot.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import org.frc4931.robot.component.RIODuino;
+import org.frc4931.robot.component.DataStream;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
  */
 public final class StackIndicatorLight extends SubsystemBase {
-    public static final int STACK_HEIGHT_REGISTER = 1;
-    public static final int ALLIANCE_REGISTER = 2;
+    private final DataStream stream;
 
-    private RIODuino arduino;
+    private boolean autoSend;
+    private int stackHeight;
+    private DriverStation.Alliance alliance;
 
     /**
-     * Create a new instance of this subsystem, in which the lights are controlled by an Arduino.
+     * Creates a new StackIndicatorLight that uses a data stream.
      *
-     * @param arduino The Arduino to interface with.
+     * @param stream The stream used to send alliance/height data.
+     * @param autoSend Whether or not to automatically send data after it has been updated.
      */
-    public StackIndicatorLight(RIODuino arduino) {
-        this.arduino = arduino;
+    public StackIndicatorLight(DataStream stream, boolean autoSend) {
+        this.stream = stream;
+        this.autoSend = autoSend;
+        stackHeight = 0;
+        alliance = null;
+    }
+
+    /**
+     * Creates a new StackIndicatorLight that uses a data stream.
+     *
+     * @param stream The stream used to send alliance/height data over.
+     */
+    public StackIndicatorLight(DataStream stream) {
+        this(stream, false);
+    }
+
+    public int getStackHeight() {
+        return stackHeight;
     }
 
     /**
@@ -33,7 +51,16 @@ public final class StackIndicatorLight extends SubsystemBase {
      * @param height The (number of?) totes stacked
      */
     public void setStackHeight(int height) {
-        arduino.write(STACK_HEIGHT_REGISTER, height);
+        boolean newValue = height != this.stackHeight;
+        this.stackHeight = height;
+
+        if (newValue && autoSend) {
+            send();
+        }
+    }
+
+    public DriverStation.Alliance getAlliance() {
+        return alliance;
     }
 
     /**
@@ -42,11 +69,33 @@ public final class StackIndicatorLight extends SubsystemBase {
      * @param alliance The alliance we are currently on.
      */
     public void setAlliance(DriverStation.Alliance alliance) {
-        if (alliance == DriverStation.Alliance.Blue) {
-            arduino.write(ALLIANCE_REGISTER, 0);
-        } else if (alliance == DriverStation.Alliance.Red) {
-            arduino.write(ALLIANCE_REGISTER, 1);
+        boolean newValue = alliance != this.alliance;
+        this.alliance = alliance;
+
+        if (newValue && autoSend) {
+            send();
         }
+    }
+
+    public void send() {
+        byte data = (byte) (stackHeight << 4);
+
+        if (alliance == DriverStation.Alliance.Blue) {
+            data += 1;
+        } else if (alliance == DriverStation.Alliance.Red) {
+            data += 2;
+        }
+
+        stream.write(data);
+        stream.flush();
+    }
+
+    public boolean isAutoSend() {
+        return autoSend;
+    }
+
+    public void setAutoSend(boolean autoSend) {
+        this.autoSend = autoSend;
     }
 
     @Override
@@ -54,8 +103,7 @@ public final class StackIndicatorLight extends SubsystemBase {
         try {
             super.shutdown();
         } finally {
-            arduino.shutdown();
+            stream.shutdown();
         }
-
     }
 }
