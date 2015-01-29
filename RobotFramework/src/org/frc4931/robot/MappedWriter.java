@@ -16,7 +16,7 @@ import java.nio.channels.FileChannel.MapMode;
 /**
  * Provides easy methods for creation and writing to of a memory mapped file.
  */
-public class MappedWriter {
+public final class MappedWriter implements AutoCloseable {
     private final File outFile;
     private final FileChannel channel;
     private final MappedByteBuffer buffer;
@@ -78,15 +78,23 @@ public class MappedWriter {
      * Writes the terminator, forces the OS to update the file
      * and closes the {@code Channel}.
      */
+    @Override
     public void close(){
-        // Write terminator
-        buffer.putInt(0xFFFFFFFF);
-        buffer.force();
-        try{
-            channel.close();
-        } catch (IOException e) {
-            System.err.println("Failed to close channel");
-            e.printStackTrace();
+        try {
+            // Write terminator
+            buffer.putInt(0xFFFFFFFF);
+        } finally {
+            try {
+                // And always force the buffer ...
+                buffer.force();
+            } finally {
+                try{
+                    // And always close the channel ...
+                    channel.close();
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to close channel",e);
+                }
+            }
         }
     }
 }
