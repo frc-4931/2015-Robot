@@ -18,9 +18,9 @@
 
 Adafruit_NeoPixel controller = Adafruit_NeoPixel
 (
-  LED_COUNT,
-  LED_PIN,
-  NEO_GRB + NEO_KHZ800
+LED_COUNT,
+LED_PIN,
+NEO_GRB + NEO_KHZ800
 );
 
 long color = 0x000000;
@@ -39,9 +39,9 @@ void loop()
   if (Serial.available())
   {
     byte data = Serial.read();
-    
+
     byte colorData = (byte) (data & 0xF);
-    
+
     color = 0x000000;
     if (colorData & 0b100)
     {
@@ -55,11 +55,11 @@ void loop()
     {
       color += 0x0000FF;
     }
-    
+
     byte height = (byte) (data >> 4);
-    
+
     lightCount = (float) height / MAX_STACK_HEIGHT * LED_COUNT;
-  
+
     setAll(color);
     update();
   }
@@ -92,3 +92,4 @@ void update()
 {  
   controller.show();
 }
+
