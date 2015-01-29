@@ -7,13 +7,20 @@
 package org.frc4931.robot.component;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import org.frc4931.utils.Lifecycle;
 
 import java.nio.ByteBuffer;
 
-public class SerialDataStream implements DataStream, Lifecycle {
+/**
+ * A DataStream implementation using the WPILib {@link edu.wpi.first.wpilibj.SerialPort} class.
+ */
+public class SerialDataStream implements DataStream {
     private SerialPort serial;
 
+    /**
+     * Creates a new DataStream wrapping around a SerialPort
+     *
+     * @param serial The serial port to wrap.
+     */
     public SerialDataStream(SerialPort serial) {
         this.serial = serial;
     }

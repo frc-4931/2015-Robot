@@ -12,27 +12,48 @@ import java.nio.ByteBuffer;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+/**
+ * A mock implementation of {@link org.frc4931.robot.component.DataStream} that does not require hardware.
+ */
 public class MockDataStream implements DataStream {
     private Queue<Byte> readData;
     private Queue<Byte> writtenData;
     private Queue<Byte> flushedData;
 
+    /**
+     * Creates a new data stream.
+     */
     public MockDataStream() {
         readData = new PriorityQueue<>();
         writtenData = new PriorityQueue<>();
         flushedData = new PriorityQueue<>();
     }
 
+    /**
+     * Puts data in the read buffer (for the class to access using read())
+     *
+     * @param data The data to add to the buffer.
+     */
     public void addReadData(byte... data) {
         for (byte b : data) {
             readData.add(b);
         }
     }
 
+    /**
+     * Puts a byte in the read buffer.
+     *
+     * @param value The byte to add.
+     */
     public void addByte(byte value) {
         addReadData(value);
     }
 
+    /**
+     * Puts a short in the read buffer.
+     *
+     * @param value The short to add.
+     */
     public void addShort(short value) {
         ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
         buffer.putShort(value);
@@ -41,6 +62,11 @@ public class MockDataStream implements DataStream {
         addReadData(buffer.array());
     }
 
+    /**
+     * Puts an int in the read buffer.
+     *
+     * @param value The int to add.
+     */
     public void addInt(int value) {
         ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
         buffer.putInt(value);
@@ -49,6 +75,11 @@ public class MockDataStream implements DataStream {
         addReadData(buffer.array());
     }
 
+    /**
+     * Puts a long in the read buffer.
+     *
+     * @param value The long to add.
+     */
     public void addLong(long value) {
         ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
         buffer.putLong(value);
@@ -57,6 +88,11 @@ public class MockDataStream implements DataStream {
         addReadData(buffer.array());
     }
 
+    /**
+     * Puts a float in the read buffer.
+     *
+     * @param value The float to add.
+     */
     public void addFloat(float value) {
         ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES);
         buffer.putFloat(value);
@@ -65,6 +101,11 @@ public class MockDataStream implements DataStream {
         addReadData(buffer.array());
     }
 
+    /**
+     * Puts a double in the read buffer.
+     *
+     * @param value The double to add.
+     */
     public void addDouble(double value) {
         ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES);
         buffer.putDouble(value);
@@ -73,6 +114,13 @@ public class MockDataStream implements DataStream {
         addReadData(buffer.array());
     }
 
+    /**
+     * Gets data flushed by the class.
+     * <p>
+     * param count The number of bytes to retrieve.
+     *
+     * @return The bytes retrieved - may be less than requested number.
+     */
     public byte[] getFlushedData(int count) {
         byte[] data = new byte[Math.min(count, flushedData.size())];
 
@@ -83,36 +131,66 @@ public class MockDataStream implements DataStream {
         return data;
     }
 
+    /**
+     * Gets a flushed byte.
+     *
+     * @return The byte retrieved.
+     */
     public byte getByte() {
         byte[] bytes = getFlushedData(Byte.BYTES);
 
         return ByteBuffer.wrap(bytes).get();
     }
 
+    /**
+     * Gets a flushed short
+     *
+     * @return The short retrieved.
+     */
     public short getShort() {
         byte[] bytes = getFlushedData(Short.BYTES);
 
         return ByteBuffer.wrap(bytes).get();
     }
 
+    /**
+     * Gets a flushed integer.
+     *
+     * @return The integer retrieved.
+     */
     public int getInt() {
         byte[] bytes = getFlushedData(Integer.BYTES);
 
         return ByteBuffer.wrap(bytes).get();
     }
 
+    /**
+     * Gets a flushed long.
+     *
+     * @return The long retrieved.
+     */
     public long getLong() {
         byte[] bytes = getFlushedData(Long.BYTES);
 
         return ByteBuffer.wrap(bytes).get();
     }
 
+    /**
+     * Gets a flushed float.
+     *
+     * @return The float retrieved.
+     */
     public float getFloat() {
         byte[] bytes = getFlushedData(Float.BYTES);
 
         return ByteBuffer.wrap(bytes).get();
     }
 
+    /**
+     * Gets a flushed double.
+     *
+     * @return The double retrieved.
+     */
     public double getDouble() {
         byte[] bytes = getFlushedData(Double.BYTES);
 

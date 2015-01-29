@@ -11,10 +11,11 @@ import org.frc4931.robot.component.SerialDataStream;
 
 /**
  * A component representing a RIODuino, an Arduino connected to the roboRIO via MXP.
+ * This class uses the {@link org.frc4931.robot.component.SerialDataStream} to send and receive data.
  */
 public final class HardwareRIODuino extends SerialDataStream {
     /**
-     * Create a new connection over I2C to the RIODuino.
+     * Create a new connection via MXP to the RIODuino.
      *
      * @param baudRate The rate at which to send data over the serial port.
      */
