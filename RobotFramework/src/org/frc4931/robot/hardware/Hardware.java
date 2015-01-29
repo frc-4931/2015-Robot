@@ -10,6 +10,7 @@ import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.MotorWithPosition;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -179,6 +180,10 @@ public class Hardware {
          */
         public static Motor victor(int channel) {
             return new HardwareMotor(new Victor(channel));
+        }
+        
+        public static MotorWithPosition talonSRX(int port){
+            return new HardwareTalonSRX(port);
         }
     }
 

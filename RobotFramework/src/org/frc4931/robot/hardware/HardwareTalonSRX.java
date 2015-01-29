@@ -17,6 +17,10 @@ import edu.wpi.first.wpilibj.CANTalon;
 class HardwareTalonSRX implements MotorWithPosition{
     private CANTalon motor;
     
+    HardwareTalonSRX(int port){
+        this.motor = new CANTalon(port);
+    }
+    
     @Override
     public double getPosition(){
         return motor.getPosition();
