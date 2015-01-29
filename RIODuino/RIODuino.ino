@@ -14,13 +14,7 @@
 #define LED_PIN 8
 #define LED_COUNT 60
 
-#define UNKNOWN_ALLIANCE 0
-#define BLUE_ALLIANCE 1
-#define RED_ALLIANCE 2
 #define MAX_STACK_HEIGHT 5
-#define UNKNOWN_COLOR 0x00FF00
-#define BLUE_COLOR 0x0000FF
-#define RED_COLOR 0xFF0000
 
 Adafruit_NeoPixel controller = Adafruit_NeoPixel
 (
@@ -29,8 +23,8 @@ Adafruit_NeoPixel controller = Adafruit_NeoPixel
   NEO_GRB + NEO_KHZ800
 );
 
-byte height = 0;
-byte alliance = 0;
+long color = 0x000000;
+int lightCount = 0;
 
 void setup()
 {
@@ -45,26 +39,30 @@ void loop()
   if (Serial.available())
   {
     byte data = Serial.read();
-    alliance = (byte) (data & 0xF);
-    height = (byte) (data >> 4);
-  }
+    
+    byte colorData = (byte) (data & 0xF);
+    
+    color = 0x000000;
+    if (colorData & 0b100)
+    {
+      color += 0xFF0000;
+    }
+    if (colorData & 0b010)
+    {
+      color += 0x00FF00;
+    }
+    if (colorData & 0b001)
+    {
+      color += 0x0000FF;
+    }
+    
+    byte height = (byte) (data >> 4);
+    
+    lightCount = (float) height / MAX_STACK_HEIGHT * LED_COUNT;
   
-  int lightCount = (float) height / MAX_STACK_HEIGHT * LED_COUNT;
-  long lightColor = UNKNOWN_COLOR;
-  if (alliance == BLUE_ALLIANCE)
-  {
-    lightColor = BLUE_COLOR;
+    setAll(color);
+    update();
   }
-  else if (alliance == RED_ALLIANCE)
-  {
-    lightColor = RED_COLOR;
-  }
-  
-  for (int i = 0; i < lightCount; i++)
-  {
-    setColor(i, lightColor);
-  }
-  update();
 }
 
 void setColor(int led, long color)
@@ -74,7 +72,7 @@ void setColor(int led, long color)
 
 void setAll(long color)
 {
-  for (int i = 0; i < LED_COUNT; i++)
+  for (int i = 0; i < lightCount; i++)
   {
     setColor(i, color);
   }

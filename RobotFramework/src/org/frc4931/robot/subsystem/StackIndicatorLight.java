@@ -8,16 +8,21 @@ package org.frc4931.robot.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import org.frc4931.robot.component.DataStream;
+import org.omg.CORBA.UNKNOWN;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
  */
 public final class StackIndicatorLight extends SubsystemBase {
+    public static final byte UNKNOWN_ALLIANCE_COLOR = 0b010;
+    public static final byte RED_ALLIANCE_COLOR = 0b100;
+    public static final byte BLUE_ALLIANCE_COLOR = 0b001;
+
     private final DataStream stream;
 
     private boolean autoSend;
-    private int stackHeight;
-    private DriverStation.Alliance alliance;
+    private byte stackHeight;
+    private byte color;
 
     /**
      * Creates a new StackIndicatorLight that uses a data stream.
@@ -29,7 +34,7 @@ public final class StackIndicatorLight extends SubsystemBase {
         this.stream = stream;
         this.autoSend = autoSend;
         stackHeight = 0;
-        alliance = null;
+        color = UNKNOWN_ALLIANCE_COLOR;
     }
 
     /**
@@ -41,16 +46,11 @@ public final class StackIndicatorLight extends SubsystemBase {
         this(stream, false);
     }
 
-    public int getStackHeight() {
+    public byte getStackHeight() {
         return stackHeight;
     }
 
-    /**
-     * Transmits the stack height to the Arduino in order to display correct length.
-     *
-     * @param height The (number of?) totes stacked
-     */
-    public void setStackHeight(int height) {
+    public void setStackHeight(byte height) {
         boolean newValue = height != this.stackHeight;
         this.stackHeight = height;
 
@@ -59,32 +59,39 @@ public final class StackIndicatorLight extends SubsystemBase {
         }
     }
 
-    public DriverStation.Alliance getAlliance() {
-        return alliance;
+    public byte getColor() {
+        return color;
     }
 
-    /**
-     * Transmits the alliance team to the Arduino in order to display correct color.
-     *
-     * @param alliance The alliance we are currently on.
-     */
-    public void setAlliance(DriverStation.Alliance alliance) {
-        boolean newValue = alliance != this.alliance;
-        this.alliance = alliance;
+    public void setColor(byte color) {
+        this.color = color;
+    }
 
-        if (newValue && autoSend) {
-            send();
+    public void setColor(boolean red, boolean green, boolean blue) {
+        color = 0;
+        if (red) {
+            color += 0b100;
+        }
+        if (green) {
+            color += 0b010;
+        }
+        if (blue) {
+            color += 0b001;
+        }
+    }
+
+    public void setColor(DriverStation.Alliance alliance) {
+        if (alliance == DriverStation.Alliance.Red) {
+            color = RED_ALLIANCE_COLOR;
+        } else if (alliance == DriverStation.Alliance.Blue) {
+            color = BLUE_ALLIANCE_COLOR;
+        } else {
+            color = UNKNOWN_ALLIANCE_COLOR;
         }
     }
 
     public void send() {
-        byte data = (byte) (stackHeight << 4);
-
-        if (alliance == DriverStation.Alliance.Blue) {
-            data += 1;
-        } else if (alliance == DriverStation.Alliance.Red) {
-            data += 2;
-        }
+        byte data = (byte) ((stackHeight << 4) + color);
 
         stream.write(data);
         stream.flush();
