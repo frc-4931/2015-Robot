@@ -6,7 +6,6 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.component.Relay;
@@ -20,9 +19,13 @@ import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 public class Robot extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
     private static Robot instance;
+    private static long startTime = System.nanoTime();
     private Systems systems;
     private OperatorInterface operatorInterface;
 
@@ -37,7 +40,10 @@ public class Robot extends IterativeRobot {
         Components components = RobotBuilder.components();
         systems = RobotBuilder.build(components);
         operatorInterface = RobotBuilder.operatorInterface();
-
+        PowerDistributionPanel pdp = new PowerDistributionPanel();
+        Logger.getInstance().register(()-> (short)(pdp.getCurrent(15)*1000), "Channel 15 Current");
+        Logger.getInstance().register(()-> (short)(pdp.getCurrent(14)*1000), "Channel 14 Current");
+        Logger.getInstance().startup();
         // Start each of the subsystems and other objects that need initializing ...
         systems.startup();
     }
@@ -54,6 +60,8 @@ public class Robot extends IterativeRobot {
 
         systems.drive.arcade(driveSpeed, turnSpeed);
 //        systems.drive.cheesy(throttle, wheel, false);
+        if(operatorInterface.writeData.isTriggered())
+            Logger.getInstance().shutdown();
     }
 
     @Override
@@ -64,6 +72,10 @@ public class Robot extends IterativeRobot {
 
     public static Robot getInstance() {
         return instance;
+    }
+    
+    public static long time() {
+        return System.nanoTime()-startTime;
     }
 
     public static final class Systems implements Lifecycle {
