@@ -15,11 +15,9 @@ import org.frc4931.robot.component.SerialDataStream;
  */
 public final class HardwareRIODuino extends SerialDataStream {
     /**
-     * Create a new connection via MXP to the RIODuino.
-     *
-     * @param baudRate The rate at which to send data over the serial port.
+     * Create a new connection via the MXP serial port to the RIODuino.
      */
-    public HardwareRIODuino(int baudRate) {
-        super(new SerialPort(baudRate, SerialPort.Port.kMXP));
+    public HardwareRIODuino() {
+        super(new SerialPort(9600, SerialPort.Port.kMXP));
     }
 }
