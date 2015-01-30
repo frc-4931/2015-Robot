@@ -56,9 +56,9 @@ public class LoggerTest {
         MockSwitch dummy1 = MockSwitch.createNotTriggeredSwitch();
         MockSwitch dummy2 = MockSwitch.createNotTriggeredSwitch();
         MockSwitch dummy3 = MockSwitch.createNotTriggeredSwitch();
-        Logger.getInstance().registerSwitch(dummy1, "Dummy1");
-        Logger.getInstance().registerSwitch(dummy2, "Dummy2");
-        Logger.getInstance().registerSwitch(dummy3, "Dummy3");
+        Logger.getInstance().registerSwitch("Dummy1", dummy1);
+        Logger.getInstance().registerSwitch("Dummy2", dummy2);
+        Logger.getInstance().registerSwitch("Dummy3", dummy3);
         Logger.getInstance().startup();
 
         Thread.sleep(10);

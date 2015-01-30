@@ -41,8 +41,8 @@ public class Robot extends IterativeRobot {
         systems = RobotBuilder.build(components);
         operatorInterface = RobotBuilder.operatorInterface();
         PowerDistributionPanel pdp = new PowerDistributionPanel();
-        Logger.getInstance().register(()-> (short)(pdp.getCurrent(15)*1000), "Channel 15 Current");
-        Logger.getInstance().register(()-> (short)(pdp.getCurrent(14)*1000), "Channel 14 Current");
+        Logger.getInstance().register("Channel 15 Current", ()-> (short)(pdp.getCurrent(15)*1000));
+        Logger.getInstance().register("Channel 14 Current", ()-> (short)(pdp.getCurrent(14)*1000));
         Logger.getInstance().startup();
         // Start each of the subsystems and other objects that need initializing ...
         systems.startup();

@@ -9,13 +9,15 @@ package org.frc4931.robot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.IntSupplier;
 
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.utils.Lifecycle;
+import org.frc4931.utils.Metronome;
 
-import edu.wpi.first.wpilibj.command.IllegalUseOfCommandException;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -30,8 +32,8 @@ public class Logger implements Lifecycle {
     public static final int WRITE_FREQUENCY = (int) (1000.0/30.0); // milliseconds per writes
     public static final int RUNNING_TIME = 200;
     
-    private final ArrayList<IntSupplier> suppliers = new ArrayList<>();
-    private final ArrayList<String> names = new ArrayList<>();
+    private final List<IntSupplier> suppliers = new ArrayList<>();
+    private final List<String> names = new ArrayList<>();
     
     private Mode mode = Mode.LOCAL_FILE;
     
@@ -49,27 +51,31 @@ public class Logger implements Lifecycle {
         running = true;
 
         // Initialize appropriate writer
-        if(mode == Mode.LOCAL_FILE) {
-            logger = new LocalLogWriter(names, suppliers);
-        }else{
-            assert mode == Mode.NETWORK_TABLES;
-            logger = new RemoteLogWriter(names, suppliers);
+        switch(mode) {
+            case LOCAL_FILE:
+                logger = new LocalLogWriter(names, suppliers);
+                break;
+            case NETWORK_TABLES:
+                logger = new RemoteLogWriter(names, suppliers);
+                break;
         }
         
          // Initialize the thread that does the actual output
-        loggerThread = new Thread(()->{
-            while(running) {
-                logger.write();
-                try {
-                    Thread.sleep(WRITE_FREQUENCY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            logger.close();
-        });
+        loggerThread = new Thread(this::logData);
         loggerThread.setName("writer");
         loggerThread.start();
+    }
+    
+    private void logData() {
+        Metronome timer = new Metronome(WRITE_FREQUENCY, TimeUnit.MILLISECONDS);
+        try {
+            while(running) {
+                logger.write();
+                timer.pause();
+            }
+        } finally {
+            logger.close();
+        }
     }
     
     /**
@@ -81,47 +87,58 @@ public class Logger implements Lifecycle {
     }
     
     /**
-     * Sets the mode of this {@link Logger}. Will throw an {@link IllegalUseOfCommandException} if {@link Logger}
-     * is still running.
-     * <li>{@link Mode#LOCAL_FILE} - The data is logged to a csv stored locally on the RIO.
-     * <li>{@link Mode#NETWORK_TABLES} - The data is written to the {@link SmartDashboard}, no data is stored locally.
+     * Sets the mode of this {@link Logger}. The {@code mode} is one of the following:
+     * <ul>
+     * <li>{@link Mode#LOCAL_FILE} - The data is logged to a csv stored locally on the RIO.</li>
+     * <li>{@link Mode#NETWORK_TABLES} - The data is written to the {@link SmartDashboard}, no data is stored locally.</li>
+     * </ul>
      * @param mode the new {@link Mode} of this {@link Logger}
+     * @throws IllegalArgumentException if the {@code mode} parameter is null
+     * @throws IllegalStateException if the logger is already {@link #startup() started}
      */
     public void setMode(Mode mode){
-        if(!running)
-            this.mode = mode;
-        else throw new UnsupportedOperationException("Cannot change modes while running");
+        if ( mode == null ) throw new IllegalArgumentException("The mode may not be null");
+        if ( running ) throw new IllegalStateException("The logger is already running");
+        this.mode = mode;
     }
 
     //TODO Consider registering byte arrays instead of specific integer primitives
     /**
      * Registers the value of the specified {@link IntSupplier} to be logged
-     * @param supplier the {@link IntSupplier} of the value to be logged
      * @param name the name of this data point
+     * @param supplier the {@link IntSupplier} of the value to be logged
+     * @throws IllegalArgumentException if the {@code supplier} parameter is null
+     * @throws IllegalStateException if the logger is already {@link #startup() started}
      */
-    public void register(IntSupplier supplier, String name) {
-        if(running) throw new UnsupportedOperationException("Cannot register while running");
+    public void register(String name, IntSupplier supplier) {
+        if ( supplier == null ) throw new IllegalArgumentException("The supplier may not be null");
+        if ( running ) throw new IllegalStateException("The logger is already running; unable to register channels");
         names.add(name);
         suppliers.add(supplier);
     }
 
     /**
      * Registers a {@link Switch} to be logged.
-     * @param swtch the {@link Switch} to be logged
      * @param name the name of the {@link Switch}
+     * @param swtch the {@link Switch} to be logged
+     * @throws IllegalArgumentException if the {@code swtch} parameter is null
+     * @throws IllegalStateException if the logger is already {@link #startup() started}
      */
-    public void registerSwitch(Switch swtch, String name) {
-        if(running) throw new UnsupportedOperationException("Cannot register while running");
+    public void registerSwitch(String name, Switch swtch) {
+        if ( swtch == null ) throw new IllegalArgumentException("The supplier may not be null");
+        if ( running ) throw new IllegalStateException("The logger is already running; unable to register channels");
         names.add(name);
         suppliers.add(()->swtch.isTriggered() ? 1 : 0);
     }
     
     /**
      * Registers a {@link Motor} to be logged.
-     * @param motor the {@link Motor} to be logged
      * @param name the name of the {@link Motor}
+     * @param motor the {@link Motor} to be logged
+     * @throws IllegalArgumentException if the {@code motor} parameter is null
+     * @throws IllegalStateException if the logger is already {@link #startup() started}
      */
-    public void registerMotor(Motor motor, String name) {
+    public void registerMotor(String name, Motor motor) {
         if(running) throw new UnsupportedOperationException("Cannot register while running");
         names.add(name+" speed");
         suppliers.add(()->(short)(motor.getSpeed()*1000));
@@ -141,11 +158,11 @@ public class Logger implements Lifecycle {
         return value;
     }
 
-    public enum Mode{
+    public static enum Mode{
         LOCAL_FILE, NETWORK_TABLES
     }
     
-    public static interface LogWriter {
+    public static interface LogWriter extends AutoCloseable {
         /**
          * Writes the current status of the robot to a log.
          */
@@ -154,17 +171,18 @@ public class Logger implements Lifecycle {
         /**
          * Frees the resources used by this {@link LogWriter}.
          */
+        @Override
         public void close();
     }
     
     public static class LocalLogWriter implements LogWriter {
-        private final ArrayList<IntSupplier> suppliers;
+        private final List<IntSupplier> suppliers;
        
         private long recordLength;
         private MappedWriter writer;
         
-        public LocalLogWriter(ArrayList<String> names,
-                               ArrayList<IntSupplier> suppliers){
+        public LocalLogWriter(List<String> names,
+                              List<IntSupplier> suppliers){
             this.suppliers = suppliers;
             try {
                 // Estimate minimum file size needed to run at WRITE_FREQUENCY for RUNNING_TIME
@@ -173,8 +191,7 @@ public class Logger implements Lifecycle {
                 
                 // Infrastructure for variable element length
                 recordLength = Integer.BYTES;
-                for(IntSupplier supplier : suppliers)
-                    recordLength += Short.BYTES;
+                recordLength += (Short.BYTES * suppliers.size());
                 
                 long minSize = numWrites * recordLength;
                 
@@ -189,8 +206,10 @@ public class Logger implements Lifecycle {
                 // Write the size of each element (Infrastructure for variable length element)
                 writer.write((byte)Integer.BYTES);
                 
-                for(IntSupplier supplier : suppliers)
+                for(IntSupplier supplier : suppliers) {
+                    assert supplier != null;
                     writer.write((byte)Short.BYTES);
+                }
                 
                 // Write length of each element name and the name itself
                 writer.write((byte)4);
@@ -224,11 +243,11 @@ public class Logger implements Lifecycle {
     }
 
     public static class RemoteLogWriter implements LogWriter, LiveWindowSendable {
-        private final ArrayList<String> names;
-        private final ArrayList<IntSupplier> suppliers;
+        private final List<String> names;
+        private final List<IntSupplier> suppliers;
         
-        public RemoteLogWriter(ArrayList<String> names,
-                               ArrayList<IntSupplier> suppliers){
+        public RemoteLogWriter(List<String> names,
+                               List<IntSupplier> suppliers){
             this.names = names;
             this.suppliers = suppliers;
         }
