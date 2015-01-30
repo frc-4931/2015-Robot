@@ -8,7 +8,6 @@ package org.frc4931.robot.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import org.frc4931.robot.component.DataStream;
-import org.omg.CORBA.UNKNOWN;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
@@ -20,7 +19,6 @@ public final class StackIndicatorLight extends SubsystemBase {
 
     private final DataStream stream;
 
-    private boolean autoSend;
     private byte stackHeight;
     private byte color;
 
@@ -28,22 +26,11 @@ public final class StackIndicatorLight extends SubsystemBase {
      * Creates a new StackIndicatorLight that uses a data stream.
      *
      * @param stream The stream used to send alliance/height data.
-     * @param autoSend Whether or not to automatically send data after it has been updated.
-     */
-    public StackIndicatorLight(DataStream stream, boolean autoSend) {
-        this.stream = stream;
-        this.autoSend = autoSend;
-        stackHeight = 0;
-        color = UNKNOWN_ALLIANCE_COLOR;
-    }
-
-    /**
-     * Creates a new StackIndicatorLight that uses a data stream.
-     *
-     * @param stream The stream used to send alliance/height data over.
      */
     public StackIndicatorLight(DataStream stream) {
-        this(stream, false);
+        this.stream = stream;
+        stackHeight = 0;
+        color = 0b000;
     }
 
     public byte getStackHeight() {
@@ -51,12 +38,9 @@ public final class StackIndicatorLight extends SubsystemBase {
     }
 
     public void setStackHeight(byte height) {
-        boolean newValue = height != this.stackHeight;
         this.stackHeight = height;
 
-        if (newValue && autoSend) {
-            send();
-        }
+        send();
     }
 
     public byte getColor() {
@@ -65,6 +49,8 @@ public final class StackIndicatorLight extends SubsystemBase {
 
     public void setColor(byte color) {
         this.color = color;
+
+        send();
     }
 
     public void setColor(boolean red, boolean green, boolean blue) {
@@ -78,6 +64,8 @@ public final class StackIndicatorLight extends SubsystemBase {
         if (blue) {
             color += 0b001;
         }
+
+        send();
     }
 
     public void setColor(DriverStation.Alliance alliance) {
@@ -88,21 +76,15 @@ public final class StackIndicatorLight extends SubsystemBase {
         } else {
             color = UNKNOWN_ALLIANCE_COLOR;
         }
+
+        send();
     }
 
-    public void send() {
+    protected void send() {
         byte data = (byte) ((stackHeight << 4) + color);
 
         stream.write(data);
         stream.flush();
-    }
-
-    public boolean isAutoSend() {
-        return autoSend;
-    }
-
-    public void setAutoSend(boolean autoSend) {
-        this.autoSend = autoSend;
     }
 
     @Override
