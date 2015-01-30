@@ -182,6 +182,12 @@ public class Hardware {
             return new HardwareMotor(new Victor(channel));
         }
         
+        /**
+         * Creates a motor controlled by a TalonSRX speed controller on a specified port.
+         * @param port
+         *          the port the motor controller is connected to
+         * @return a motor with a specified port
+         */
         public static MotorWithPosition talonSRX(int port){
             return new HardwareTalonSRX(port);
         }
