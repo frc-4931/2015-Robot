@@ -89,26 +89,18 @@ public class MockDataStream implements DataStream {
     }
 
     /**
-     * Clears the read buffer.
-     * Delegates java.nio.Buffer#clear()
+     * Sets up the buffers for test usage (get/put operations).
      */
-    public void clearReadBuffer() {
+    public void testBuffers() {
         readBuffer.clear();
+        flushBuffer.rewind();
     }
 
     /**
-     * Clears the write buffer.
-     * Delegates java.nio.Buffer#clear()
+     * Sets up the buffers for normal stream usage (read/write/flush operations).
      */
-    public void clearWriteBuffer() {
-        writeBuffer.clear();
-    }
-
-    /**
-     * Clears the flush buffer.
-     * Delegates java.nio.Buffer#clear()
-     */
-    public void clearFlushBuffer() {
+    public void resetBuffers() {
+        readBuffer.rewind();
         flushBuffer.clear();
     }
 
@@ -323,6 +315,7 @@ public class MockDataStream implements DataStream {
     @Override
     public void flush() {
         flushBuffer.put(writeBuffer.array());
+        flushBuffer.clear();
     }
 
     @Override
