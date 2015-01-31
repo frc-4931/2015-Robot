@@ -149,7 +149,7 @@ public class RobotBuilder {
         String frontCameraName = Properties.FRONT_CAMERA_NAME;
         String rearCameraName = Properties.REAR_CAMERA_NAME;
 
-        HardwareRIODuino arduino = new HardwareRIODuino(Properties.RIODUINO_I2C_ADDRESS);
+        HardwareRIODuino arduino = new HardwareRIODuino();
 
         return new Robot.Components() {
 

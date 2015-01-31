@@ -6,11 +6,11 @@
  */
 package org.frc4931.robot.mock;
 
-import org.frc4931.robot.component.DataStream;
-
 import java.nio.ByteBuffer;
 import java.util.PriorityQueue;
 import java.util.Queue;
+
+import org.frc4931.robot.component.DataStream;
 
 /**
  * A mock implementation of {@link org.frc4931.robot.component.DataStream} that does not require hardware.
@@ -117,7 +117,7 @@ public class MockDataStream implements DataStream {
     /**
      * Gets data flushed by the class.
      * <p>
-     * param count The number of bytes to retrieve.
+     * @param count The number of bytes to retrieve.
      *
      * @return The bytes retrieved - may be less than requested number.
      */
@@ -254,7 +254,7 @@ public class MockDataStream implements DataStream {
     }
 
     @Override
-    public int write(byte... data) {
+    public int write(byte[] data) {
         int writeCount = 0;
         for (byte b : data) {
             if (writtenData.offer(b)) {
@@ -267,7 +267,7 @@ public class MockDataStream implements DataStream {
 
     @Override
     public void writeByte(byte value) {
-        write(value);
+        write(new byte[]{value});
     }
 
     @Override

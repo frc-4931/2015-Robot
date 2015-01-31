@@ -6,8 +6,9 @@
  */
 package org.frc4931.robot.subsystem;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import org.frc4931.robot.component.DataStream;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
@@ -86,7 +87,7 @@ public final class StackIndicatorLight extends SubsystemBase {
     protected void send() {
         byte data = (byte) ((stackHeight << 4) + color.getData());
 
-        stream.write(data);
+        stream.writeByte(data);
         stream.flush();
     }
 
