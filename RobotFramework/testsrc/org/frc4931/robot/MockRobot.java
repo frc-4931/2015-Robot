@@ -6,15 +6,19 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.TestableRobotState;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc4931.robot.component.DataStream;
+import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.mock.MockDataStream;
 import org.frc4931.robot.mock.MockMotor;
+import org.frc4931.robot.mock.MockMotorWithAngle;
 import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
 import org.frc4931.robot.mock.MockSwitch;
+import org.frc4931.robot.subsystem.Kicker.Position;
+
+import edu.wpi.first.wpilibj.TestableRobotState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -43,6 +47,7 @@ public class MockRobot implements Robot.Components {
     private final MockSolenoid grabber = MockSolenoid.extending();
     private final MockSwitch capturable = MockSwitch.createNotTriggeredSwitch();
     private final MockSwitch captured = MockSwitch.createNotTriggeredSwitch();
+    private final MockMotorWithAngle kickerMotor = new MockMotorWithAngle();
     private final MockSolenoid rampLifter = MockSolenoid.retracting();
     private final MockMotor guardRailMotor = MockMotor.stopped();
     private final MockSwitch guardRailOpenSwitch = MockSwitch.createTriggeredSwitch();
@@ -103,6 +108,11 @@ public class MockRobot implements Robot.Components {
     @Override
     public MockSwitch capturedSwitch() {
         return captured;
+    }
+    
+    @Override
+    public MotorWithAngle kickerMotor() {
+        return kickerMotor;
     }
 
     @Override
@@ -271,6 +281,22 @@ public class MockRobot implements Robot.Components {
     public void assertGuardRailClosed() {
         assertThat(guardRailClosedSwitch().isTriggered()).isEqualTo(true);
         assertThat(guardRailOpenSwitch().isTriggered()).isEqualTo(false);
+    }
+    
+    public void assertKickerDown() {
+        assertThat(kickerMotor.isAt(Position.DOWN.getAngle())).isEqualTo(true);
+    }
+    
+    public void assertKickerStep() {
+        assertThat(kickerMotor.isAt(Position.STEP.getAngle())).isEqualTo(true);
+    }
+    
+    public void assertKickerTote() {
+        assertThat(kickerMotor.isAt(Position.TOTE.getAngle())).isEqualTo(true);
+    }
+    
+    public void assertKickerToteStep() {
+        assertThat(kickerMotor.isAt(Position.TOTE_STEP.getAngle())).isEqualTo(true);
     }
     
     public void assertGrabberRaised() {

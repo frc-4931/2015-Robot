@@ -10,6 +10,7 @@ import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -23,6 +24,7 @@ import org.frc4931.robot.hardware.Hardware.Solenoids;
 import org.frc4931.robot.hardware.HardwareRIODuino;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.Guardrail;
+import org.frc4931.robot.subsystem.Kicker;
 import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.RampLifter;
@@ -88,7 +90,8 @@ public class RobotBuilder {
         Guardrail rail = new Guardrail(new LimitedMotor(components.guardRailActuator(),
                                         components.guardRailOpenSwitch(),
                                         components.guardRailClosedSwitch()));
-        return new Ramp(rail, lifter);
+        Kicker kicker = new Kicker(components.kickerMotor());
+        return new Ramp(rail, lifter, kicker);
     }
     
     /**
@@ -127,6 +130,7 @@ public class RobotBuilder {
         Solenoid grabberClaw = Solenoids.doubleSolenoid(Properties.GRABBER_CLAW_EXTEND,
                                                         Properties.GRABBER_CLAW_RETRACT,
                                                         Solenoid.Direction.EXTENDING);
+        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR);
         Switch canGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB);
         Switch didGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB);
 
@@ -189,6 +193,11 @@ public class RobotBuilder {
             @Override
             public Switch capturedSwitch() {
                 return didGrab;
+            }
+            
+            @Override
+            public MotorWithAngle kickerMotor() {
+                return kickerMotor;
             }
 
             @Override
@@ -260,6 +269,8 @@ public class RobotBuilder {
         private static final int GUARDRAIL_MOTOR = 7;
         private static final int GUARDRAIL_OPEN_SWITCH = 8;
         private static final int GUARDRAIL_CLOSE_SWITCH = 9;
+        
+        private static final int KICKER_MOTOR = 5;
         
         /*-------VISION-------*/
         private static final String FRONT_CAMERA_NAME = "cam0";
