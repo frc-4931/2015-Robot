@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * Command helper class that automatically overrides {@link #interrupted()} to call {@link #end()}.
  */
 public abstract class CommandBase extends Command {
+    private boolean hasExecuted = false;
     protected CommandBase() {
     }
 
@@ -26,7 +27,17 @@ public abstract class CommandBase extends Command {
     protected CommandBase(String name, double timeout) {
         super(name, timeout);
     }
+    
+    @Override
+    protected void execute(){
+        if(!hasExecuted){
+           executeFirstTime();
+           hasExecuted = true;
+        }
+    }
+    protected void executeFirstTime(){}
 
+    
     @Override
     protected void interrupted() {
         end();

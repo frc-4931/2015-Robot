@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot.hardware;
 
-import org.frc4931.robot.component.MotorWithPosition;
+import org.frc4931.robot.component.MotorWithAngle;
 
 import edu.wpi.first.wpilibj.CANTalon;
 
@@ -14,21 +14,22 @@ import edu.wpi.first.wpilibj.CANTalon;
  * Talon speed controller with position sensor
  * @author Nathan Brown
  */
-class HardwareTalonSRX implements MotorWithPosition{
+class HardwareTalonSRX implements MotorWithAngle{
     private final CANTalon motor;
+    private double tolerance;
     
     HardwareTalonSRX(int port){
         this.motor = new CANTalon(port);
     }
     
     @Override
-    public double getPosition(){
+    public double getAngle(){
         return motor.getPosition();
     }
 
     @Override
-    public void setPosition(double pos) {
-        motor.setPosition(pos);
+    public void setAngle(double angle) {
+        motor.setPosition(angle);
     }
 
     @Override
@@ -46,4 +47,13 @@ class HardwareTalonSRX implements MotorWithPosition{
         return (short)(motor.get()*1000);
     }
 
+    @Override
+    public void setTolerance(double tol){
+        tolerance = tol;
+    }
+    
+    @Override
+    public double getTolerance(){
+        return tolerance;
+    }
 }

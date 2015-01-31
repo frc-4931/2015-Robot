@@ -10,7 +10,7 @@ import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.MotorWithPosition;
+import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -188,7 +188,7 @@ public class Hardware {
          *          the port the motor controller is connected to
          * @return a motor with a specified port
          */
-        public static MotorWithPosition talonSRX(int port){
+        public static MotorWithAngle talonSRX(int port){
             return new HardwareTalonSRX(port);
         }
     }

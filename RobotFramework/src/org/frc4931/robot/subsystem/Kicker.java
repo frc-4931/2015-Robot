@@ -6,33 +6,36 @@
  */
 package org.frc4931.robot.subsystem;
 
-import org.frc4931.robot.component.AngleSensor;
-import org.frc4931.robot.component.Motor;
-
-import edu.wpi.first.wpilibj.PIDController;
+import org.frc4931.robot.component.MotorWithAngle;
 
 /**
  * 
  */
 public class Kicker extends SubsystemBase {
+    private final MotorWithAngle motor;
     
-    private final AngleSensor angleSensor;
-    private final Motor motor;
-    
-    public Kicker(AngleSensor pot,Motor motor){
-        
-        angleSensor = pot;
+    public Kicker(MotorWithAngle motor){
         this.motor = motor;
     }
     
-    public void setAngle(double angle){
-        PIDController pid = new PIDController(1, 0, 0, 0, ()->angleSensor.getAngle(), (speed)->motor.setSpeed(speed));
-        pid.setInputRange(0, 270);
-        pid.setOutputRange(-1.0, 1.0);
-        pid.setContinuous(false);
-        pid.setSetpoint(angle);
+    public void set(Position pos){
+        motor.setAngle(pos.getAngle());
+    }
+    
+    public boolean is(Position pos){
+        return motor.isAt(pos.getAngle());
+    }
+    
+    public static enum Position{
+        DOWN(0),STEP(15),TOTE(30),TOTE_STEP(45);
         
-        pid.enable();
+        private final double angle;
+        private Position(double angle){
+            this.angle = angle;
+        }
+        public double getAngle(){
+          return angle;
+        }
     }
     
 }

@@ -6,15 +6,16 @@
  */
 package org.frc4931.robot.mock;
 
-import org.frc4931.robot.component.MotorWithPosition;
+import org.frc4931.robot.component.MotorWithAngle;
 
 /**
  * Test Motor with a position
  * @author Nathan Brown
  */
-public class MockMotorWithPosition implements MotorWithPosition {
+public class MockMotorWithAngle implements MotorWithAngle {
     private double speed;
-    private double pos;
+    private double angle;
+    private double tolerance;
     
     @Override
     public void setSpeed(double speed) {
@@ -32,13 +33,23 @@ public class MockMotorWithPosition implements MotorWithPosition {
     }
 
     @Override
-    public double getPosition() {
-        return pos;
+    public double getAngle() {
+        return angle;
     }
 
     @Override
-    public void setPosition(double pos) {
-        this.pos = pos;
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
+
+    @Override
+    public double getTolerance() {
+        return tolerance;
+    }
+
+    @Override
+    public void setTolerance(double tol) {
+        tolerance = tol;
     }
 
 }

@@ -6,10 +6,9 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -20,6 +19,9 @@ import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
+
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
@@ -139,6 +141,8 @@ public class Robot extends IterativeRobot {
         Switch capturableSwitch();
 
         Switch capturedSwitch();
+        
+        MotorWithAngle kickerMotor();
 
         Solenoid rampLifterActuator();
 

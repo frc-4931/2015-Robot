@@ -23,15 +23,18 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public final class Ramp extends SubsystemBase {
     public final Guardrail guardrail;
     public final RampLifter rampLift;
+    public final Kicker kicker;
 
     /**
      * Creates a new {@link RampLifter} using a {@link Guardrail} and a {@link RampLifter}.
      *
      * @param guardrail The {@link Guardrail} for this {@link Ramp}
      * @param rampLift The {@link RampLifter} for this {@link Ramp}
+     * @param kicker The {@link Kicker} for this {@link Ramp}
      */
-    public Ramp(Guardrail guardrail, RampLifter rampLift) {
+    public Ramp(Guardrail guardrail, RampLifter rampLift, Kicker kicker) {
         this.guardrail = guardrail;
         this.rampLift = rampLift;
+        this.kicker = kicker;
     }
 }
