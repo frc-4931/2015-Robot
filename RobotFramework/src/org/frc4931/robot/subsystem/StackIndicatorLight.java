@@ -7,46 +7,87 @@
 package org.frc4931.robot.subsystem;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import org.frc4931.robot.component.RIODuino;
+import org.frc4931.robot.component.DataStream;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
  */
 public final class StackIndicatorLight extends SubsystemBase {
-    public static final int STACK_HEIGHT_REGISTER = 1;
-    public static final int ALLIANCE_REGISTER = 2;
-
-    private RIODuino arduino;
-
     /**
-     * Create a new instance of this subsystem, in which the lights are controlled by an Arduino.
-     *
-     * @param arduino The Arduino to interface with.
+     * Colors that are able to be written to the stream
      */
-    public StackIndicatorLight(RIODuino arduino) {
-        this.arduino = arduino;
-    }
+    public enum LightColor {
+        BLACK((byte) 0b000),
+        WHITE((byte) 0b111),
+        RED((byte) 0b100),
+        YELLOW((byte) 0b110),
+        GREEN((byte) 0b010),
+        CYAN((byte) 0b011),
+        BLUE((byte) 0b001),
+        MAGENTA((byte) 0b101);
 
-    /**
-     * Transmits the stack height to the Arduino in order to display correct length.
-     *
-     * @param height The (number of?) totes stacked
-     */
-    public void setStackHeight(int height) {
-        arduino.write(STACK_HEIGHT_REGISTER, height);
-    }
+        private final byte data;
 
-    /**
-     * Transmits the alliance team to the Arduino in order to display correct color.
-     *
-     * @param alliance The alliance we are currently on.
-     */
-    public void setAlliance(DriverStation.Alliance alliance) {
-        if (alliance == DriverStation.Alliance.Blue) {
-            arduino.write(ALLIANCE_REGISTER, 0);
-        } else if (alliance == DriverStation.Alliance.Red) {
-            arduino.write(ALLIANCE_REGISTER, 1);
+        LightColor(byte data) {
+            this.data = data;
         }
+
+        byte getData() {
+            return data;
+        }
+    }
+
+    private final DataStream stream;
+
+    private byte stackHeight;
+    private LightColor color;
+
+    /**
+     * Creates a new StackIndicatorLight that uses a data stream.
+     *
+     * @param stream The stream used to send alliance/height data.
+     */
+    public StackIndicatorLight(DataStream stream) {
+        this.stream = stream;
+        stackHeight = 0;
+        color = LightColor.BLACK;
+    }
+
+    public byte getStackHeight() {
+        return stackHeight;
+    }
+
+    public void setStackHeight(byte height) {
+        this.stackHeight = height;
+        send();
+    }
+
+    public LightColor getColor() {
+        return color;
+    }
+
+    public void setColor(LightColor color) {
+        this.color = color;
+        send();
+    }
+
+    public void setColor(DriverStation.Alliance alliance) {
+        if (alliance == DriverStation.Alliance.Red) {
+            color = LightColor.RED;
+        } else if (alliance == DriverStation.Alliance.Blue) {
+            color = LightColor.BLUE;
+        }
+        send();
+    }
+
+    /**
+     * Writes the currently-stored stack height and color data to the  stream.
+     */
+    protected void send() {
+        byte data = (byte) ((stackHeight << 4) + color.getData());
+
+        stream.write(data);
+        stream.flush();
     }
 
     @Override
@@ -54,8 +95,7 @@ public final class StackIndicatorLight extends SubsystemBase {
         try {
             super.shutdown();
         } finally {
-            arduino.shutdown();
+            stream.shutdown();
         }
-
     }
 }

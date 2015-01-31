@@ -10,7 +10,6 @@ import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -21,6 +20,7 @@ import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
+import org.frc4931.robot.hardware.HardwareRIODuino;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.Guardrail;
 import org.frc4931.robot.subsystem.LoaderArm;
@@ -149,7 +149,7 @@ public class RobotBuilder {
         String frontCameraName = Properties.FRONT_CAMERA_NAME;
         String rearCameraName = Properties.REAR_CAMERA_NAME;
 
-        RIODuino arduino = new RIODuino(Properties.RIODUINO_I2C_ADDRESS);
+        HardwareRIODuino arduino = new HardwareRIODuino(Properties.RIODUINO_I2C_ADDRESS);
 
         return new Robot.Components() {
 
@@ -269,7 +269,7 @@ public class RobotBuilder {
             }
 
             @Override
-            public RIODuino arduino() {
+            public HardwareRIODuino arduino() {
                 return arduino;
             }
         };
