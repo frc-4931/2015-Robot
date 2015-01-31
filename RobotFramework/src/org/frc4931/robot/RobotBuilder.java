@@ -275,8 +275,8 @@ public class RobotBuilder {
         private static final int KICKER_MOTOR = 5;
         
         /*-------VISION-------*/
-        private static final String FRONT_CAMERA_NAME = "cam0";
-        private static final String REAR_CAMERA_NAME = "cam1";
+        private static final String FRONT_CAMERA_NAME = null;
+        private static final String REAR_CAMERA_NAME = null;
 
         /*-------RIODUINO-------*/
         private static final int RIODUINO_I2C_ADDRESS = 1;
