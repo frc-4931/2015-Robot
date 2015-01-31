@@ -40,10 +40,14 @@ public class SwitchListener{
     public void start(){
         if(running) return;
         running = true;
-        monitorThread = new Thread(()->{
-                while(running) monitor();
-            },"switchMonitor");
+        monitorThread = new Thread(this::monitorSwitches,"switchMonitor");
         monitorThread.start();
+    }
+    
+    private void monitorSwitches() {
+        while ( running ) {
+            monitor();
+        }
     }
     
     /**

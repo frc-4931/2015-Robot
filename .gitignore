@@ -31,3 +31,6 @@ dist
 /.idea
 *.iml
 
+# Ignore files related to the robot log
+*.log
+*.csv
