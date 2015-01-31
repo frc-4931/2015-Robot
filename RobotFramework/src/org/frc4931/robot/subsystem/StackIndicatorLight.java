@@ -13,14 +13,34 @@ import org.frc4931.robot.component.DataStream;
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
  */
 public final class StackIndicatorLight extends SubsystemBase {
-    public static final byte UNKNOWN_ALLIANCE_COLOR = 0b010;
-    public static final byte RED_ALLIANCE_COLOR = 0b100;
-    public static final byte BLUE_ALLIANCE_COLOR = 0b001;
+    /**
+     * Colors that are able to be written to the stream
+     */
+    public enum LightColor {
+        BLACK((byte) 0b000),
+        WHITE((byte) 0b111),
+        RED((byte) 0b100),
+        YELLOW((byte) 0b110),
+        GREEN((byte) 0b010),
+        CYAN((byte) 0b011),
+        BLUE((byte) 0b001),
+        MAGENTA((byte) 0b101);
+
+        private final byte data;
+
+        LightColor(byte data) {
+            this.data = data;
+        }
+
+        byte getData() {
+            return data;
+        }
+    }
 
     private final DataStream stream;
 
     private byte stackHeight;
-    private byte color;
+    private LightColor color;
 
     /**
      * Creates a new StackIndicatorLight that uses a data stream.
@@ -30,7 +50,7 @@ public final class StackIndicatorLight extends SubsystemBase {
     public StackIndicatorLight(DataStream stream) {
         this.stream = stream;
         stackHeight = 0;
-        color = 0b000;
+        color = LightColor.BLACK;
     }
 
     public byte getStackHeight() {
@@ -39,49 +59,32 @@ public final class StackIndicatorLight extends SubsystemBase {
 
     public void setStackHeight(byte height) {
         this.stackHeight = height;
-
         send();
     }
 
-    public byte getColor() {
+    public LightColor getColor() {
         return color;
     }
 
-    public void setColor(byte color) {
+    public void setColor(LightColor color) {
         this.color = color;
-
-        send();
-    }
-
-    public void setColor(boolean red, boolean green, boolean blue) {
-        color = 0;
-        if (red) {
-            color += 0b100;
-        }
-        if (green) {
-            color += 0b010;
-        }
-        if (blue) {
-            color += 0b001;
-        }
-
         send();
     }
 
     public void setColor(DriverStation.Alliance alliance) {
         if (alliance == DriverStation.Alliance.Red) {
-            color = RED_ALLIANCE_COLOR;
+            color = LightColor.RED;
         } else if (alliance == DriverStation.Alliance.Blue) {
-            color = BLUE_ALLIANCE_COLOR;
-        } else {
-            color = UNKNOWN_ALLIANCE_COLOR;
+            color = LightColor.BLUE;
         }
-
         send();
     }
 
+    /**
+     * Writes the currently-stored stack height and color data to the  stream.
+     */
     protected void send() {
-        byte data = (byte) ((stackHeight << 4) + color);
+        byte data = (byte) ((stackHeight << 4) + color.getData());
 
         stream.write(data);
         stream.flush();
