@@ -75,7 +75,7 @@ public interface DataStream extends Lifecycle {
      * @param data The data to write.
      * @return The number of bytes actually written (which may be less than the number passed in).
      */
-    public int write(byte... data);
+    public int write(byte[] data);
 
     /**
      * Writes a byte to the destination.

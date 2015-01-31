@@ -79,13 +79,13 @@ public class SerialDataStream implements DataStream {
     }
 
     @Override
-    public int write(byte... data) {
+    public int write(byte[] data) {
         return serial.write(data, data.length);
     }
 
     @Override
     public void writeByte(byte value) {
-        write(value);
+        write(new byte[]{value});
     }
 
     @Override
