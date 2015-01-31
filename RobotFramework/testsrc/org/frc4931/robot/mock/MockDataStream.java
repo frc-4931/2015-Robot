@@ -6,112 +6,146 @@
  */
 package org.frc4931.robot.mock;
 
-import java.nio.ByteBuffer;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
 import org.frc4931.robot.component.DataStream;
+
+import java.nio.ByteBuffer;
 
 /**
  * A mock implementation of {@link org.frc4931.robot.component.DataStream} that does not require hardware.
  */
 public class MockDataStream implements DataStream {
-    private Queue<Byte> readData;
-    private Queue<Byte> writtenData;
-    private Queue<Byte> flushedData;
+    private ByteBuffer readBuffer;
+    private ByteBuffer writeBuffer;
+    private ByteBuffer flushBuffer;
 
     /**
      * Creates a new data stream.
+     *
+     * @param readCapacity  The capacity of the read buffer.
+     * @param writeCapacity The capacity of the write buffer.
+     * @param flushCapacity The capacity of the flush buffer.
      */
-    public MockDataStream() {
-        readData = new PriorityQueue<>();
-        writtenData = new PriorityQueue<>();
-        flushedData = new PriorityQueue<>();
+    public MockDataStream(int readCapacity, int writeCapacity, int flushCapacity) {
+        readBuffer = ByteBuffer.allocate(readCapacity);
+        writeBuffer = ByteBuffer.allocate(writeCapacity);
+        flushBuffer = ByteBuffer.allocate(flushCapacity);
+    }
+
+    /**
+     * Sets the limit on the read buffer.
+     * Delegates {@link java.nio.Buffer#limit(int)}
+     *
+     * @param limit The new limit
+     */
+    public void setReadLimit(int limit) {
+        readBuffer.limit(limit);
+    }
+
+    /**
+     * Sets the limit on the write buffer.
+     * Delegates {@link java.nio.Buffer#limit(int)}
+     *
+     * @param limit The new limit
+     */
+    public void setWriteLimit(int limit) {
+        writeBuffer.limit(limit);
+    }
+
+    /**
+     * Sets the limit on the flush buffer.
+     * Delegates {@link java.nio.Buffer#limit(int)}
+     *
+     * @param limit The new limit
+     */
+    public void setFlushLimit(int limit) {
+        flushBuffer.limit(limit);
+    }
+
+    /**
+     * Clears the read buffer.
+     * Delegates java.nio.Buffer#clear()
+     */
+    public void clearReadBuffer() {
+        readBuffer.clear();
+    }
+
+    /**
+     * Clears the write buffer.
+     * Delegates java.nio.Buffer#clear()
+     */
+    public void clearWriteBuffer() {
+        writeBuffer.clear();
+    }
+
+    /**
+     * Clears the flush buffer.
+     * Delegates java.nio.Buffer#clear()
+     */
+    public void clearFlushBuffer() {
+        flushBuffer.clear();
     }
 
     /**
      * Puts data in the read buffer (for the class to access using read())
      *
-     * @param data The data to add to the buffer.
+     * @param data The data to put in the buffer.
      */
-    public void addReadData(byte... data) {
-        for (byte b : data) {
-            readData.add(b);
-        }
+    public void put(byte[] data) {
+        readBuffer.put(data);
     }
 
     /**
      * Puts a byte in the read buffer.
      *
-     * @param value The byte to add.
+     * @param value The byte to put.
      */
-    public void addByte(byte value) {
-        addReadData(value);
+    public void putByte(byte value) {
+        readBuffer.put(value);
     }
 
     /**
      * Puts a short in the read buffer.
      *
-     * @param value The short to add.
+     * @param value The short to put.
      */
-    public void addShort(short value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
-        buffer.putShort(value);
-        buffer.flip();
-
-        addReadData(buffer.array());
+    public void putShort(short value) {
+        readBuffer.putShort(value);
     }
 
     /**
      * Puts an int in the read buffer.
      *
-     * @param value The int to add.
+     * @param value The int to put.
      */
-    public void addInt(int value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
-        buffer.putInt(value);
-        buffer.flip();
-
-        addReadData(buffer.array());
+    public void putInt(int value) {
+        readBuffer.putInt(value);
     }
 
     /**
      * Puts a long in the read buffer.
      *
-     * @param value The long to add.
+     * @param value The long to put.
      */
-    public void addLong(long value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(value);
-        buffer.flip();
-
-        addReadData(buffer.array());
+    public void putLong(long value) {
+        readBuffer.putLong(value);
     }
 
     /**
      * Puts a float in the read buffer.
      *
-     * @param value The float to add.
+     * @param value The float to put.
      */
-    public void addFloat(float value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES);
-        buffer.putFloat(value);
-        buffer.flip();
-
-        addReadData(buffer.array());
+    public void putFloat(float value) {
+        readBuffer.putFloat(value);
     }
 
     /**
      * Puts a double in the read buffer.
      *
-     * @param value The double to add.
+     * @param value The double to put.
      */
-    public void addDouble(double value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES);
-        buffer.putDouble(value);
-        buffer.flip();
-
-        addReadData(buffer.array());
+    public void putDouble(double value) {
+        readBuffer.putDouble(value);
     }
 
     /**
@@ -121,14 +155,10 @@ public class MockDataStream implements DataStream {
      *
      * @return The bytes retrieved - may be less than requested number.
      */
-    public byte[] getFlushedData(int count) {
-        byte[] data = new byte[Math.min(count, flushedData.size())];
-
-        for (int i = 0; i < data.length; i++) {
-            data[i] = flushedData.remove();
-        }
-
-        return data;
+    public byte[] get(int count) {
+        byte[] result = new byte[count];
+        flushBuffer.get(result);
+        return result;
     }
 
     /**
@@ -137,9 +167,7 @@ public class MockDataStream implements DataStream {
      * @return The byte retrieved.
      */
     public byte getByte() {
-        byte[] bytes = getFlushedData(Byte.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.get();
     }
 
     /**
@@ -148,9 +176,7 @@ public class MockDataStream implements DataStream {
      * @return The short retrieved.
      */
     public short getShort() {
-        byte[] bytes = getFlushedData(Short.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.getShort();
     }
 
     /**
@@ -159,9 +185,7 @@ public class MockDataStream implements DataStream {
      * @return The integer retrieved.
      */
     public int getInt() {
-        byte[] bytes = getFlushedData(Integer.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.getInt();
     }
 
     /**
@@ -170,9 +194,7 @@ public class MockDataStream implements DataStream {
      * @return The long retrieved.
      */
     public long getLong() {
-        byte[] bytes = getFlushedData(Long.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.getLong();
     }
 
     /**
@@ -181,9 +203,7 @@ public class MockDataStream implements DataStream {
      * @return The float retrieved.
      */
     public float getFloat() {
-        byte[] bytes = getFlushedData(Float.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.getFloat();
     }
 
     /**
@@ -192,133 +212,90 @@ public class MockDataStream implements DataStream {
      * @return The double retrieved.
      */
     public double getDouble() {
-        byte[] bytes = getFlushedData(Double.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return flushBuffer.getDouble();
     }
 
     @Override
     public int available() {
-        return readData.size();
+        return readBuffer.remaining();
     }
 
     @Override
     public byte[] read(int count) {
-        byte[] result = new byte[Math.max(count, readData.size())];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = readData.remove();
-        }
+        byte[] result = new byte[count];
+        readBuffer.get(result);
         return result;
     }
 
     @Override
     public byte readByte() {
-        byte[] bytes = read(Byte.BYTES);
-
-        return ByteBuffer.wrap(bytes).get();
+        return readBuffer.get();
     }
 
     @Override
     public short readShort() {
-        byte[] bytes = read(Short.BYTES);
-
-        return ByteBuffer.wrap(bytes).getShort();
+        return readBuffer.getShort();
     }
 
     @Override
     public int readInt() {
-        byte[] bytes = read(Integer.BYTES);
-
-        return ByteBuffer.wrap(bytes).getInt();
+        return readBuffer.getInt();
     }
 
     @Override
     public long readLong() {
-        byte[] bytes = read(Long.BYTES);
-
-        return ByteBuffer.wrap(bytes).getLong();
+        return readBuffer.getLong();
     }
 
     @Override
     public float readFloat() {
-        byte[] bytes = read(Float.BYTES);
-
-        return ByteBuffer.wrap(bytes).getFloat();
+        return readBuffer.getFloat();
     }
 
     @Override
     public double readDouble() {
-        byte[] bytes = read(Double.BYTES);
-
-        return ByteBuffer.wrap(bytes).getDouble();
+        return readBuffer.getDouble();
     }
 
     @Override
     public int write(byte[] data) {
-        int writeCount = 0;
-        for (byte b : data) {
-            if (writtenData.offer(b)) {
-                writeCount++;
-            }
-        }
-
-        return writeCount;
+        writeBuffer.put(data);
+        return data.length;
     }
 
     @Override
     public void writeByte(byte value) {
-        write(new byte[]{value});
+        writeBuffer.put(value);
     }
 
     @Override
     public void writeShort(short value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Short.BYTES);
-        buffer.putShort(value);
-        buffer.flip();
-
-        write(buffer.array());
+        writeBuffer.putShort(value);
     }
 
     @Override
     public void writeInt(int value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Integer.BYTES);
-        buffer.putInt(value);
-        buffer.flip();
-
-        write(buffer.array());
+        writeBuffer.putInt(value);
     }
 
     @Override
     public void writeLong(long value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(value);
-        buffer.flip();
-
-        write(buffer.array());
+        writeBuffer.putLong(value);
     }
 
     @Override
     public void writeFloat(float value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Float.BYTES);
-        buffer.putFloat(value);
-        buffer.flip();
-
-        write(buffer.array());
+        writeBuffer.putFloat(value);
     }
 
     @Override
     public void writeDouble(double value) {
-        ByteBuffer buffer = ByteBuffer.allocate(Double.BYTES);
-        buffer.putDouble(value);
-        buffer.flip();
-
-        write(buffer.array());
+        writeBuffer.putDouble(value);
     }
 
     @Override
     public void flush() {
-        flushedData.addAll(writtenData);
-        writtenData.clear();
+        flushBuffer.put(writeBuffer.array());
     }
 
     @Override
@@ -328,8 +305,8 @@ public class MockDataStream implements DataStream {
 
     @Override
     public void shutdown() {
-        readData.clear();
-        writtenData.clear();
-        flushedData.clear();
+        readBuffer.clear();
+        writeBuffer.clear();
+        flushBuffer.clear();
     }
 }
