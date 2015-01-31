@@ -57,8 +57,10 @@ public class Robot extends IterativeRobot {
         double driveSpeed = operatorInterface.driveSpeed.read();
         double turnSpeed = operatorInterface.turnSpeed.read();
 
-        systems.drive.arcade(driveSpeed, turnSpeed);
-//        systems.drive.cheesy(throttle, wheel, false);
+        boolean quickTurn = operatorInterface.quickTurn.isTriggered();
+        if(Math.abs(driveSpeed)<0.05)
+            quickTurn = true;
+        systems.drive.cheesy(throttle*0.5, wheel*0.5, quickTurn);
         if(operatorInterface.writeData.isTriggered())
             Logger.getInstance().shutdown();
     }
@@ -139,14 +141,7 @@ public class Robot extends IterativeRobot {
         Switch capturedSwitch();
 
         Solenoid rampLifterActuator();
-        Motor leadScrewActuator();
-        Switch leadScrewLowerSwitch();
-        Switch leadScrewStepSwitch();
-        Switch leadScrewToteSwitch();
-        Switch leadScrewToteOnStepSwitch();
-        Motor kickerActuator();
-        Switch kickerLowerSwitch();
-        Switch kickerUpperSwitch();
+
         Motor guardRailActuator();
 
         Switch guardRailOpenSwitch();

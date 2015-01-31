@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.component;
 
+
 /**
  * A representation of a drive train with motors on the left and right.
  */
@@ -35,7 +36,8 @@ public interface DriveTrain {
         assert right != null;
         return (leftMotor,rightMotor)->{
             left.setSpeed(leftMotor);
-            right.setSpeed(rightMotor);
+            right.setSpeed(rightMotor*-1);
+            
         };
     }
 }
