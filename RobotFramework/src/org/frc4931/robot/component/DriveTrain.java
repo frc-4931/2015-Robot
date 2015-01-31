@@ -36,7 +36,7 @@ public interface DriveTrain {
         assert right != null;
         return (leftMotor,rightMotor)->{
             left.setSpeed(leftMotor);
-            right.setSpeed(rightMotor*-1);
+            right.setSpeed(rightMotor);
             
         };
     }

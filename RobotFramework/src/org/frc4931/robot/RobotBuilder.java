@@ -119,8 +119,10 @@ public class RobotBuilder {
         // Create the drive system ...
         Motor leftDriveMotor = Motor.compose(Motors.talon(Properties.LEFT_FRONT_DRIVE),
                                              Motors.talon(Properties.LEFT_REAR_DRIVE));
-        Motor rightDriveMotor = Motor.compose(Motors.talon(Properties.RIGHT_FRONT_DRIVE),
-                                              Motors.talon(Properties.RIGHT_REAR_DRIVE));
+        // Right motor is physically oriented in the opposite direction...
+        Motor rightDriveMotor = Motor.invert(
+                Motor.compose(Motors.talon(Properties.RIGHT_FRONT_DRIVE),
+                        Motors.talon(Properties.RIGHT_REAR_DRIVE)));
         Relay shifter = Hardware.relay(Properties.DRIVE_SHIFTER);
 
         // Create the loader arm subsystem ...

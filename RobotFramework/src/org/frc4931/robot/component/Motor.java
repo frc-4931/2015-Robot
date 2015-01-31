@@ -119,4 +119,23 @@ public interface Motor {
             }
         };
     }
+
+    static Motor invert(Motor motor) {
+        return new Motor() {
+            @Override
+            public void setSpeed(double speed) {
+                motor.setSpeed(-1 * speed);
+            }
+
+            @Override
+            public double getSpeed() {
+                return -1 * motor.getSpeed();
+            }
+
+            @Override
+            public short getSpeedAsShort() {
+                return (short) (-1 * motor.getSpeedAsShort());
+            }
+        };
+    }
 }

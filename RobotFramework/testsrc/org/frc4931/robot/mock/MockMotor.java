@@ -16,7 +16,8 @@ import org.frc4931.robot.component.Motor;
  * @author Zach Anderson
  * @see Motor
  */
-public final class MockMotor implements Motor {
+public class MockMotor implements Motor {
+
     /**
      * Constructs a new {@link MockMotor} that is initially stopped. Same as
      * calling {@code running(0.0)}.
@@ -42,6 +43,25 @@ public final class MockMotor implements Motor {
 
     private MockMotor(double speed) {
         this.speed = speed;
+    }
+
+    public MockMotor invert() {
+        return new MockMotor(speed) {
+            @Override
+            public void setSpeed(double speed) {
+                super.setSpeed(-1 * speed);
+            }
+
+            @Override
+            public double getSpeed() {
+                return -1 * super.getSpeed();
+            }
+
+            @Override
+            public short getSpeedAsShort() {
+                return (short) (-1 * super.getSpeedAsShort());
+            }
+        };
     }
 
     @Override
