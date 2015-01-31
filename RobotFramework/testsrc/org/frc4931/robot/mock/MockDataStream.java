@@ -62,6 +62,33 @@ public class MockDataStream implements DataStream {
     }
 
     /**
+     * Determines whether there is remaining data in the read buffer.
+     *
+     * @return true if there is no remaining data in the buffer.
+     */
+    public boolean isReadEmpty() {
+        return !readBuffer.hasRemaining();
+    }
+
+    /**
+     * Determines whether there is remaining data in the write buffer.
+     *
+     * @return true if there is no remaining data in the buffer.
+     */
+    public boolean isWriteEmpty() {
+        return !writeBuffer.hasRemaining();
+    }
+
+    /**
+     * Determines whether there is remaining data in the flush buffer.
+     *
+     * @return true if there is no remaining data in the buffer.
+     */
+    public boolean isFlushEmpty() {
+        return !flushBuffer.hasRemaining();
+    }
+
+    /**
      * Clears the read buffer.
      * Delegates java.nio.Buffer#clear()
      */
