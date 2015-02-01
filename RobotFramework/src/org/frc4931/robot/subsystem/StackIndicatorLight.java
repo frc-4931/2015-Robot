@@ -6,89 +6,81 @@
  */
 package org.frc4931.robot.subsystem;
 
-import org.frc4931.robot.component.DataStream;
-
 import edu.wpi.first.wpilibj.DriverStation;
+import org.frc4931.robot.component.RIODuino;
 
 /**
  * A subsystem using a string of addressable LED lights to convey stack height to the driver.
  */
 public final class StackIndicatorLight extends SubsystemBase {
-    /**
-     * Colors that are able to be written to the stream
-     */
-    public enum LightColor {
-        BLACK((byte) 0b000),
-        WHITE((byte) 0b111),
-        RED((byte) 0b100),
-        YELLOW((byte) 0b110),
-        GREEN((byte) 0b010),
-        CYAN((byte) 0b011),
-        BLUE((byte) 0b001),
-        MAGENTA((byte) 0b101);
 
-        private final byte data;
-
-        LightColor(byte data) {
-            this.data = data;
-        }
-
-        byte getData() {
-            return data;
-        }
-    }
-
-    private final DataStream stream;
+    private final RIODuino rioDuino;
 
     private byte stackHeight;
-    private LightColor color;
+    private RIODuino.LightColor color;
 
     /**
      * Creates a new StackIndicatorLight that uses a data stream.
      *
-     * @param stream The stream used to send alliance/height data.
+     * @param rioDuino The RIODuino object to control.
      */
-    public StackIndicatorLight(DataStream stream) {
-        this.stream = stream;
+    public StackIndicatorLight(RIODuino rioDuino) {
+        this.rioDuino = rioDuino;
         stackHeight = 0;
-        color = LightColor.BLACK;
+        color = RIODuino.LightColor.BLACK;
     }
 
     public byte getStackHeight() {
         return stackHeight;
     }
 
-    public void setStackHeight(byte height) {
-        this.stackHeight = height;
+    /**
+     * Sets the stack height to a new value and sends it to the RIODuino.
+     *
+     * @param stackHeight The new height to set.
+     */
+    public void setStackHeight(byte stackHeight) {
+        this.stackHeight = stackHeight;
         send();
     }
 
-    public LightColor getColor() {
+    public RIODuino.LightColor getColor() {
         return color;
     }
 
-    public void setColor(LightColor color) {
+    /**
+     * Sets the color to a new color and sends it to the RIODuino.
+     *
+     * @param color The new color to set.
+     */
+    public void setColor(RIODuino.LightColor color) {
         this.color = color;
         send();
     }
 
+    /**
+     * Sets the color according to an alliance and sends it to the RIODuino.
+     * @param alliance The alliance that corresponds to the new color.
+     */
     public void setColor(DriverStation.Alliance alliance) {
         if (alliance == DriverStation.Alliance.Red) {
-            color = LightColor.RED;
+            setColor(RIODuino.LightColor.RED);
         } else if (alliance == DriverStation.Alliance.Blue) {
-            color = LightColor.BLUE;
+            setColor(RIODuino.LightColor.BLUE);
         }
-        send();
     }
 
     /**
-     * Writes the currently-stored stack height and color data to the  stream.
+     * Sends the currently-stored stack height and color data to the RIODuino.
      */
     protected void send() {
-        byte data = (byte) ((stackHeight << 4) + color.getData());
+        rioDuino.sendStackIndicatorInfo(stackHeight, color);
+    }
 
-        stream.writeByte(data);
-        stream.flush();
+    @Override
+    public void startup() {
+        super.startup();
+        rioDuino.startup();
     }
 
     @Override
@@ -96,7 +88,7 @@ public final class StackIndicatorLight extends SubsystemBase {
         try {
             super.shutdown();
         } finally {
-            stream.shutdown();
+            rioDuino.shutdown();
         }
     }
 }

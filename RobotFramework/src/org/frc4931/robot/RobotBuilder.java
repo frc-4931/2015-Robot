@@ -6,12 +6,16 @@
  */
 package org.frc4931.robot;
 
+import edu.wpi.first.wpilibj.SerialPort;
 import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.LimitedMotor;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
+import org.frc4931.robot.component.RIODuino;
 import org.frc4931.robot.component.Relay;
+import org.frc4931.robot.component.SerialDataStream;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.driver.Joystick;
@@ -21,7 +25,6 @@ import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
-import org.frc4931.robot.hardware.HardwareRIODuino;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.Guardrail;
 import org.frc4931.robot.subsystem.Kicker;
@@ -51,7 +54,7 @@ public class RobotBuilder {
     }
 
     private static StackIndicatorLight buildStackIndicator(Robot.Components components) {
-        return new StackIndicatorLight(components.arduino());
+        return new StackIndicatorLight(new RIODuino(components.rioDuinoDataStream()));
     }
 
     /**
@@ -148,7 +151,8 @@ public class RobotBuilder {
         String frontCameraName = Properties.FRONT_CAMERA_NAME;
         String rearCameraName = Properties.REAR_CAMERA_NAME;
 
-        HardwareRIODuino arduino = new HardwareRIODuino();
+        DataStream rioDuinoDataStream = new SerialDataStream(new SerialPort(Properties.RIODUINO_SERIAL_BAUD,
+                Properties.RIODUINO_SERIAL_PORT));
 
         return new Robot.Components() {
 
@@ -233,8 +237,8 @@ public class RobotBuilder {
             }
 
             @Override
-            public HardwareRIODuino arduino() {
-                return arduino;
+            public DataStream rioDuinoDataStream() {
+                return rioDuinoDataStream;
             }
         };
     }
@@ -279,6 +283,7 @@ public class RobotBuilder {
         private static final String REAR_CAMERA_NAME = null;
 
         /*-------RIODUINO-------*/
-        private static final int RIODUINO_I2C_ADDRESS = 1;
+        private static final int RIODUINO_SERIAL_BAUD = 9600;
+        private static final SerialPort.Port RIODUINO_SERIAL_PORT = SerialPort.Port.kMXP;
     }
 }

@@ -52,13 +52,12 @@ public class MockRobot implements Robot.Components {
     private final MockMotor guardRailMotor = MockMotor.stopped();
     private final MockSwitch guardRailOpenSwitch = MockSwitch.createTriggeredSwitch();
     private final MockSwitch guardRailClosedSwitch = MockSwitch.createNotTriggeredSwitch();
-    private final String frontCameraName;
-    private final String rearCameraName;
+    private final String frontCameraName = null;
+    private final String rearCameraName = null;
+    private final DataStream rioDuinoDataStream = new MockDataStream(1024, 1024, 1024);
 
     public MockRobot() {
         systems = RobotBuilder.build(this);
-        frontCameraName = null;
-        rearCameraName = null;
     }
 
     public Robot.Systems systems() {
@@ -145,10 +144,10 @@ public class MockRobot implements Robot.Components {
     public String rearCameraName() {
         return rearCameraName;
     }
-    
+
     @Override
-    public DataStream arduino() {
-        return new MockDataStream();
+    public DataStream rioDuinoDataStream() {
+        return rioDuinoDataStream;
     }
 
     public MockRobot enableRobot() {
