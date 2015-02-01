@@ -29,22 +29,56 @@ public class OperatorInterface {
 
     public final Switch writeData;
     public final Switch quickTurn;
-    
-    // Modified to fit driver preference
-    public OperatorInterface(Joystick joy){
-        wheel = joy.getYaw();
-        throttle = joy.getPitch();
 
-        driveSpeed = joy.getPitch();
-        turnSpeed = joy.getRoll();
-        
-        quickTurn = joy.getButton(5);
-        
-        writeData = joy.getButton(6);
-        
-        toggleClaw = joy.getButton(0);
-        toggleLift = joy.getButton(1);
-        toggleRamp = joy.getButton(2);
-        toggleRails = joy.getButton(3);
+    // Modified to fit driver preference
+    public OperatorInterface(Joystick joy) {
+        if (joy instanceof LogitechAttack3D) {
+            wheel = joy.getYaw();
+            throttle = joy.getPitch();
+
+            driveSpeed = joy.getPitch();
+            turnSpeed = joy.getRoll();
+
+            quickTurn = joy.getButton(5);
+
+            writeData = joy.getButton(6);
+
+            toggleClaw = joy.getButton(0);
+            toggleLift = joy.getButton(1);
+            toggleRamp = joy.getButton(2);
+            toggleRails = joy.getButton(3);
+
+        } else if (joy instanceof LogitechGamepadF310) {
+            wheel = joy.getYaw();
+            throttle = joy.getPitch();
+
+            driveSpeed = joy.getPitch();
+            turnSpeed = joy.getRoll();
+
+            quickTurn = joy.getButton(6);
+
+            writeData = joy.getButton(7);
+
+            toggleClaw = joy.getButton(0);
+            toggleLift = joy.getButton(2);
+            toggleRamp = joy.getButton(3);
+            toggleRails = joy.getButton(1);
+
+        } else {
+            wheel = joy.getYaw();
+            throttle = joy.getPitch();
+
+            driveSpeed = joy.getPitch();
+            turnSpeed = joy.getRoll();
+
+            quickTurn = joy.getButton(5);
+
+            writeData = joy.getButton(6);
+
+            toggleClaw = joy.getButton(0);
+            toggleLift = joy.getButton(1);
+            toggleRamp = joy.getButton(2);
+            toggleRails = joy.getButton(3);
+        }
     }
 }
