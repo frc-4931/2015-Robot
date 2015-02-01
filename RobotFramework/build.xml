@@ -39,7 +39,7 @@
 	    
   <!-- Deletes the directories used by the tests-->
   <target name="clean" depends="clean-tests" description="Clean up all generated files">
-    <ant antfile="${wpilib.ant.dir}/build.xml" target="jar"/>
+    <ant antfile="${wpilib.ant.dir}/build.xml" target="clean"/>
   </target>
 	    
   <!-- 
@@ -67,6 +67,7 @@
   <path id="junit.class.path">
     <fileset dir="${test.libs.dir}" includes="**/*.jar" excludes="**/*-sources.jar"/>
     <pathelement location="${build.dir}" />
+    <pathelement path="${classpath}" />
   </path>
 
   <!-- Run the JUnit Tests -->
@@ -84,7 +85,7 @@
     <mkdir dir="${test.output.dir}" />
     <mkdir dir="${test.report.dir}" />
     <echo>[run-tests] Running all unit tests...</echo>
-    <junit printsummary="off" showOutput="false" fork="true" haltonfailure="false">
+    <junit printsummary="off" showOutput="false" fork="false" haltonfailure="false">
       <classpath refid="junit.class.path" />
       <classpath> 
         <pathelement location="${test.target.dir}"/>
