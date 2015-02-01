@@ -6,6 +6,9 @@
  */
 package org.frc4931.robot;
 
+import edu.wpi.first.wpilibj.TestableRobotState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.mock.MockDataStream;
@@ -15,10 +18,6 @@ import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
 import org.frc4931.robot.mock.MockSwitch;
 import org.frc4931.robot.subsystem.Kicker.Position;
-
-import edu.wpi.first.wpilibj.TestableRobotState;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -40,7 +39,8 @@ public class MockRobot implements Robot.Components {
     private final Robot.Systems systems;
     private final MockRelay shifter = MockRelay.withOff();
     private final MockMotor leftDrive = MockMotor.stopped();
-    private final MockMotor rightDrive = MockMotor.stopped();
+    // Right motor is physically oriented in the opposite direction...
+    private final MockMotor rightDrive = MockMotor.stopped().invert();
     private final MockMotor armLifterMotor = MockMotor.stopped();
     private final MockSwitch armLifterLowerSwitch = MockSwitch.createTriggeredSwitch();
     private final MockSwitch armLifterUpperSwitch = MockSwitch.createNotTriggeredSwitch();
