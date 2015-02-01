@@ -6,17 +6,27 @@
  */
 package org.frc4931.robot.mock;
 
-import org.frc4931.robot.component.DataStream;
-
 import java.nio.ByteBuffer;
+
+import org.frc4931.robot.component.DataStream;
 
 /**
  * A mock implementation of {@link org.frc4931.robot.component.DataStream} that does not require hardware.
  */
 public class MockDataStream implements DataStream {
+    
+    public static final int DEFAULT_SIZE = 1024*10;
+    
     private ByteBuffer readBuffer;
     private ByteBuffer writeBuffer;
     private ByteBuffer flushBuffer;
+
+    /**
+     * Creates a new data stream with {@link #DEFAULT_SIZE default sized} buffers.
+     */
+    public MockDataStream() {
+        this(DEFAULT_SIZE,DEFAULT_SIZE,DEFAULT_SIZE);
+    }
 
     /**
      * Creates a new data stream.
