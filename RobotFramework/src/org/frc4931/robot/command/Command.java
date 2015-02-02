@@ -13,7 +13,7 @@ public interface Command {
     /**
      * Set up this {@link Command}. No physical hardware should be manipulated.
      */
-    public void initialized();
+    public void initialize();
     
     /**
      * Executed once after this {@link Command} is initialized, should return {@code true}

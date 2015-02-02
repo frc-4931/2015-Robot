@@ -6,40 +6,74 @@
  */
 package org.frc4931.robot.command;
 
+import org.frc4931.robot.command.Scheduler.Commands;
+
 /**
  * Manages all of the state information for a {@link Command}.
  */
 class CommandRunner {
-    private final Command command;
+    private Command command;
+    private CommandRunner[] commands = null;
+    private CommandRunner next;
+    private final boolean isBranch;
     private State state = State.UNINITIALIZED;
     
     public CommandRunner(Command command) {
+        this(null, command);
+    }
+    
+    public CommandRunner(CommandRunner next, Command command) {
         this.command = command;
+        this.next = next;
+        isBranch = false;
+    }
+    
+    public CommandRunner(CommandRunner next, CommandRunner... commands) {
+        this.commands = commands;
+        this.next = next;
+        isBranch = true;
     }
     
     /**
      * Steps through all of the state logic for its {@link Command}.
+     * @return {@code true} if this {@link CommandRunner} is ready to be terminated;
+     * {@code false} otherwise
      */
-    public void step() {
+    public boolean step() {
+        if(isBranch) {
+            boolean flag = true;
+            for(CommandRunner command : commands) if(!command.step()) flag = false;
+            return flag;
+        }
+        
         // If we are uninitialized initialize us
         if(state == State.UNINITIALIZED) {
-            command.initialized();
+            command.initialize();
             state = State.INITIALIZED;
         }
         
         // Run
         if(state == State.INITIALIZED) {
-            state = State.RUNNING;
-            if(command.firstExecute()) state = State.FINISHED;
+            // If any command is not finished, we set the state to running
+            state = State.FINISHED;
+            if(!command.firstExecute()) state = State.RUNNING;
+            
         } else if(state == State.RUNNING) {
-            if(command.execute()) state = State.FINISHED;
+            // If any command is not finished, we set the state to running
+            state = State.FINISHED;
+            if(!command.execute()) state = State.RUNNING;
         }
-        
         
         if(state == State.FINISHED || state == State.INTERUPTED) {
             command.finalize();
             state = State.FINALIZED;
+            return true;
         }
+        return false;
+    }
+    
+    public void after(Commands commandList) {
+        commandList.add(next);
     }
     
     /**
@@ -47,6 +81,25 @@ class CommandRunner {
      */
     public void cancel() {
         state = State.INTERUPTED;
+    }
+    
+    static final class ForkRunner extends CommandRunner {
+        private final CommandRunner forkedCommand;
+
+        public ForkRunner(CommandRunner forked) {
+            super(null);
+            forkedCommand = forked;
+        }
+        
+        @Override
+        public boolean step() { return true; }
+        
+        @Override
+        public void after(Commands commandList) {
+            super.after(commandList);
+            commandList.add(forkedCommand);
+        }
+        
     }
     
     /**
