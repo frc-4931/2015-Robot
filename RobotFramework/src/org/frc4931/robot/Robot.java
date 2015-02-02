@@ -6,8 +6,6 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
@@ -22,10 +20,14 @@ import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
 
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+
 public class Robot extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
     private static Robot instance;
     private static long startTime = System.nanoTime();
+    private static long startTimeInMillis = System.currentTimeMillis();
     private Systems systems;
     private OperatorInterface operatorInterface;
 
@@ -92,6 +94,10 @@ public class Robot extends IterativeRobot {
         return System.nanoTime()-startTime;
     }
 
+    public static int elapsedTimeInMillis() {
+        return (int)(System.currentTimeMillis()-startTimeInMillis);
+    }
+    
     public static final class Systems implements Lifecycle {
         public final DriveSystem drive;
         public final LoaderArm grabber;
