@@ -103,14 +103,14 @@ public class MockDataStream implements DataStream {
      */
     public void testBuffers() {
         readBuffer.clear();
-        flushBuffer.rewind();
+        flushBuffer.flip();
     }
 
     /**
      * Sets up the buffers for normal stream usage (read/write/flush operations).
      */
     public void resetBuffers() {
-        readBuffer.rewind();
+        readBuffer.flip();
         flushBuffer.clear();
     }
 
@@ -325,7 +325,7 @@ public class MockDataStream implements DataStream {
     @Override
     public void flush() {
         flushBuffer.put(writeBuffer.array());
-        flushBuffer.clear();
+        writeBuffer.clear();
     }
 
     @Override
