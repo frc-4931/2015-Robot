@@ -33,7 +33,7 @@ public class Scheduler {
         list.step();
     }
     
-    private final static class Commands {
+    final static class Commands {
         List<CommandRunner> beingExecuted = new ArrayList<>();
         List<CommandRunner> pendingAdditon = new ArrayList<>();
         
@@ -46,6 +46,10 @@ public class Scheduler {
         
         public void add(Command command) {
             pendingAdditon.add(new CommandRunner(command));
+        }
+        
+        public void add(CommandRunner command) {
+            pendingAdditon.add(command);
         }
     }
 }
