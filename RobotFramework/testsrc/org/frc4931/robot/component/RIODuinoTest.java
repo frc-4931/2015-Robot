@@ -6,6 +6,7 @@
  */
 package org.frc4931.robot.component;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.frc4931.robot.mock.MockDataStream;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +24,6 @@ public class RIODuinoTest {
     }
 
     @Test
-    public void shouldInitializeWithEmptyBuffers() {
-        assertReadBufferEmpty();
-        assertWriteBufferEmpty();
-        assertFlushBufferEmpty();
-    }
-
-    @Test
     public void shouldWriteStackIndicatorInfoToStream() {
         dataStream.resetBuffers();
         rioDuino.sendStackIndicatorInfo((byte) 13, RIODuino.LightColor.BLUE);
@@ -41,17 +35,5 @@ public class RIODuinoTest {
 
         assertThat(colorData).isEqualTo(RIODuino.LightColor.BLUE.getData());
         assertThat(heightData).isEqualTo((byte) 13);
-    }
-
-    private void assertReadBufferEmpty() {
-        assertThat(dataStream.isReadEmpty()).isTrue();
-    }
-
-    private void assertWriteBufferEmpty() {
-        assertThat(dataStream.isWriteEmpty()).isTrue();
-    }
-
-    private void assertFlushBufferEmpty() {
-        assertThat(dataStream.isFlushEmpty()).isTrue();
     }
 }
