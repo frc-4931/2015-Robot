@@ -32,7 +32,7 @@ public final class RIODuino implements Lifecycle {
             this.data = data;
         }
 
-        private byte getData() {
+        protected byte getData() {
             return data;
         }
     }

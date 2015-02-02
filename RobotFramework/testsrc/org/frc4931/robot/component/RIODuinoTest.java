@@ -29,6 +29,20 @@ public class RIODuinoTest {
         assertFlushBufferEmpty();
     }
 
+    @Test
+    public void shouldWriteStackIndicatorInfoToStream() {
+        dataStream.resetBuffers();
+        rioDuino.sendStackIndicatorInfo((byte) 13, RIODuino.LightColor.BLUE);
+        dataStream.testBuffers();
+
+        byte data = dataStream.getByte();
+        byte colorData = (byte) (data & 0x0F);
+        byte heightData = (byte) (data >> 4 & 0x0F);
+
+        assertThat(colorData).isEqualTo(RIODuino.LightColor.BLUE.getData());
+        assertThat(heightData).isEqualTo((byte) 13);
+    }
+
     private void assertReadBufferEmpty() {
         assertThat(dataStream.isReadEmpty()).isTrue();
     }
