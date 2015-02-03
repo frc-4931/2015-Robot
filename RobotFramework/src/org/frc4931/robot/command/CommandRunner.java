@@ -13,25 +13,25 @@ import org.frc4931.robot.command.Scheduler.Commands;
  */
 class CommandRunner {
     private Command command;
-    private CommandRunner[] commands = null;
+    private CommandRunner[] children = null;
     private CommandRunner next;
-    private final boolean isBranch;
     private State state = State.UNINITIALIZED;
     
     public CommandRunner(Command command) {
+        // Just a command and no next is a leaf
         this(null, command);
     }
     
     public CommandRunner(CommandRunner next, Command command) {
+        // A command and a next is a node
         this.command = command;
         this.next = next;
-        isBranch = false;
     }
     
     public CommandRunner(CommandRunner next, CommandRunner... commands) {
-        this.commands = commands;
+        // A next and several children is a branch
+        this.children = commands;
         this.next = next;
-        isBranch = true;
     }
     
     /**
@@ -40,11 +40,24 @@ class CommandRunner {
      * {@code false} otherwise
      */
     public boolean step() {
-        if(isBranch) {
+        // If we don't have children or a command, we are a fork and must be done
+        if(children.length == 0 && command == null) return true;
+        
+        // If we have children, but no command, we are a branch
+        if(children.length > 0) {
+            assert command == null;
+            
+            // If we were canceled, cancel our children
+            if(state == State.INTERUPTED)
+                for(CommandRunner command : children) command.cancel();
+            
+            // We are done as long as none of our children are not
             boolean flag = true;
-            for(CommandRunner command : commands) if(!command.step()) flag = false;
+            for(CommandRunner command : children) if(!command.step()) flag = false;
             return flag;
         }
+        
+        // If we have a command, but no children, manage our command
         
         // If we are uninitialized initialize us
         if(state == State.UNINITIALIZED) {
@@ -52,18 +65,14 @@ class CommandRunner {
             state = State.INITIALIZED;
         }
         
-        // Run
+        // If we haven't been executed yet, execute the first time, otherwise just execute
         if(state == State.INITIALIZED) {
-            // If any command is not finished, we set the state to running
-            state = State.FINISHED;
-            if(!command.firstExecute()) state = State.RUNNING;
-            
+            if(command.firstExecute()) state = State.FINISHED;
         } else if(state == State.RUNNING) {
-            // If any command is not finished, we set the state to running
-            state = State.FINISHED;
-            if(!command.execute()) state = State.RUNNING;
+            if(command.execute()) state = State.FINISHED;
         }
         
+        // If we are pending finalization
         if(state == State.FINISHED || state == State.INTERUPTED) {
             command.finalize();
             state = State.FINALIZED;
@@ -73,7 +82,9 @@ class CommandRunner {
     }
     
     public void after(Commands commandList) {
-        commandList.add(next);
+        // Add our own next (if we have one) and the nexts of our children
+        if(next != null) commandList.add(next);
+        for(CommandRunner command : children) command.after(commandList);
     }
     
     /**
@@ -81,25 +92,6 @@ class CommandRunner {
      */
     public void cancel() {
         state = State.INTERUPTED;
-    }
-    
-    static final class ForkRunner extends CommandRunner {
-        private final CommandRunner forkedCommand;
-
-        public ForkRunner(CommandRunner forked) {
-            super(null);
-            forkedCommand = forked;
-        }
-        
-        @Override
-        public boolean step() { return true; }
-        
-        @Override
-        public void after(Commands commandList) {
-            super.after(commandList);
-            commandList.add(forkedCommand);
-        }
-        
     }
     
     /**
