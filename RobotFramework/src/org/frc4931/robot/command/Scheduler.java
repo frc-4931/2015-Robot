@@ -31,9 +31,9 @@ public class Scheduler {
     }
     
     /**
-     * Runs once though all of the {@link Command}s in the {@link Scheduler}.
+     * Steps once though all of the {@link Command}s in the {@link Scheduler}.
      */
-    public void run() {
+    public void step() {
         list.step();
     }
     
