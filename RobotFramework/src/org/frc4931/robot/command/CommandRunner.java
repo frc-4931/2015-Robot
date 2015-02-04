@@ -6,12 +6,14 @@
  */
 package org.frc4931.robot.command;
 
+import java.util.Arrays;
+
 import org.frc4931.robot.command.Scheduler.Commands;
 
 /**
  * Manages all of the state information for a {@link Command}.
  */
-class CommandRunner {
+public class CommandRunner {
     private Command command;
     private CommandRunner[] children = null;
     private CommandRunner next;
@@ -30,7 +32,7 @@ class CommandRunner {
     
     public CommandRunner(CommandRunner next, CommandRunner... commands) {
         // A next and several children is a branch
-        this.children = commands;
+        if(commands.length!=0) this.children = commands;
         this.next = next;
     }
     
@@ -41,10 +43,10 @@ class CommandRunner {
      */
     public boolean step() {
         // If we don't have children or a command, we are a fork and must be done
-        if(children.length == 0 && command == null) return true;
+        if(children == null && command == null) return true;
         
         // If we have children, but no command, we are a branch
-        if(children.length > 0) {
+        if(children != null) {
             assert command == null;
             
             // If we were canceled, cancel our children
@@ -74,7 +76,7 @@ class CommandRunner {
         
         // If we are pending finalization
         if(state == State.FINISHED || state == State.INTERUPTED) {
-            command.finalize();
+            command.end();
             state = State.FINALIZED;
             return true;
         }
@@ -82,9 +84,10 @@ class CommandRunner {
     }
     
     public void after(Commands commandList) {
-        // Add our own next (if we have one) and the nexts of our children
+        // Add our own next (if we have one) and the nexts of our children (if we have them)
         if(next != null) commandList.add(next);
-        for(CommandRunner command : children) command.after(commandList);
+        if(children != null)
+            for(CommandRunner command : children) command.after(commandList);
     }
     
     /**
@@ -92,6 +95,21 @@ class CommandRunner {
      */
     public void cancel() {
         state = State.INTERUPTED;
+    }
+    
+    @Override
+    public String toString() {
+        if(command != null) {
+            if(next != null) return command.toString() + " -> " + next.toString();
+            return command.toString();
+        }
+        
+        if(children!=null) {
+            if(next != null) return Arrays.toString(children) + " -> " + next.toString();
+            return Arrays.toString(children);
+        }
+        
+        return "FORK<" + next.toString() +">";
     }
     
     /**

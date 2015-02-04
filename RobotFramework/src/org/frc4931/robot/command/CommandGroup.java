@@ -47,7 +47,7 @@ public class CommandGroup {
      * @return the {@link CommandGroup} doing the executing
      */
     public static CommandRunner sequentially(CommandRunner... commands) {
-        CommandRunner root = new CommandRunner(commands[commands.length-1]);
+        CommandRunner root = new CommandRunner(null, commands[commands.length-1]);
         for(int i = commands.length-2; i >= 0; i--){
             root = new CommandRunner(root, commands[i]);
         }
