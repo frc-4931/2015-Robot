@@ -34,5 +34,5 @@ public interface Command {
     /**
      * Cleans up the resources used by this command and puts the robot in a safe state.
      */
-    public void finalize();
+    public void end();
 }
