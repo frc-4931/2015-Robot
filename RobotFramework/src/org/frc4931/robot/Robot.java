@@ -167,6 +167,6 @@ public class Robot extends IterativeRobot {
 
         String rearCameraName();
 
-        DataStream arduino();
+        DataStream rioDuinoDataStream();
     }
 }
