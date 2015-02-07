@@ -7,13 +7,11 @@
 package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
-import edu.wpi.first.wpilibj.Joystick;
 
-public class MicrosoftSideWinder extends org.frc4931.robot.driver.Joystick {
-    private final Joystick joystick;
+public class MicrosoftSideWinder extends DSInputDevice implements FlightStick {
 
     public MicrosoftSideWinder(int port) {
-        joystick = new Joystick(port);
+        super(port);
     }
 
     @Override
@@ -34,6 +32,16 @@ public class MicrosoftSideWinder extends org.frc4931.robot.driver.Joystick {
     @Override
     public AnalogAxis getThrottle() {
         return joystick::getThrottle;
+    }
+
+    @Override
+    public Switch getTrigger() {
+        return () ->  joystick.getRawButton(0);
+    }
+
+    @Override
+    public Switch getThumb() {
+        return () -> joystick.getRawButton(1);
     }
 
     @Override
