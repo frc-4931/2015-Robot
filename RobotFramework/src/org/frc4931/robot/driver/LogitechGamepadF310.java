@@ -6,39 +6,90 @@
  */
 package org.frc4931.robot.driver;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import org.frc4931.robot.component.Switch;
 
-public class LogitechGamepadF310 extends org.frc4931.robot.driver.Joystick {
-    private Joystick joystick;
-
+public class LogitechGamepadF310 extends DSInputDevice implements Gamepad {
     public LogitechGamepadF310(int port) {
-        joystick = new Joystick(port);
+        super(port);
     }
 
     @Override
-    public AnalogAxis getPitch() {
-        return () -> joystick.getX() * -1;
+    public AnalogAxis getLeftX() {
+        return () -> joystick.getRawAxis(0);
     }
 
     @Override
-    public AnalogAxis getYaw() {
-        return joystick::getY;
+    public AnalogAxis getLeftY() {
+        return () -> joystick.getRawAxis(1) * -1;
     }
 
     @Override
-    public AnalogAxis getRoll() {
-        return joystick::getZ;
+    public AnalogAxis getRightX() {
+        return () -> joystick.getRawAxis(4);
     }
 
     @Override
-    public AnalogAxis getThrottle() {
-        return joystick::getTwist;
+    public AnalogAxis getRightY() {
+        return () -> joystick.getRawAxis(5) * -1;
     }
 
     @Override
-    public Switch getButton(int button) {
-        return () -> joystick.getRawButton(button);
+    public AnalogAxis getLeftTrigger() {
+        return () -> joystick.getRawAxis(2);
+    }
+
+    @Override
+    public AnalogAxis getRightTrigger() {
+        return () -> joystick.getRawAxis(3);
+    }
+
+    @Override
+    public Switch getLeftBumper() {
+        return () -> joystick.getRawButton(4);
+    }
+
+    @Override
+    public Switch getRightBumper() {
+        return () -> joystick.getRawButton(5);
+    }
+
+    @Override
+    public Switch getA() {
+        return () -> joystick.getRawButton(0);
+    }
+
+    @Override
+    public Switch getB() {
+        return () -> joystick.getRawButton(1);
+    }
+
+    @Override
+    public Switch getX() {
+        return () -> joystick.getRawButton(2);
+    }
+
+    @Override
+    public Switch getY() {
+        return () -> joystick.getRawButton(3);
+    }
+
+    @Override
+    public Switch getStart() {
+        return () -> joystick.getRawButton(7);
+    }
+
+    @Override
+    public Switch getSelect() {
+        return () -> joystick.getRawButton(6);
+    }
+
+    @Override
+    public Switch getLeftStick() {
+        return () -> joystick.getRawButton(8);
+    }
+
+    @Override
+    public Switch getRightStick() {
+        return () -> joystick.getRawButton(9);
     }
 }
