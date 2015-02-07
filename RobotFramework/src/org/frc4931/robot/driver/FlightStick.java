@@ -9,8 +9,7 @@ package org.frc4931.robot.driver;
 import org.frc4931.robot.component.Switch;
 
 /**
- * Abstract joystick that provides human readable method names for joystick properties.
- * 
+ * A type of input device consisting of a joystick with twist and throttle.
  */
 public interface FlightStick extends InputDevice {
     public AnalogAxis getPitch();

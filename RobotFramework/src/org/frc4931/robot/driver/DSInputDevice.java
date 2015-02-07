@@ -9,9 +9,16 @@ package org.frc4931.robot.driver;
 import edu.wpi.first.wpilibj.Joystick;
 import org.frc4931.robot.component.Switch;
 
+/**
+ * Defines an input device controlled by the Driver Station.
+ */
 public class DSInputDevice implements InputDevice {
     protected final Joystick joystick;
 
+    /**
+     * Creates a new Driver Station input device.
+     * @param port The port number of the device.
+     */
     public DSInputDevice(int port) {
         joystick = new Joystick(port);
     }

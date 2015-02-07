@@ -8,6 +8,9 @@ package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
 
+/**
+ * A simple collection of axes and buttons.
+ */
 public interface InputDevice {
     public AnalogAxis getAxis(int axis);
     public Switch getButton(int button);
