@@ -48,6 +48,21 @@ public class OperatorInterface {
             toggleRamp = joy.getButton(2);
             toggleRails = joy.getButton(3);
 
+        } else if (joy instanceof MicrosoftSideWinder) {
+            wheel = joy.getYaw();
+            throttle = joy.getPitch();
+
+            driveSpeed = joy.getPitch();
+            turnSpeed = joy.getRoll();
+
+            quickTurn = joy.getButton(4);
+
+            writeData = joy.getButton(5);
+
+            toggleClaw = joy.getButton(0);
+            toggleLift = joy.getButton(1);
+            toggleRamp = joy.getButton(2);
+            toggleRails = joy.getButton(3);
         } else if (joy instanceof LogitechGamepadF310) {
             wheel = joy.getYaw();
             throttle = joy.getPitch();
