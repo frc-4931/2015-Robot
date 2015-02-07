@@ -18,10 +18,8 @@ import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.SerialDataStream;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
-import org.frc4931.robot.driver.FlightStick;
 import org.frc4931.robot.driver.Gamepad;
-import org.frc4931.robot.driver.InputDevice;
-import org.frc4931.robot.driver.LogitechAttack3D;
+import org.frc4931.robot.driver.LogitechGamepadF310;
 import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
@@ -112,8 +110,8 @@ public class RobotBuilder {
      * @return the default operator interface; never null
      */
     public static OperatorInterface operatorInterface() {
-        InputDevice input = new LogitechAttack3D(Properties.JOYSTICK);
-        return new OperatorInterface((Gamepad) input);
+        Gamepad gamepad = new LogitechGamepadF310(Properties.JOYSTICK);
+        return new OperatorInterface(gamepad);
     }
 
     /**
