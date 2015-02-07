@@ -9,7 +9,7 @@ package org.frc4931.robot.driver;
 import org.frc4931.robot.component.Switch;
 
 public class LogitechGamepadF310 extends DSInputDevice implements Gamepad {
-    protected LogitechGamepadF310(int port) {
+    public LogitechGamepadF310(int port) {
         super(port);
     }
 

@@ -44,4 +44,9 @@ public class LogitechAttack3D extends DSInputDevice implements FlightStick {
     public Switch getTrigger() {
         return () -> joystick.getRawButton(0);
     }
+
+    @Override
+    public Switch getThumb() {
+        return () -> joystick.getRawButton(1);
+    }
 }
