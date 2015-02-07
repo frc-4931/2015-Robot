@@ -30,70 +30,35 @@ public class OperatorInterface {
     public final Switch writeData;
     public final Switch quickTurn;
 
-    // Modified to fit driver preference
-    public OperatorInterface(Joystick joy) {
-        if (joy instanceof LogitechAttack3D) {
-            wheel = joy.getYaw();
-            throttle = joy.getPitch();
+    public OperatorInterface(FlightStick flightStick) {
+        throttle = flightStick.getPitch();
+        wheel = flightStick.getYaw();
+        quickTurn = flightStick.getButton(5);
 
-            driveSpeed = joy.getPitch();
-            turnSpeed = joy.getRoll();
+        driveSpeed = flightStick.getPitch();
+        turnSpeed = flightStick.getRoll();
 
-            quickTurn = joy.getButton(5);
+        toggleClaw = flightStick.getTrigger();
+        toggleLift = flightStick.getThumb();
+        toggleRamp = flightStick.getButton(2);
+        toggleRails = flightStick.getButton(3);
 
-            writeData = joy.getButton(6);
+        writeData = flightStick.getButton(6);
+    }
 
-            toggleClaw = joy.getButton(0);
-            toggleLift = joy.getButton(1);
-            toggleRamp = joy.getButton(2);
-            toggleRails = joy.getButton(3);
+    public OperatorInterface(Gamepad gamepad) {
+        throttle = gamepad.getLeftY();
+        wheel = gamepad.getRightX();
+        quickTurn = gamepad.getRightBumper();
 
-        } else if (joy instanceof MicrosoftSideWinder) {
-            wheel = joy.getYaw();
-            throttle = joy.getPitch();
+        driveSpeed = gamepad.getLeftY();
+        turnSpeed = gamepad.getLeftX();
 
-            driveSpeed = joy.getPitch();
-            turnSpeed = joy.getRoll();
+        toggleClaw = gamepad.getA();
+        toggleLift = gamepad.getX();
+        toggleRamp = gamepad.getY();
+        toggleRails = gamepad.getB();
 
-            quickTurn = joy.getButton(4);
-
-            writeData = joy.getButton(5);
-
-            toggleClaw = joy.getButton(0);
-            toggleLift = joy.getButton(1);
-            toggleRamp = joy.getButton(2);
-            toggleRails = joy.getButton(3);
-        } else if (joy instanceof LogitechGamepadF310) {
-            wheel = joy.getYaw();
-            throttle = joy.getPitch();
-
-            driveSpeed = joy.getPitch();
-            turnSpeed = joy.getRoll();
-
-            quickTurn = joy.getButton(6);
-
-            writeData = joy.getButton(7);
-
-            toggleClaw = joy.getButton(0);
-            toggleLift = joy.getButton(2);
-            toggleRamp = joy.getButton(3);
-            toggleRails = joy.getButton(1);
-
-        } else {
-            wheel = joy.getYaw();
-            throttle = joy.getPitch();
-
-            driveSpeed = joy.getPitch();
-            turnSpeed = joy.getRoll();
-
-            quickTurn = joy.getButton(5);
-
-            writeData = joy.getButton(6);
-
-            toggleClaw = joy.getButton(0);
-            toggleLift = joy.getButton(1);
-            toggleRamp = joy.getButton(2);
-            toggleRails = joy.getButton(3);
-        }
+        writeData = gamepad.getStart();
     }
 }

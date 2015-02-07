@@ -8,43 +8,40 @@ package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 
 /**
  * Converts a Logitech Attack 3D to Axis and Buttons.
  * 
  * @author Zach Anderson
  */
-public class LogitechAttack3D extends org.frc4931.robot.driver.Joystick{
-    private final Joystick joy;
-    
+public class LogitechAttack3D extends DSInputDevice implements FlightStick {
+
     public LogitechAttack3D(int port) {
-        joy = new Joystick(port);
+        super(port);
     }
 
     @Override
-    public AnalogAxis getPitch(){
-        return ()->joy.getY()*-1;
+    public AnalogAxis getPitch() {
+        return () -> joystick.getY() * -1;
     }
-    
+
     @Override
-    public AnalogAxis getRoll(){
-        return ()->joy.getX();
+    public AnalogAxis getYaw() {
+        return joystick::getTwist;
     }
-    
+
     @Override
-    public AnalogAxis getYaw(){
-        return ()->joy.getZ();
+    public AnalogAxis getRoll() {
+        return joystick::getX;
     }
-    
+
     @Override
-    public AnalogAxis getThrottle(){
-        return ()->joy.getThrottle();
+    public AnalogAxis getThrottle() {
+        return joystick::getThrottle;
     }
-    
+
     @Override
-    public Switch getButton(int button){
-        return ()->joy.getRawButton(button);
+    public Switch getTrigger() {
+        return () -> joystick.getRawButton(0);
     }
 }
