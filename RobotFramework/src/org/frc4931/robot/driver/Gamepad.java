@@ -8,6 +8,9 @@ package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
 
+/**
+ * A type of input device similar to an Xbox controller.
+ */
 public interface Gamepad extends InputDevice {
     public abstract AnalogAxis getLeftX();
     public abstract AnalogAxis getLeftY();

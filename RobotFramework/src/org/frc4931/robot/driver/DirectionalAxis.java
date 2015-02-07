@@ -6,6 +6,9 @@
  */
 package org.frc4931.robot.driver;
 
+/**
+ * Defines an axis that points in a direction.
+ */
 @FunctionalInterface
 public interface DirectionalAxis {
     public int getDirection();
