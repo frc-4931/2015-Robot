@@ -8,15 +8,9 @@ package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
 
+public class MicrosoftSideWinder extends DSInputDevice implements FlightStick {
 
-/**
- * Converts a Logitech Attack 3D to Axis and Buttons.
- * 
- * @author Zach Anderson
- */
-public class LogitechAttack3D extends DSInputDevice implements FlightStick {
-
-    public LogitechAttack3D(int port) {
+    public MicrosoftSideWinder(int port) {
         super(port);
     }
 
@@ -42,11 +36,16 @@ public class LogitechAttack3D extends DSInputDevice implements FlightStick {
 
     @Override
     public Switch getTrigger() {
-        return () -> joystick.getRawButton(0);
+        return () ->  joystick.getRawButton(0);
     }
 
     @Override
     public Switch getThumb() {
         return () -> joystick.getRawButton(1);
+    }
+
+    @Override
+    public Switch getButton(int button) {
+        return () -> joystick.getRawButton(button);
     }
 }
