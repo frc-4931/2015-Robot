@@ -23,10 +23,42 @@ public class Scheduler {
      * @param command the {@link Command} to be added
      */
     public void add(Command command) {
-        list.add(command);
+        if(command instanceof CommandGroup) {
+            CommandGroup first = (CommandGroup) command;
+            CommandRunner root = buildCR(first.getRoot(), null);
+            list.add(root);
+        } else {
+            list.add(command);
+        }
     }
     
-    public void add(CommandRunner command) {
+    private CommandRunner buildCR(Command command, CommandRunner last) {
+        if(command instanceof CommandGroup){
+            CommandGroup cg = (CommandGroup) command;
+            Command[] commands = cg.getCommands();
+            switch (cg.getType()) {
+                case SEQUENTIAL:
+                    for(int i = commands.length-1; i >=0 ; i--) {
+                        last = buildCR(commands[i], last);
+                    }
+                    return last;
+                case PARRALLEL:
+                    CommandRunner[] crs = new CommandRunner[commands.length];
+                    for(int i = 0; i<crs.length; i++){
+                        crs[i] = buildCR(commands[i], null);
+                    }
+                    return new CommandRunner(last, crs);
+                case FORK:
+                    assert commands.length == 1;
+                    return new CommandRunner(last, new CommandRunner(buildCR(commands[0], null)));
+            }
+            // This line should never happen, the switch will throw an exception first
+            return null;
+        }
+        return new CommandRunner(last, command);
+    }
+    
+    void add(CommandRunner command) {
         list.add(command);
     }
     
@@ -38,8 +70,8 @@ public class Scheduler {
     }
     
     final static class Commands {
-        Queue<CommandRunner> beingExecuted = new LinkedList<>();
-        Queue<CommandRunner> pendingAdditon = new LinkedList<>();
+        private Queue<CommandRunner> beingExecuted = new LinkedList<>();
+        private Queue<CommandRunner> pendingAdditon = new LinkedList<>();
         
         public Commands() { }
 
@@ -58,10 +90,10 @@ public class Scheduler {
         }
         
         public void add(Command command) {
-            pendingAdditon.offer(new CommandRunner(command));
+            add(new CommandRunner(command));
         }
         
-        public void add(CommandRunner command) {
+        void add(CommandRunner command) {
             pendingAdditon.offer(command);
         }
     }

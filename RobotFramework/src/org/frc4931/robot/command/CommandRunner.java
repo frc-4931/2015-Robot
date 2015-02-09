@@ -13,7 +13,7 @@ import org.frc4931.robot.command.Scheduler.Commands;
 /**
  * Manages all of the state information for a {@link Command}.
  */
-public class CommandRunner {
+class CommandRunner {
     private Command command;
     private CommandRunner[] children = null;
     private CommandRunner next;

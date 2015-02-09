@@ -14,11 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
-
-import static org.frc4931.robot.command.CommandGroup.ex;
-import static org.frc4931.robot.command.CommandGroup.fork;
-import static org.frc4931.robot.command.CommandGroup.sequentially;
-import static org.frc4931.robot.command.CommandGroup.simultaneously;
 /**
  * 
  */
@@ -39,12 +34,8 @@ public class CommandGroupTest {
     
     @Test
     public void shouldExecuteCommandsInOrder() {
-        scheduler.add(
-            sequentially(ex(c[0]),
-                         ex(c[1]),
-                         ex(c[2])
-                         )
-                );
+        Command c = new SeqCommandGroup();
+        scheduler.add(c);
         assertThat(list).isEmpty();
         // First step, C0 should have been added, run, and finished
         scheduler.step();
@@ -63,16 +54,19 @@ public class CommandGroupTest {
             "C0 init", "C0 exe", "C0 fin",
             "C1 init", "C1 exe", "C1 fin",
             "C2 init", "C2 exe", "C2 fin"}));
-        
     }
+    
+    private final class SeqCommandGroup extends CommandGroup {
+        @SuppressWarnings("synthetic-access")
+        public SeqCommandGroup (){
+            sequentially(c[0],c[1],c[2]);
+        }
+    }
+  
     @Test
     public void shouldExecuteCommandsTogether() {
-        scheduler.add(
-            simultaneously(ex(c[0]),
-                           ex(c[1]),
-                           ex(c[2])
-                          )
-                );
+        Command c = new SimulCommandGroup();
+        scheduler.add(c);
         scheduler.step();
         // After one step, all three should have run
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
@@ -81,45 +75,41 @@ public class CommandGroupTest {
             "C2 init", "C2 exe", "C2 fin"}));
     }
     
+    private final class SimulCommandGroup extends CommandGroup {
+        @SuppressWarnings("synthetic-access")
+        public SimulCommandGroup (){
+            simultaneously(c[0],c[1],c[2]);
+        }
+    }
+    
     @Test
     public void shouldExecuteTwoCommandsTogetherAndOneAfter() {
-        scheduler.add(
-            sequentially(
-                         simultaneously(ex(c[0]),ex(c[1])),
-                         ex(c[2])
-                         )
-                );
-        
-        
+        Command c = new TwoOneGroup();
+        scheduler.add(c);
         // After one step, first two should have run
         scheduler.step();
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin",
             "C1 init", "C1 exe", "C1 fin"}));
-        
+        list.clear();
         
         // After two steps, all three should have run
         scheduler.step();
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
-            "C0 init", "C0 exe", "C0 fin",
-            "C1 init", "C1 exe", "C1 fin",
             "C2 init", "C2 exe", "C2 fin"}));
+    }
+    
+    private final class TwoOneGroup extends CommandGroup {
+        @SuppressWarnings("synthetic-access")
+        public TwoOneGroup() {
+            sequentially(simultaneously(c[0],c[1]),
+            c[2]);
+        }
     }
     
     @Test
     public void shouldModelDiagramFromBoard(){
-        CommandRunner cr = sequentially(ex(c[0]),
-                                        fork(sequentially(
-                                                          ex(c[3]),
-                                                          ex(c[4])
-                                                          )),
-                                        simultaneously(ex(c[1]), ex(c[2])),
-                                        ex(c[5]),
-                                        fork(ex(c[7])),
-                                        ex(c[6])
-                           );
-        scheduler.add(cr);
-        
+        scheduler.add(new DiagramFromBoard());
         // Nothing has executed yet
         assertThat(list).isEmpty();
         
@@ -164,15 +154,24 @@ public class CommandGroupTest {
         assertThat(list).isEmpty();
     }
     
+    private final class DiagramFromBoard extends CommandGroup {
+        @SuppressWarnings("synthetic-access")
+        public DiagramFromBoard() {
+            sequentially(c[0],
+                         fork(sequentially(
+                                           c[3],
+                                           c[4]
+                                 )),
+                                 simultaneously(c[1], c[2]),
+                                 c[5],
+                                 fork(c[7]),
+                                 c[6]);
+            }
+    }
+    
     @Test
     public void shouldModelOtherDiagramFromBoard() {
-        CommandRunner cr = sequentially(ex(c[0]),
-                                        fork(simultaneously(ex(c[1]),ex(c[2]))),
-                                         ex(c[3]),
-                                         simultaneously(ex(c[4]),ex(c[5])),
-                                         ex(c[6])
-                                         );
-        scheduler.add(cr);
+        scheduler.add(new OtherDiagramFromBoard());
         
         // Nothing has executed yet
         assertThat(list).isEmpty();
@@ -212,6 +211,18 @@ public class CommandGroupTest {
         scheduler.step();
         assertThat(list).isEmpty();
         
+    }
+    
+    private final class OtherDiagramFromBoard extends CommandGroup {
+        @SuppressWarnings("synthetic-access")
+        public OtherDiagramFromBoard() {
+            sequentially(c[0],
+                         fork(simultaneously(c[1],c[2])),
+                          c[3],
+                          simultaneously(c[4],c[5]),
+                          c[6]
+                          );
+            }
     }
     
     private static final class TestCommand implements Command {
