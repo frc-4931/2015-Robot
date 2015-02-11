@@ -14,6 +14,8 @@ import org.frc4931.robot.command.Scheduler.Commands;
  * Manages all of the state information for a {@link Command}.
  */
 class CommandRunner {
+    private long timeout;
+    private long startTime;
     private Command command;
     private CommandRunner[] children = null;
     private CommandRunner next;
@@ -38,10 +40,15 @@ class CommandRunner {
     
     /**
      * Steps through all of the state logic for its {@link Command}.
+     * @param time the current system time in nanos
      * @return {@code true} if this {@link CommandRunner} is ready to be terminated;
      * {@code false} otherwise
      */
-    public boolean step() {
+    public boolean step(long time) {
+        if(timeout != 0 && startTime == 0)
+            startTime = time;
+        if(startTime != 0 && time - startTime >= timeout) state = State.INTERUPTED;
+        
         // If we don't have children or a command, we are a fork and must be done
         if(children == null && command == null) return true;
         
@@ -55,7 +62,7 @@ class CommandRunner {
             
             // We are done as long as none of our children are not
             boolean flag = true;
-            for(CommandRunner command : children) if(!command.step()) flag = false;
+            for(CommandRunner command : children) if(!command.step(time)) flag = false;
             return flag;
         }
         
@@ -83,11 +90,17 @@ class CommandRunner {
         return false;
     }
     
-    public void after(Commands commandList) {
+    public void after(Commands commandList, long time) {
         // Add our own next (if we have one) and the nexts of our children (if we have them)
-        if(next != null) commandList.add(next);
-        if(children != null)
-            for(CommandRunner command : children) command.after(commandList);
+        if(next != null) {
+            // Set the timeout of the next command to the time left from this one
+            next.setTimeout(time - startTime);
+            
+            commandList.add(next);
+        }
+        if(children != null) {
+            for(CommandRunner command : children) command.after(commandList, time);
+        }
     }
     
     /**
@@ -110,6 +123,11 @@ class CommandRunner {
         }
         
         return "FORK<" + next.toString() +">";
+    }
+    
+    public void setTimeout(long timeout) {
+        
+        this.timeout = timeout;
     }
     
     /**
