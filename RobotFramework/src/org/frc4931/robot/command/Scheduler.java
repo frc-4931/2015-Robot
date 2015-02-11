@@ -23,13 +23,16 @@ public class Scheduler {
      * @param command the {@link Command} to be added
      */
     public void add(Command command) {
-        if(command instanceof CommandGroup) {
-            CommandGroup first = (CommandGroup) command;
-            CommandRunner root = buildCR(first.getRoot(), null);
-            list.add(root);
-        } else {
-            list.add(command);
-        }
+        add(command, 0);
+    }
+    
+    public void add(Command command, long timeout) {
+        if(command instanceof CommandGroup)
+            command = ((CommandGroup) command).getRoot();
+        
+        CommandRunner runner = buildCR(command, null);
+        runner.setTimeout(timeout);
+        list.add(runner);
     }
     
     private CommandRunner buildCR(Command command, CommandRunner last) {
@@ -58,15 +61,12 @@ public class Scheduler {
         return new CommandRunner(last, command);
     }
     
-    void add(CommandRunner command) {
-        list.add(command);
-    }
-    
     /**
      * Steps once though all of the {@link Command}s in the {@link Scheduler}.
+     * @param time the current system time in millis
      */
-    public void step() {
-        list.step();
+    public void step(long time) {
+        list.step(time);
     }
     
     final static class Commands {
@@ -75,22 +75,18 @@ public class Scheduler {
         
         public Commands() { }
 
-        public void step() {
+        public void step(long time) {
             while(!pendingAdditon.isEmpty()) beingExecuted.offer(pendingAdditon.poll());
             
             // Run all of the commands, if one is done, don't put it back in the queue
             int initialSize = beingExecuted.size();
             for(int i = 0; i < initialSize; i++) {
                 CommandRunner runner = beingExecuted.poll();
-                if(runner.step())
-                    runner.after(this);
+                if(runner.step(time))
+                    runner.after(this, time);
                 else
                     beingExecuted.offer(runner);
             }
-        }
-        
-        public void add(Command command) {
-            add(new CommandRunner(command));
         }
         
         void add(CommandRunner command) {
