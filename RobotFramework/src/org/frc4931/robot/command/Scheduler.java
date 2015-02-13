@@ -6,8 +6,11 @@
  */
 package org.frc4931.robot.command;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * 
@@ -71,26 +74,62 @@ public class Scheduler {
     
     final static class Commands {
         private Queue<CommandRunner> beingExecuted = new LinkedList<>();
-        private Queue<CommandRunner> pendingAdditon = new LinkedList<>();
+        private Queue<CommandRunner> pendingAddition = new LinkedList<>();
+        
+        private Map<Requireable, CommandRunner> inUse = new HashMap<>();
         
         public Commands() { }
 
         public void step(long time) {
-            while(!pendingAdditon.isEmpty()) beingExecuted.offer(pendingAdditon.poll());
+            int pendingLength = pendingAddition.size();
+            for(int i = 0; i < pendingLength; i++)
+                if(reserve(pendingAddition.peek()))
+                    pendingAddition.poll();
+                else
+                    // What to do if can't reserve requirement
+                    // As of now, don't even try again
+                    pendingAddition.poll();
             
             // Run all of the commands, if one is done, don't put it back in the queue
             int initialSize = beingExecuted.size();
             for(int i = 0; i < initialSize; i++) {
-                CommandRunner runner = beingExecuted.poll();
+                CommandRunner runner= beingExecuted.poll();
                 if(runner.step(time))
-                    runner.after(this, time);
+                    remove(runner, time);
                 else
                     beingExecuted.offer(runner);
             }
         }
         
         void add(CommandRunner command) {
-            pendingAdditon.offer(command);
+            // Add the command runner
+            pendingAddition.offer(command);
+        }
+        
+        private boolean reserve(CommandRunner command) {
+            Set<Requireable> requirements = command.getRequired();
+            
+            // Verify that every requirement can be obtained
+            for(Requireable required : requirements) {
+                CommandRunner user = inUse.get(required);
+                if(user != null && !user.isInterruptable())
+                    return false;
+            }
+            
+            // Reserve the requirements
+            for(Requireable required : requirements) {
+                if(inUse.containsKey(required)) inUse.get(required).cancel();
+                inUse.put(required, command);
+            }
+            beingExecuted.offer(command);
+            return true;
+        }
+        
+        private void remove(CommandRunner runner, long time) {
+            for(Requireable required : runner.getRequired()) inUse.remove(required);
+            runner.after(this, time);
         }
     }
+    
+    public static interface Requireable {}
 }
