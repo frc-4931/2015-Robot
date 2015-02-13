@@ -7,8 +7,11 @@
 package org.frc4931.robot.command;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.frc4931.robot.command.Scheduler.Commands;
+import org.frc4931.robot.command.Scheduler.Requireable;
 
 /**
  * Manages all of the state information for a {@link Command}.
@@ -56,14 +59,9 @@ class CommandRunner {
         if(children != null) {
             assert command == null;
             
-            // If we were canceled, cancel our children
-            if(state == State.INTERUPTED)
-                for(CommandRunner command : children) command.cancel();
-            
             // We are done as long as none of our children are not
-            boolean flag = true;
-            for(CommandRunner command : children) if(!command.step(time)) flag = false;
-            return flag;
+            for(CommandRunner command : children) if(!command.step(time)) return false;
+            return true;
         }
         
         // If we have a command, but no children, manage our command
@@ -108,6 +106,11 @@ class CommandRunner {
      */
     public void cancel() {
         state = State.INTERUPTED;
+        if(children!=null)
+            for(CommandRunner runner : children)
+                runner.cancel();
+        if(next!=null)
+            next = null;
     }
     
     @Override
@@ -126,8 +129,29 @@ class CommandRunner {
     }
     
     public void setTimeout(long timeout) {
-        
         this.timeout = timeout;
+    }
+    
+    public boolean isInterruptable() {
+        if(command !=null)
+            return command.isInterruptable();
+        
+        else if(children!=null)
+            for(CommandRunner runner : children)
+                if(!runner.isInterruptable()) return false;
+        return true;
+    }
+
+    public Set<Requireable> getRequired() {
+        Set<Requireable> required = new HashSet<>();
+        if(command != null) {
+              for(Requireable r : command.getRequirements()) required.add(r);
+        } else if(children!=null) {
+            for(CommandRunner runner : children) {
+                required.addAll(runner.getRequired());
+            }
+        }
+        return required;
     }
     
     /**

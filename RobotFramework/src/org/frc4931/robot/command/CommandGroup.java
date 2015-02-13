@@ -8,7 +8,7 @@ package org.frc4931.robot.command;
 
 import org.frc4931.robot.command.Scheduler.Commands;
 
-public class CommandGroup implements Command{
+public class CommandGroup extends Command{
     private Command root;
     private final Command[] commands;
     private final Type type;

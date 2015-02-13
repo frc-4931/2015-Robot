@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.frc4931.robot.command.Scheduler.Requireable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class CommandGroupTest {
     private Queue<String> list;
     private Command[] c;
     private Command[] d;
+    
     @Before
     public void beforeEach() {
         scheduler = Scheduler.getInstance();
@@ -66,6 +68,59 @@ public class CommandGroupTest {
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "D0 fin"}));
         list.clear();
+    }
+    
+    @Test
+    public void shoudKillCommandThatUsesRequirementOfAnother() {
+        Requireable required = new Requireable(){};
+        CommandWithRequirement r0 = new CommandWithRequirement(required, 0, list, true);
+        CommandWithRequirement r1 = new CommandWithRequirement(required, 1, list, false);
+        CommandWithRequirement r2 = new CommandWithRequirement(required, 2, list, true);
+
+        scheduler.add(r0);
+        scheduler.add(r1);
+        scheduler.add(r2);
+        
+        scheduler.step(0);
+        assertThat(list).isEqualTo(Arrays.asList(new String[]{
+                "R0 end", "R1 init", "R1 exe", "R1 end"}));
+        list.clear();
+    }
+    
+    @Test
+    public void shoudKillCommandGroupThatUsesRequirementOfAnother() {
+        Requireable required = new Requireable(){
+            @Override public String toString() {
+                return "R0";
+            }
+        };
+        CommandWithRequirement r0 = new CommandWithRequirement(required, 0, list, true);
+        CommandWithRequirement r1 = new CommandWithRequirement(required, 1, list, true);
+        CommandWithRequirement r2 = new CommandWithRequirement(required, 2, list, true);
+        RequiredGroup g = new RequiredGroup(r0, r1, r2);
+        
+        CommandWithRequirement r3 = new CommandWithRequirement(required, 3, list, false);
+        scheduler.add(g);
+        
+        scheduler.step(0);
+        assertThat(list).isEqualTo(Arrays.asList(new String[]{
+                "R0 init", "R0 exe", "R0 end"}));
+        list.clear();
+        
+        scheduler.add(r3);
+        scheduler.step(1);
+        assertThat(list).isEqualTo(Arrays.asList(new String[]{
+                "R1 end", "R3 init", "R3 exe", "R3 end"}));
+        list.clear();
+        
+        scheduler.step(2);
+        assertThat(list).isEmpty();
+    }
+    
+    private final class RequiredGroup extends CommandGroup {
+        public RequiredGroup(CommandWithRequirement... commands) {
+            sequentially(commands);
+        }
     }
     
     @Test
@@ -251,7 +306,6 @@ public class CommandGroupTest {
                                  c[6]);
             }
     }
-    
     @Test
     public void shouldModelOtherDiagramFromBoard() {
         scheduler.add(new OtherDiagramFromBoard());
@@ -308,7 +362,7 @@ public class CommandGroupTest {
             }
     }
     
-    private static final class TestCommand implements Command {
+    private static final class TestCommand extends Command {
         private static int commandID = 0;
         public static void reset() { commandID = 0; }
         private final Queue<String> list;
@@ -345,7 +399,7 @@ public class CommandGroupTest {
         
     }
     
-    private static final class DelayCommand implements Command {
+    private static final class DelayCommand extends Command {
         private static int commandID = 0;
         public static void reset() { commandID = 0; }
         private final Queue<String> list;
@@ -379,6 +433,38 @@ public class CommandGroupTest {
         public String toString() {
             return "D"+id;
         }
+    }
+    
+    private final class CommandWithRequirement extends Command {
+        private final Queue<String> list;
+        private final int number;
         
+        public CommandWithRequirement(Requireable required, int number, Queue<String> list, boolean interruptable) {
+            this.list = list;
+            this.number = number;
+            setInterruptable(interruptable);
+            requires(required);
+        }
+    
+        @Override
+        public void initialize() {
+            list.offer("R"+number+" init");
+        }
+    
+        @Override
+        public boolean execute() {
+            list.offer("R"+number+" exe");
+            return true;
+        }
+    
+        @Override
+        public void end() {
+            list.offer("R"+number+" end");
+        }
+        
+        @Override
+        public String toString() {
+            return "R"+number;
+        }
     }
 }
