@@ -13,7 +13,7 @@ import org.frc4931.robot.commandnew.Scheduler.Requireable;
  */
 public abstract class Command {
     private Requireable[] requirements = new Requireable[0];
-    private boolean interruptable = true;
+    private boolean interruptible = true;
     /**
      * Set up this {@link Command}. No physical hardware should be manipulated.
      */
@@ -58,11 +58,11 @@ public abstract class Command {
      * requirements is added to the scheduler. By default the new command will cancel the
      * old one.
      */
-    protected final void setNotInterruptable() {
-        this.interruptable = false;
+    protected final void setNotInterruptible() {
+        this.interruptible = false;
     }
     
-    final boolean isInterruptable() {
-        return interruptable;
+    final boolean isInterruptible() {
+        return interruptible;
     }
 }

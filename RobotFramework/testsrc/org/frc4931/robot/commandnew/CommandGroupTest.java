@@ -439,10 +439,10 @@ public class CommandGroupTest {
         private final Queue<String> list;
         private final int number;
         
-        public CommandWithRequirement(Requireable required, int number, Queue<String> list, boolean interruptable) {
+        public CommandWithRequirement(Requireable required, int number, Queue<String> list, boolean interruptible) {
             this.list = list;
             this.number = number;
-            if(!interruptable) setNotInterruptable();
+            if(!interruptible) setNotInterruptible();
             requires(required);
         }
     

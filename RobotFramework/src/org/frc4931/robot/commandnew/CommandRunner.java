@@ -132,13 +132,13 @@ class CommandRunner {
         this.timeout = timeout;
     }
     
-    public boolean isInterruptable() {
+    public boolean isInterruptible() {
         if(command !=null)
-            return command.isInterruptable();
+            return command.isInterruptible();
         
         else if(children!=null)
             for(CommandRunner runner : children)
-                if(!runner.isInterruptable()) return false;
+                if(!runner.isInterruptible()) return false;
         return true;
     }
 

@@ -112,7 +112,7 @@ public class Scheduler {
             // Verify that every requirement can be obtained
             for(Requireable required : requirements) {
                 CommandRunner user = inUse.get(required);
-                if(user != null && !user.isInterruptable())
+                if(user != null && !user.isInterruptible())
                     return false;
             }
             
