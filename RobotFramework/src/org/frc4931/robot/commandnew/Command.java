@@ -45,11 +45,11 @@ public abstract class Command {
      * requirements, it will not be executed.
      * @param requirements the {@link Requireable}s this {@link Command} requires
      */
-    public void requires(Requireable... requirements) {
+    public final void requires(Requireable... requirements) {
         this.requirements = requirements;
     }
     
-    Requireable[] getRequirements(){
+    final Requireable[] getRequirements(){
         return requirements;
     }
     
@@ -57,11 +57,11 @@ public abstract class Command {
      * Sets if this command can be interupted by another command that shares a {@link Requireable}
      * @param interruptable if this {@link Command} is interruptable
      */
-    public void setInterruptable(boolean interruptable) {
+    public final void setInterruptable(boolean interruptable) {
         this.interruptable = interruptable;
     }
     
-    boolean isInterruptable() {
+    final boolean isInterruptable() {
         return interruptable;
     }
 }
