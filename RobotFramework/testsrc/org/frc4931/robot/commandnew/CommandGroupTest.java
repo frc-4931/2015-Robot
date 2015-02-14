@@ -10,9 +10,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.frc4931.robot.commandnew.Command;
-import org.frc4931.robot.commandnew.CommandGroup;
-import org.frc4931.robot.commandnew.Scheduler;
 import org.frc4931.robot.commandnew.Scheduler.Requireable;
 import org.junit.Before;
 import org.junit.Test;
@@ -445,7 +442,7 @@ public class CommandGroupTest {
         public CommandWithRequirement(Requireable required, int number, Queue<String> list, boolean interruptable) {
             this.list = list;
             this.number = number;
-            setInterruptable(interruptable);
+            if(!interruptable) setNotInterruptable();
             requires(required);
         }
     

@@ -54,11 +54,12 @@ public abstract class Command {
     }
     
     /**
-     * Sets if this command can be interupted by another command that shares a {@link Requireable}
-     * @param interruptable if this {@link Command} is interruptable
+     * Sets this {@link Command} to not be interrupted if another command with the same
+     * requirements is added to the scheduler. By default the new command will cancel the
+     * old one.
      */
-    public final void setInterruptable(boolean interruptable) {
-        this.interruptable = interruptable;
+    protected final void setNotInterruptable() {
+        this.interruptable = false;
     }
     
     final boolean isInterruptable() {
