@@ -17,7 +17,7 @@ public abstract class Command {
     /**
      * Set up this {@link Command}. No physical hardware should be manipulated.
      */
-    public abstract void initialize();
+    public void initialize() { }
     
     /**
      * Executed once after this {@link Command} is initialized, should return {@code true}
@@ -38,7 +38,7 @@ public abstract class Command {
     /**
      * Cleans up the resources used by this command and puts the robot in a safe state.
      */
-    public abstract void end();
+    public void end() { }
     
     /**
      * Sets the requirements of this {@link Command}. If a command cannot obtain its
