@@ -7,17 +7,16 @@
 package org.frc4931.robot.system;
 
 import org.frc4931.robot.component.Accelerometer;
-import org.frc4931.robot.subsystem.DriveSystem;
 
 /**
  * 
  */
 public class RobotSystems {
-    public final DriveSystem drive;
+    public final Drive drive;
     public final Accelerometer accelerometer;
     public final Superstructure structure;
     
-    public RobotSystems(DriveSystem drive, Accelerometer accelerometer, Superstructure structure) {
+    public RobotSystems(Drive drive, Accelerometer accelerometer, Superstructure structure) {
         this.drive = drive;
         this.accelerometer = accelerometer;
         this.structure = structure;

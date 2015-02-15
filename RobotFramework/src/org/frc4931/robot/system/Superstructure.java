@@ -11,12 +11,12 @@ package org.frc4931.robot.system;
  */
 public class Superstructure {
     public final Grabber grabber;
-    public final Kicker kicker;
+    public final KickerSwitchSystem kickerSystem;
     public final Ramp ramp;
     
-    public Superstructure(Grabber grabber, Kicker kicker, Ramp ramp) {
+    public Superstructure(Grabber grabber, KickerSwitchSystem kss, Ramp ramp) {
         this.grabber = grabber;
-        this.kicker = kicker;
+        this.kickerSystem = kss;
         this.ramp = ramp;
     }
 }
