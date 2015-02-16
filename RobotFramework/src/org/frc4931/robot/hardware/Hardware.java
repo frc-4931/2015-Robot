@@ -7,6 +7,7 @@
 package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.Accelerometer;
+import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
@@ -40,6 +41,19 @@ public class Hardware {
          */
         public static Gyroscope gyroscope(int channel) {
             return new HardwareGyroscope(channel);
+        }
+        
+        /**
+         * Creates a new {@link HardwareEncoder} using the specified channels with the
+         * specified distance per pulse.
+         * @param aChannel the a channel of the encoder
+         * @param bChannel the b channel of the encoder
+         * @param distancePerPulse the distance the end shaft spins per pulse
+         * @return an {@link AngleSensor}
+         */
+        public static AngleSensor encoder(int aChannel, int bChannel,
+                                          double distancePerPulse) {
+            return new HardwareEncoder(aChannel, bChannel, distancePerPulse);
         }
         
         public static final class Accelerometers {
