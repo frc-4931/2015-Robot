@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Encoder;
  */
 class HardwareEncoder implements AngleSensor{
     private Encoder encoder;
+    private double zero;
  
     public HardwareEncoder(int aChannel, int bChannel, double distancePerPulse) {
         encoder = new Encoder(aChannel, bChannel);
@@ -23,7 +24,12 @@ class HardwareEncoder implements AngleSensor{
     
     @Override
     public double getAngle() {
-        return encoder.getDistance();
+        return encoder.getDistance() - zero;
+    }
+
+    @Override
+    public void reset() {
+        zero = encoder.getDistance();
     }
 
 }

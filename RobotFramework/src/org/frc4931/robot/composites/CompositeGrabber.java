@@ -24,29 +24,37 @@ public class CompositeGrabber implements org.frc4931.robot.system.Grabber {
     
     @Override
     public void set(Position pos) {
+        motor.setAngle(pos.getAngle());
     }
 
     @Override
     public boolean is(Position pos) {
-        return false;
+        return motor.isAt(pos.getAngle());
     }
 
     @Override
     public void close() {
+        grabber.extend();
     }
 
     @Override
     public boolean isClosed() {
-        return false;
+        return grabber.isExtending();
     }
 
     @Override
     public void open() {
+        grabber.retract();
     }
 
     @Override
     public boolean isOpen() {
-        return false;
+        return grabber.isRetracting();
+    }
+    
+    @Override
+    public void home() {
+        motor.home(0.3 * 1);
     }
 
 }

@@ -48,6 +48,8 @@ public interface Grabber extends Requireable{
      * @return {@code true} if the grabbers are open; {@code false} otherwise
      */
     public boolean isOpen();
+    
+    public void home();
 
     public static enum Position {
         DOWN(0),TRANSFER(45);

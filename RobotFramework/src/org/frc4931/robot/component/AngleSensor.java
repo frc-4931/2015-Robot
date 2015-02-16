@@ -14,4 +14,6 @@ public interface AngleSensor {
     
    public double getAngle();
    
+   public void reset();
+   
 }

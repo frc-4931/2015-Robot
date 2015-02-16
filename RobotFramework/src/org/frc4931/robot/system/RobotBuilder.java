@@ -47,7 +47,7 @@ public class RobotBuilder {
         
         // Build the grabber
         Grabber grabber = new CompositeGrabber(new PIDMotorWithAngle(
-                             componets.grabberLifter, componets.grabberEncoder, 0.1),
+                             componets.grabberLifter, componets.grabberEncoder, componets.grabberHome, 0.1),
                              componets.grabberGrabber);
                 
         // Build the Kicker
@@ -92,7 +92,7 @@ public class RobotBuilder {
         
         public final Solenoid guardrailGrabber = Solenoids.doubleSolenoid(Properties.GUARDRAIL_SOLENOID_EXTEND, Properties.GUARDRAIL_SOLENOID_RETRACT, Direction.RETRACTING);
         
-        public final MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID);
+        public final MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID, Switches.normallyClosed(Properties.KICKER_HOME));
         public final Switch kickerSwitch        = Switches.normallyClosed(Properties.CAN_GRAB);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
@@ -127,6 +127,7 @@ public class RobotBuilder {
         private static final int GRABBER_ENCODER_A = 3;
         private static final int GRABBER_ENCODER_B = 4;
         private static final int CAN_GRAB = 5;
+        private static final int KICKER_HOME = 6;
 
         /*-------CAN------*/
         private static final int KICKER_MOTOR_CAN_ID = 0;

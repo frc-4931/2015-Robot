@@ -13,7 +13,7 @@ import org.frc4931.utils.Operations;
  * motor with a position
  * @author Nathan Brown
  */
-public interface MotorWithAngle extends Motor, AngleSensor{
+public interface MotorWithAngle extends Motor{
 
     /**
      * gets the tolerance of this motor with position
@@ -40,4 +40,17 @@ public interface MotorWithAngle extends Motor, AngleSensor{
      * @param angle target angle of motor
      */
     public void setAngle(double angle);
+    
+    /**
+     * Moves this motor to the endstop in the direction specified. Blocks until completion.
+     * @param speed the speed to home at, {@code >0} is clockwise from the reference of
+     *                   the motor; {@code <0} is counter-clockwise
+     */
+    public void home(double speed);
+
+    /**
+     * Gets the angle of this {@link MotorWithAngle}.
+     * @return the angle of this {@link MotorWithAngle}
+     */
+    double getAngle();
 }

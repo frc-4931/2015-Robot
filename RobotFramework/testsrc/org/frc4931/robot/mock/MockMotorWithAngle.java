@@ -52,4 +52,7 @@ public class MockMotorWithAngle implements MotorWithAngle {
         tolerance = tol;
     }
 
+    @Override
+    public void home(double speed) { }
+
 }

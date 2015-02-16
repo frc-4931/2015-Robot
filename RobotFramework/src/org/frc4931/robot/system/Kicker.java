@@ -16,6 +16,8 @@ public interface Kicker extends Requireable {
     
     public boolean is(Position pos);
     
+    public void home();
+    
     public static enum Position {
         DOWN(0),STEP(29.5),TOTE(65.1),TOTE_STEP(92.5);
         

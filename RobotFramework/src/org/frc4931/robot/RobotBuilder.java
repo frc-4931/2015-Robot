@@ -6,7 +6,6 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.SerialPort;
 import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.DriveTrain;
@@ -33,6 +32,8 @@ import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.RampLifter;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
+
+import edu.wpi.first.wpilibj.SerialPort;
 
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.
@@ -135,7 +136,7 @@ public class RobotBuilder {
         Solenoid grabberClaw = Solenoids.doubleSolenoid(Properties.GRABBER_CLAW_EXTEND,
                                                         Properties.GRABBER_CLAW_RETRACT,
                                                         Solenoid.Direction.EXTENDING);
-        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR);
+        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR, Switches.normallyClosed(Properties.KICKER_HOME));
         Switch canGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB);
         Switch didGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB);
 
@@ -277,6 +278,7 @@ public class RobotBuilder {
         private static final int GUARDRAIL_CLOSE_SWITCH = 9;
         
         private static final int KICKER_MOTOR = 5;
+        private static final int KICKER_HOME = 6;
         
         /*-------VISION-------*/
         private static final String FRONT_CAMERA_NAME = null;

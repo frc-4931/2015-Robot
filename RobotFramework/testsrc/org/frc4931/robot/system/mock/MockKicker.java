@@ -41,4 +41,7 @@ public class MockKicker implements Kicker{
     public void assertGround() {
         assertThat(position).isEqualTo(Position.DOWN);
     }
+
+    @Override
+    public void home() { }
 }

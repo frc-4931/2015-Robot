@@ -28,4 +28,9 @@ public class CompositeKicker implements Kicker{
     public boolean is(Position pos){
         return motor.isAt(pos.getAngle());
     }
+    
+    @Override
+    public void home() {
+        motor.home(0.3 * 1);
+    }
 }

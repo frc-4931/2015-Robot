@@ -62,4 +62,7 @@ public class MockGrabber implements Grabber {
     public void assertGrabberLowered() {
         assertThat(position).isEqualTo(Position.DOWN);
     }
+
+    @Override
+    public void home() { }
 }

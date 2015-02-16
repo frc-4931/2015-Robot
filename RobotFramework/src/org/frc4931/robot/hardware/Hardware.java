@@ -204,10 +204,12 @@ public class Hardware {
          * Creates a motor controlled by a TalonSRX speed controller on a specified port.
          * @param port
          *          the port the motor controller is connected to
+         * @param home
+         *          the {@link Switch} that defines this motor's home
          * @return a motor with a specified port
          */
-        public static MotorWithAngle talonSRX(int port){
-            return new HardwareTalonSRX(port);
+        public static MotorWithAngle talonSRX(int port, Switch home){
+            return new HardwareTalonSRX(port, home);
         }
     }
 
