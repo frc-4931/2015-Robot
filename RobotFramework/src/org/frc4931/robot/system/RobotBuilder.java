@@ -8,15 +8,23 @@ package org.frc4931.robot.system;
 
 import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.AngleSensor;
+import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Solenoid.Direction;
+import org.frc4931.robot.component.SolenoidWithPosition;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.composites.CompositeGrabber;
+import org.frc4931.robot.composites.CompositeGuardrail;
+import org.frc4931.robot.composites.CompositeKicker;
+import org.frc4931.robot.composites.CompositeLifter;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors;
+import org.frc4931.robot.hardware.Hardware.Sensors.Accelerometers;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
+import org.frc4931.robot.hardware.PIDMotorWithAngle;
 
 import edu.wpi.first.wpilibj.SerialPort;
 
@@ -28,32 +36,42 @@ public class RobotBuilder {
         Componets componets = new Componets();
         
         // Build the drive
-        DriveInterpreter drive = null;
+        DriveInterpreter drive = new DriveInterpreter(DriveTrain.create(
+                                  Motor.compose(componets.leftFront,
+                                                componets.leftRear),
+                                  Motor.invert(Motor.compose(
+                                      componets.rightFront,
+                                      componets.rightRear))));
         
         // Build the structure
         
         // Build the grabber
-        Grabber grabber = null;
+        Grabber grabber = new CompositeGrabber(new PIDMotorWithAngle(
+                             componets.grabberLifter, componets.grabberEncoder, 0.1),
+                             componets.grabberGrabber);
                 
         // Build the Kicker
-        Kicker kicker          = null;
+        Kicker kicker          = new CompositeKicker(componets.kickerMotor);
         Switch canCapture      = componets.kickerSwitch;
         KickerSwitchSystem kss = new KickerSwitchSystem(kicker, canCapture);
         
         // Build the ramp
-        Lifter    lifter = null;
-        Guardrail rail   = null;
+        Lifter    lifter = new CompositeLifter(new SolenoidWithPosition(
+                            componets.rampLifter, componets.rampDown, componets.rampUp));
+        Guardrail rail   = new CompositeGuardrail(componets.guardrailGrabber);
         Ramp      ramp   = new Ramp(lifter, rail);
         
         Superstructure structure = new Superstructure(grabber, kss, ramp);
         
-        // Build the accel
-        Accelerometer accel = null;
+        // Build the accelerometer
+        Accelerometer accel = componets.builtInAccel;
                 
         return new RobotSystems(drive, accel, structure);
     }
     
     private static final class Componets {
+        public Componets() { }
+
         // Drive
         public final Motor leftFront  = Motors.talon(Properties.LEFT_FRONT_DRIVE);
         public final Motor leftRear   = Motors.talon(Properties.LEFT_REAR_DRIVE);
@@ -76,6 +94,8 @@ public class RobotBuilder {
         
         public final MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID);
         public final Switch kickerSwitch        = Switches.normallyClosed(Properties.CAN_GRAB);
+        
+        public final Accelerometer builtInAccel = Accelerometers.builtIn();
     }
     
     private static final class Properties {
