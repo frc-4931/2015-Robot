@@ -8,6 +8,7 @@ package org.frc4931.robot.commandnew.auto;
 
 import org.frc4931.robot.commandnew.CommandTester;
 import org.frc4931.robot.mock.MockSwitch;
+import org.frc4931.robot.system.DriveInterpreter;
 import org.frc4931.robot.system.mock.MockDrive;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,13 +19,15 @@ import static org.fest.assertions.Assertions.assertThat;
  * 
  */
 public class DriveUpToCanTest {
-    private MockDrive drive;
+    private MockDrive driveTrain;
+    private DriveInterpreter drive;
     private MockSwitch swtch;
     private CommandTester command;
     
     @Before
     public void beforeEach() {
-        drive = new MockDrive();
+        driveTrain = new MockDrive();
+        drive = new DriveInterpreter(driveTrain);
         swtch = MockSwitch.createNotTriggeredSwitch();
         command = new CommandTester(new DriveUpToCan(drive, swtch));
     }
@@ -33,19 +36,19 @@ public class DriveUpToCanTest {
     public void shouldDriveUpToCan() {
         // Preconditions
         drive.stop();
-        drive.assertStopped();
+        driveTrain.assertStopped();
         swtch.setNotTriggered();
         assertThat(swtch.isTriggered()).isEqualTo(false);
         
         command.step(0);
-        drive.assertDrivingForward();
+        driveTrain.assertDrivingForward();
         
         command.step(1);
-        drive.assertDrivingForward();
+        driveTrain.assertDrivingForward();
         
         swtch.setTriggered();
         
         command.step(2);
-        drive.assertStopped();
+        driveTrain.assertStopped();
     }
 }

@@ -8,17 +8,17 @@ package org.frc4931.robot.commandnew.auto;
 
 import org.frc4931.robot.commandnew.Command;
 import org.frc4931.robot.component.Switch;
-import org.frc4931.robot.system.Drive;
+import org.frc4931.robot.system.DriveInterpreter;
 
 /**
  * 
  */
 public class DriveUpToCan extends Command {
     private final static double SPEED = 0.5;
-    private final Drive drive;
+    private final DriveInterpreter drive;
     private final Switch swtch;
     
-    public DriveUpToCan(Drive drive, Switch swtch) {
+    public DriveUpToCan(DriveInterpreter drive, Switch swtch) {
         requires(drive);
         this.drive = drive;
         this.swtch = swtch;

@@ -12,11 +12,11 @@ import org.frc4931.robot.component.Accelerometer;
  * 
  */
 public class RobotSystems {
-    public final Drive drive;
+    public final DriveInterpreter drive;
     public final Accelerometer accelerometer;
     public final Superstructure structure;
     
-    public RobotSystems(Drive drive, Accelerometer accelerometer, Superstructure structure) {
+    public RobotSystems(DriveInterpreter drive, Accelerometer accelerometer, Superstructure structure) {
         this.drive = drive;
         this.accelerometer = accelerometer;
         this.structure = structure;

@@ -28,7 +28,7 @@ public class RobotBuilder {
         Componets componets = new Componets();
         
         // Build the drive
-        Drive drive = null;
+        DriveInterpreter drive = null;
         
         // Build the structure
         

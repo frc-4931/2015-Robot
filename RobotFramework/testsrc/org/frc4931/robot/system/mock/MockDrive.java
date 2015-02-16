@@ -7,32 +7,21 @@
 package org.frc4931.robot.system.mock;
 
 import org.fest.assertions.Delta;
-import org.frc4931.robot.system.Drive;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.frc4931.robot.component.DriveTrain;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * 
  */
-public class MockDrive implements Drive {
+public class MockDrive implements DriveTrain {
     private double leftSpeed;
     private double rightSpeed;
     
     @Override
-    public void tank(double leftSpeed, double rightSpeed, boolean squaredInputs) {
-        if(squaredInputs) {
-            leftSpeed = leftSpeed * leftSpeed * Math.signum(leftSpeed);
-            rightSpeed = rightSpeed * rightSpeed * Math.signum(rightSpeed);
-        }
+    public void drive(double leftSpeed, double rightSpeed) {
         this.leftSpeed = leftSpeed;
         this.rightSpeed = rightSpeed;
-    }
-
-    @Override
-    public void cheesy(double throttle, double wheel, boolean isQuickTurn) {
-        throw new NotImplementedException();
     }
 
     public void assertDrivingForward() {

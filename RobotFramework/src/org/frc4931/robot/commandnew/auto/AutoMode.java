@@ -14,12 +14,12 @@ import org.frc4931.robot.commandnew.kicker.MoveKickerToGround;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToStep;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToTote;
 import org.frc4931.robot.commandnew.ramplifter.LowerRamp;
-import org.frc4931.robot.system.Drive;
+import org.frc4931.robot.system.DriveInterpreter;
 import org.frc4931.robot.system.Superstructure;
 import org.frc4931.robot.vision.Camera;
 
 public class AutoMode extends CommandGroup{
-    public AutoMode(Drive drive, Superstructure structure, Camera eyes) {
+    public AutoMode(DriveInterpreter drive, Superstructure structure, Camera eyes) {
         sequentially(
                      // Grab can in guardrails
                      new DriveUpToCan(drive, structure.kickerSystem.canCapture),

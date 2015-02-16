@@ -7,7 +7,7 @@
 package org.frc4931.robot.commandnew.auto;
 
 import org.frc4931.robot.commandnew.Command;
-import org.frc4931.robot.system.Drive;
+import org.frc4931.robot.system.DriveInterpreter;
 import org.frc4931.robot.vision.Camera;
 
 
@@ -15,10 +15,10 @@ import org.frc4931.robot.vision.Camera;
  * 
  */
 public class TurnToTote extends Command {
-    private final Drive drive;
+    private final DriveInterpreter drive;
     private final Camera eyes;
     
-    public TurnToTote(Drive drive, Camera eyes) {
+    public TurnToTote(DriveInterpreter drive, Camera eyes) {
         requires(drive);
         this.drive = drive;
         this.eyes = eyes;
