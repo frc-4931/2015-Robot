@@ -7,10 +7,8 @@
 package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.Accelerometer;
-import org.frc4931.utils.Triple;
 
 import edu.wpi.first.wpilibj.ADXL345_I2C;
-import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
 import edu.wpi.first.wpilibj.I2C;
 
 /**
@@ -20,20 +18,6 @@ import edu.wpi.first.wpilibj.I2C;
  */
 final class HardwareAccelerometer implements Accelerometer{
     private ADXL345_I2C accel;
-    
-    private long lastUpdate = 0;
-    
-    private double xAccel;
-    private double yAccel;
-    private double zAccel;
-    
-    private double xVel;
-    private double yVel;
-    private double zVel;
-    
-    private double xDisp;
-    private double yDisp;
-    private double zDisp;
     
     public HardwareAccelerometer(int range) {
         if(range==2)
@@ -49,39 +33,17 @@ final class HardwareAccelerometer implements Accelerometer{
     }
     
     @Override
-    public Triple getAcceleration() {
-        return new Triple(xAccel,yAccel,zAccel);
+    public double getXacceleration() {
+        return accel.getX();
     }
 
     @Override
-    public Triple getVelocity() {
-        return new Triple(xVel,yVel,zVel);
+    public double getYacceleration() {
+        return accel.getY();
     }
 
     @Override
-    public Triple getDisplacement() {
-        return new Triple(xDisp,yDisp,zDisp);
-    }
-
-    @Override
-    public void update() {
-        long now = System.nanoTime();
-        long delta = now-lastUpdate;
-        
-        double d = delta/1.0e-9;
-        
-        AllAxes a = accel.getAccelerations();
-        
-        xAccel = a.XAxis;
-        yAccel = a.YAxis;
-        zAccel = a.ZAxis;
-        
-        xVel += xAccel*d;
-        yVel += yAccel*d;
-        zVel += zAccel*d;
-        
-        xDisp += xVel*d;
-        yDisp += yVel*d;
-        zDisp += zVel*d;
+    public double getZacceleration() {
+        return accel.getZ();
     }
 }

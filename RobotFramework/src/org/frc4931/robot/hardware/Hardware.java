@@ -88,6 +88,10 @@ public class Hardware {
             public static Accelerometer accelerometer16G() {
                 return new HardwareAccelerometer(16);
             }
+            
+            public static Accelerometer builtIn() {
+                return new HardwareBuiltInAccel();
+            }
         }
         
         public static final class Switches {

@@ -6,7 +6,6 @@
  */
 package org.frc4931.robot.component;
 
-import org.frc4931.utils.Triple;
 
 /**
  * An accelerometer is a device capable of sensing acceleration. By performing
@@ -16,29 +15,9 @@ import org.frc4931.utils.Triple;
  */
 public interface Accelerometer {
     
-    /**
-     * Gets the acceleration on all three axis of this {@link Accelerometer}.
-     * @return a {@link Triple} containing all three axis of acceleration
-     */
-    public Triple getAcceleration();
+    public double getXacceleration();
     
-    /**
-     * Gets the velocity on all three axis of this {@link Accelerometer},
-     * found by integrating the acceleration with respect to time.
-     * @return a {@link Triple} containing all three axis of velocity
-     */
-    public Triple getVelocity();
+    public double getYacceleration();
     
-    /**
-     * Gets the displacement on all three axis of this {@link Accelerometer},
-     * found by integrating the velocity with respect to time.
-     * @return a {@link Triple} containing all three axis of displacement
-     */
-    public Triple getDisplacement();
-    
-    /**
-     * Updates the current acceleration of this {@link Accelerometer} and
-     * performs the integrations to find velocity and displacement.
-     */
-    public void update();
+    public double getZacceleration();
 }
