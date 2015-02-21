@@ -64,7 +64,8 @@ public class SwitchListener{
      * @param function the {@link ListenerFunction} to execute
      */
     public void onTriggered(Switch swtch, ListenerFunction function){
-        listeners.putIfAbsent(swtch, new Container()).addWhenTriggered(function);
+        listeners.putIfAbsent(swtch, new Container());
+        listeners.get(swtch).addWhenTriggered(function);
     }
     
     /**
@@ -74,7 +75,8 @@ public class SwitchListener{
      * @param function the {@link ListenerFunction} to execute
      */
     public void onUntriggered(Switch swtch, ListenerFunction function){
-        listeners.putIfAbsent(swtch, new Container()).addWhenUntriggered(function);
+        listeners.putIfAbsent(swtch, new Container());
+        listeners.get(swtch).addWhenUntriggered(function);
     }
     
     /**
@@ -84,7 +86,8 @@ public class SwitchListener{
      * @param function the {@link ListenerFunction} to execute
      */
     public void whileTriggered(Switch swtch, ListenerFunction function){
-        listeners.putIfAbsent(swtch, new Container()).addWhileTriggered(function);
+        listeners.putIfAbsent(swtch, new Container());
+        listeners.get(swtch).addWhileTriggered(function);
     }
 
     /**
@@ -94,7 +97,8 @@ public class SwitchListener{
      * @param function the {@link ListenerFunction} to execute
      */
     public void whileUntriggered(Switch swtch, ListenerFunction function){
-        listeners.putIfAbsent(swtch, new Container()).addWhileUntriggered(function);
+        listeners.putIfAbsent(swtch, new Container());
+        listeners.get(swtch).addWhileUntriggered(function);
     }
     
     private static final class Container{
