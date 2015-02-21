@@ -31,6 +31,7 @@ public class CompositeKicker implements Kicker{
     
     @Override
     public void home() {
-        motor.home(0.3 * 1);
+        // Direction * speed
+        motor.home(-1 * 0.25);
     }
 }
