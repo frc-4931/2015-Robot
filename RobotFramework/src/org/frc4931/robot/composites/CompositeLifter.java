@@ -6,16 +6,16 @@
  */
 package org.frc4931.robot.composites;
 
-import org.frc4931.robot.component.SolenoidWithPosition;
+import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.system.Lifter;
 
 /**
  * 
  */
 public class CompositeLifter implements Lifter{
-    private final SolenoidWithPosition solenoid;
+    private final Solenoid solenoid;
     
-    public CompositeLifter(SolenoidWithPosition solenoid) {
+    public CompositeLifter(Solenoid solenoid) {
         this.solenoid = solenoid;
     }
     
@@ -26,7 +26,7 @@ public class CompositeLifter implements Lifter{
 
     @Override
     public boolean isUp() {
-        return solenoid.isExtended();
+        return solenoid.isExtending();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CompositeLifter implements Lifter{
 
     @Override
     public boolean isDown() {
-        return solenoid.isRetracted();
+        return solenoid.isRetracting();
     }
 
 }

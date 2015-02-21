@@ -13,7 +13,6 @@ import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Solenoid.Direction;
-import org.frc4931.robot.component.SolenoidWithPosition;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.composites.CompositeGrabber;
 import org.frc4931.robot.composites.CompositeGuardrail;
@@ -56,8 +55,7 @@ public class RobotBuilder {
         KickerSwitchSystem kss = new KickerSwitchSystem(kicker, canCapture);
         
         // Build the ramp
-        Lifter    lifter = new CompositeLifter(new SolenoidWithPosition(
-                            componets.rampLifter, componets.rampDown, componets.rampUp));
+        Lifter    lifter = new CompositeLifter(componets.rampLifter);
         Guardrail rail   = new CompositeGuardrail(componets.guardrailGrabber);
         Ramp      ramp   = new Ramp(lifter, rail);
         
@@ -86,14 +84,11 @@ public class RobotBuilder {
         public final Solenoid grabberGrabber = Solenoids.doubleSolenoid(Properties.GRABBER_SOLENOID_EXTEND, Properties.GRABBER_SOLENOID_RETRACT, Direction.RETRACTING);
 
         // Ramp
-        public final Solenoid rampLifter = Solenoids.doubleSolenoid(Properties.RAMP_SOLENOID_EXTEND, Properties.RAMP_SOLENOID_RETRACT, Direction.EXTENDING);
-        public final Switch   rampUp     = Switches.normallyClosed(Properties.RAMP_UP_SWITCH);
-        public final Switch   rampDown   = Switches.normallyClosed(Properties.RAMP_DOWN_SWITCH);
+        public final Solenoid rampLifter        = Solenoids.doubleSolenoid(Properties.RAMP_SOLENOID_EXTEND, Properties.RAMP_SOLENOID_RETRACT, Direction.EXTENDING);
+        public final Solenoid guardrailGrabber  = Solenoids.doubleSolenoid(Properties.GUARDRAIL_SOLENOID_EXTEND, Properties.GUARDRAIL_SOLENOID_RETRACT, Direction.RETRACTING);
         
-        public final Solenoid guardrailGrabber = Solenoids.doubleSolenoid(Properties.GUARDRAIL_SOLENOID_EXTEND, Properties.GUARDRAIL_SOLENOID_RETRACT, Direction.RETRACTING);
-        
-        public final MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID, Switches.normallyClosed(Properties.KICKER_HOME));
-        public final Switch kickerSwitch        = Switches.normallyClosed(Properties.CAN_GRAB);
+        public final MotorWithAngle kickerMotor  = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID, Switches.normallyClosed(Properties.KICKER_HOME));
+        public final Switch         kickerSwitch = Switches.normallyClosed(Properties.CAN_GRAB);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
     }
@@ -121,8 +116,6 @@ public class RobotBuilder {
         private static final int GUARDRAIL_SOLENOID_RETRACT = 5;
         
         /*-------DIO------*/
-        private static final int RAMP_UP_SWITCH = 0;
-        private static final int RAMP_DOWN_SWITCH = 1;
         private static final int GRABBER_LIFTER_HOME = 2;
         private static final int GRABBER_ENCODER_A = 3;
         private static final int GRABBER_ENCODER_B = 4;
