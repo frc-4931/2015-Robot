@@ -72,6 +72,16 @@ public class Scheduler {
         list.step(time);
     }
     
+    /**
+     * Tests if there are any {@link Command}s currently executing or pending execution.
+     * 
+     * @return {@code true} if there are no {@link Command}s executing or pending;
+     *          {@code false} otherwise
+     */
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+    
     final static class Commands {
         private Queue<CommandRunner> beingExecuted = new LinkedList<>();
         private Queue<CommandRunner> pendingAddition = new LinkedList<>();
@@ -128,6 +138,10 @@ public class Scheduler {
         private void remove(CommandRunner runner, long time) {
             for(Requireable required : runner.getRequired()) inUse.remove(required);
             runner.after(this, time);
+        }
+        
+        boolean isEmpty() {
+            return pendingAddition.isEmpty() && beingExecuted.isEmpty();
         }
     }
     
