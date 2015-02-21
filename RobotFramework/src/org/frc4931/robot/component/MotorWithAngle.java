@@ -20,12 +20,7 @@ public interface MotorWithAngle extends Motor{
      * @return tolerance of the motor
      */
     public double getTolerance();
-    
-    /**
-     * sets the tolerance for the motor
-     * @param tol is the new tolerance  for this motor
-     */
-    public void setTolerance(double tol);
+
     /**
      * 
      * @param angle angle to test

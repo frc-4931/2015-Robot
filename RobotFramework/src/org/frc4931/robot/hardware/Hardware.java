@@ -15,6 +15,7 @@ import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.system.PowerPanel;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -32,6 +33,14 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Hardware {
     public static final class Sensors {
+        /**
+         * Gets the {@link PowerPanel} of the robot.
+         * 
+         * @return the {@link PowerPanel} of the robot
+         */
+        public static PowerPanel powerPanel() {
+            return new HardwarePowerPanel();
+        }
         /**
          * Create a {@link HardwareGyroscope} on the specified channel.
          * 
@@ -206,10 +215,17 @@ public class Hardware {
          *          the port the motor controller is connected to
          * @param home
          *          the {@link Switch} that defines this motor's home
+         * @param tolerance
+         *          the tolerance in degrees
+         * @param ppd
+         *          the number of encoder pulses per degree of revolution of the final shaft
+         * @param maxCurrent
+         *          the maximum current in amps of this motor, any higher and the motor will
+         *          be stopped
          * @return a motor with a specified port
          */
-        public static MotorWithAngle talonSRX(int port, Switch home){
-            return new HardwareTalonSRX(port, home);
+        public static MotorWithAngle talonSRX(int port, Switch home, double tolerance, double ppd, double maxCurrent){
+            return new HardwareTalonSRX(port, home, tolerance, ppd, maxCurrent);
         }
     }
 

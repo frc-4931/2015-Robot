@@ -15,10 +15,12 @@ public class RobotSystems {
     public final DriveInterpreter drive;
     public final Accelerometer accelerometer;
     public final Superstructure structure;
+    public final PowerPanel powerPanel;
     
-    public RobotSystems(DriveInterpreter drive, Accelerometer accelerometer, Superstructure structure) {
+    public RobotSystems(DriveInterpreter drive, Accelerometer accelerometer, Superstructure structure, PowerPanel powerPanel) {
         this.drive = drive;
         this.accelerometer = accelerometer;
         this.structure = structure;
+        this.powerPanel = powerPanel;
     }
 }

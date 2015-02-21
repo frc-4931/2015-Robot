@@ -7,6 +7,7 @@
 package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.AngleSensor;
+import org.frc4931.robot.component.CurrentSensor;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Switch;
@@ -15,38 +16,39 @@ import edu.wpi.first.wpilibj.PIDController;
 
 public class PIDMotorWithAngle implements MotorWithAngle {
     private final Motor motor;
+    private final CurrentSensor motorCurrent;
     private final AngleSensor angleSensor;
     private final Switch home;
     private final PIDController pidController;
-    private double tolerance;
+    private final double maxCurrent;
+    private final double tolerance;
 
-    public PIDMotorWithAngle(Motor motor, AngleSensor angleSensor, Switch home, double tolerance) {
+    public PIDMotorWithAngle(Motor motor, CurrentSensor motorCurrent, AngleSensor angleSensor, Switch home, double tolerance, double maxCurrent) {
         this.motor = motor;
+        this.motorCurrent = motorCurrent;
         this.angleSensor = angleSensor;
         this.home = home;
+        this.maxCurrent = maxCurrent;
+        this.tolerance = tolerance;
+        
         pidController = new PIDController(1.0, 0.0, 0.0, angleSensor::getAngle, motor::setSpeed);
         pidController.setInputRange(0.0, 360.0);
         pidController.setOutputRange(-1.0, 1.0);
         pidController.setContinuous();
-        this.tolerance = tolerance;
     }
     
     @Override
     public void home(double speed) {
-        while(!home.isTriggered()) {
+        while(!home.isTriggered() && motorCurrent.getCurrent()<maxCurrent) {
             motor.setSpeed(speed);
         }
+        motor.stop();
         angleSensor.reset();
     }
 
     @Override
     public double getTolerance() {
         return tolerance;
-    }
-
-    @Override
-    public void setTolerance(double tolerance) {
-        this.tolerance = tolerance;
     }
 
     @Override

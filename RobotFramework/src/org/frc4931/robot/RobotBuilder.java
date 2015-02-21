@@ -136,7 +136,7 @@ public class RobotBuilder {
         Solenoid grabberClaw = Solenoids.doubleSolenoid(Properties.GRABBER_CLAW_EXTEND,
                                                         Properties.GRABBER_CLAW_RETRACT,
                                                         Solenoid.Direction.EXTENDING);
-        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR, Switches.normallyClosed(Properties.KICKER_HOME));
+        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR, Switches.normallyClosed(Properties.KICKER_HOME), Properties.KICKER_TOLERANCE, Properties.KICKER_PPD, Properties.KICKER_MAX_CURRENT);
         Switch canGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB);
         Switch didGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB);
 
@@ -246,6 +246,11 @@ public class RobotBuilder {
     
     private static final class Properties {
         // TODO: Make sure these are all correct before running on the hardware!!
+
+        /*-------CONSTANT------*/
+        private static final double KICKER_TOLERANCE = 5;
+        private static final double KICKER_PPD = 2.7;
+        private static final double KICKER_MAX_CURRENT = 5;
         
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;

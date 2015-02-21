@@ -34,6 +34,9 @@ public class RobotBuilder {
     public RobotSystems buildRobot() {
         Componets componets = new Componets();
         
+     // Build the power distro panel
+        PowerPanel powerPanel = componets.powerPanel;
+        
         // Build the drive
         DriveInterpreter drive = new DriveInterpreter(DriveTrain.create(
                                   Motor.compose(componets.leftFront,
@@ -46,7 +49,9 @@ public class RobotBuilder {
         
         // Build the grabber
         Grabber grabber = new CompositeGrabber(new PIDMotorWithAngle(
-                             componets.grabberLifter, componets.grabberEncoder, componets.grabberHome, 0.1),
+                             componets.grabberLifter, ()->powerPanel.getCurrent(Properties.GRABBER_LIFTER_CURRENT),
+                             componets.grabberEncoder, componets.grabberHome,
+                             Properties.GRABBER_TOLERANCE, Properties.GRABBER_MAX_CURRENT),
                              componets.grabberLeftGrabber, componets.grabberRightGrabber);
                 
         // Build the Kicker
@@ -63,8 +68,8 @@ public class RobotBuilder {
         
         // Build the accelerometer
         Accelerometer accel = componets.builtInAccel;
-                
-        return new RobotSystems(drive, accel, structure);
+        
+        return new RobotSystems(drive, accel, structure, powerPanel);
     }
     
     private static final class Componets {
@@ -88,15 +93,23 @@ public class RobotBuilder {
         public final Solenoid rampLifter        = Solenoids.doubleSolenoid(Properties.RAMP_SOLENOID_EXTEND, Properties.RAMP_SOLENOID_RETRACT, Direction.EXTENDING);
         public final Solenoid guardrailGrabber  = Solenoids.doubleSolenoid(Properties.GUARDRAIL_SOLENOID_EXTEND, Properties.GUARDRAIL_SOLENOID_RETRACT, Direction.RETRACTING);
         
-        public final MotorWithAngle kickerMotor  = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID, Switches.normallyClosed(Properties.KICKER_HOME));
+        public final MotorWithAngle kickerMotor  = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID, Switches.normallyClosed(Properties.KICKER_HOME),
+                                                                     Properties.KICKER_TOLERANCE, Properties.KICKER_ENCODER_DPP, Properties.KICKER_MAX_CURRENT);
         public final Switch         kickerSwitch = Switches.normallyClosed(Properties.CAN_GRAB);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
+        
+        public final PowerPanel powerPanel = Sensors.powerPanel();
     }
     
     private static final class Properties {
         /*-------CONSTANTS------*/
-        private static final double GRABBER_ENCODER_DPP = 0.7;
+        private static final double GRABBER_ENCODER_DPP = 3.6861;
+        private static final double GRABBER_MAX_CURRENT = 4;
+        private static final double GRABBER_TOLERANCE = 5;
+        private static final double KICKER_ENCODER_DPP = 2.8444;
+        private static final double KICKER_MAX_CURRENT = 4;
+        private static final double KICKER_TOLERANCE = 5;
         
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;
@@ -107,6 +120,10 @@ public class RobotBuilder {
         private static final int RIGHT_FRONT_DRIVE = 2;
         private static final int RIGHT_REAR_DRIVE = 3;
         private static final int GRABBER_LIFTER_MOTOR = 4;
+        
+        /*-------POWER PANEL------*/
+        private static final int GRABBER_LIFTER_CURRENT = 2;
+        private static final int KICKER_CURRENT = 3;
        
         /*-------SOLENOIDS------*/
         private static final int RAMP_SOLENOID_EXTEND = 0;
