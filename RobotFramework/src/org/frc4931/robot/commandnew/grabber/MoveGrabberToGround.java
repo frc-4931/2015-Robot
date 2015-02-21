@@ -22,13 +22,8 @@ public class MoveGrabberToGround extends Command{
     }
 
     @Override
-    public boolean firstExecute() {
-        grabber.set(Position.DOWN);
-        return grabber.is(Position.DOWN);
-    }
-    
-    @Override
     public boolean execute() {
+        grabber.set(Position.DOWN);
         return grabber.is(Position.DOWN);
     }
 }

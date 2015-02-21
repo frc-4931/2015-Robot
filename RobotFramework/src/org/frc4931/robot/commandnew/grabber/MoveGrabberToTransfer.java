@@ -22,13 +22,8 @@ public class MoveGrabberToTransfer extends Command {
     }
     
     @Override
-    public boolean firstExecute() {
-        grabber.set(Position.TRANSFER);
-        return grabber.is(Position.TRANSFER);
-    }
-    
-    @Override
     public boolean execute() {
+        grabber.set(Position.TRANSFER);
         return grabber.is(Position.TRANSFER);
     }
 

@@ -20,15 +20,6 @@ public abstract class Command {
     public void initialize() { }
     
     /**
-     * Executed once after this {@link Command} is initialized, should return {@code true}
-     * if this {@link Command} is complete. Defers to {@link #execute()} by default.
-     * @return {@code true} if this {@link Command} is complete; {@code false} otherwise
-     */
-    public boolean firstExecute() {
-        return execute();
-    }
-    
-    /**
      * Executed repeatedly after this {@link Command} is initialized until it
      * returns {@code true}.
      * @return {@code true} if this {@link Command} is complete; {@code false} otherwise

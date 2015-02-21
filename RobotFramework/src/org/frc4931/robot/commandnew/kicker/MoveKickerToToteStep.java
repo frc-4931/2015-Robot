@@ -20,15 +20,10 @@ public class MoveKickerToToteStep extends Command {
         requires(kicker);
         this.kicker = kicker;
     }
-    
-    @Override
-    public boolean firstExecute() {
-        kicker.set(Position.TOTE_STEP);
-        return kicker.is(Position.TOTE_STEP);
-    }
 
     @Override
     public boolean execute() {
+        kicker.set(Position.TOTE_STEP);
         return kicker.is(Position.TOTE_STEP);
     }
 

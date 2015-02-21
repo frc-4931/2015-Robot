@@ -22,13 +22,8 @@ public class MoveKickerToTote extends Command {
     }
     
     @Override
-    public boolean firstExecute() {
-        kicker.set(Position.TOTE);
-        return kicker.is(Position.TOTE);
-    }
-
-    @Override
     public boolean execute() {
+        kicker.set(Position.TOTE);
         return kicker.is(Position.TOTE);
     }
 

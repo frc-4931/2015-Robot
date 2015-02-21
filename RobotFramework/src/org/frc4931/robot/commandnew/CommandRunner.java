@@ -72,10 +72,13 @@ class CommandRunner {
             state = State.INITIALIZED;
         }
         
-        // If we haven't been executed yet, execute the first time, otherwise just execute
+        // If we haven't been executed yet
         if(state == State.INITIALIZED) {
-            if(command.firstExecute()) state = State.FINISHED;
-        } else if(state == State.RUNNING) {
+            state = State.RUNNING;
+        }
+        
+        // If we should be running
+        if(state == State.RUNNING) {
             if(command.execute()) state = State.FINISHED;
         }
         

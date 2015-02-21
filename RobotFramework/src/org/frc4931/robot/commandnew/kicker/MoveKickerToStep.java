@@ -22,14 +22,9 @@ public class MoveKickerToStep extends Command {
     }
     
     @Override
-    public boolean firstExecute() {
+    public boolean execute() {
         kicker.set(Position.STEP);
         return kicker.is(Position.STEP);
     }
-
-    @Override
-    public boolean execute() {
-        return kicker.is(Position.STEP);
-    }
-
+    
 }

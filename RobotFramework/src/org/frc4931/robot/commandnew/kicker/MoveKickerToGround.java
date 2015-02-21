@@ -22,13 +22,8 @@ public class MoveKickerToGround extends Command {
     }
     
     @Override
-    public boolean firstExecute() {
-        kicker.set(Position.DOWN);
-        return kicker.is(Position.DOWN);
-    }
-
-    @Override
     public boolean execute() {
+        kicker.set(Position.DOWN);
         return kicker.is(Position.DOWN);
     }
 
