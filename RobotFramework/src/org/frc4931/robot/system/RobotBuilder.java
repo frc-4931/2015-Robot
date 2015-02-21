@@ -47,7 +47,7 @@ public class RobotBuilder {
         // Build the grabber
         Grabber grabber = new CompositeGrabber(new PIDMotorWithAngle(
                              componets.grabberLifter, componets.grabberEncoder, componets.grabberHome, 0.1),
-                             componets.grabberGrabber);
+                             componets.grabberLeftGrabber, componets.grabberRightGrabber);
                 
         // Build the Kicker
         Kicker kicker          = new CompositeKicker(componets.kickerMotor);
@@ -81,7 +81,8 @@ public class RobotBuilder {
         public final Switch      grabberHome    = Switches.normallyClosed(Properties.GRABBER_LIFTER_HOME);
         public final AngleSensor grabberEncoder = Sensors.encoder(Properties.GRABBER_ENCODER_A, Properties.GRABBER_ENCODER_B, Properties.GRABBER_ENCODER_DPP);
     
-        public final Solenoid grabberGrabber = Solenoids.doubleSolenoid(Properties.GRABBER_SOLENOID_EXTEND, Properties.GRABBER_SOLENOID_RETRACT, Direction.RETRACTING);
+        public final Solenoid grabberLeftGrabber  = Solenoids.doubleSolenoid(Properties.GRABBER_LEFT_SOLENOID_EXTEND, Properties.GRABBER_LEFT_SOLENOID_RETRACT, Direction.RETRACTING);
+        public final Solenoid grabberRightGrabber = Solenoids.doubleSolenoid(Properties.GRABBER_RIGHT_SOLENOID_EXTEND, Properties.GRABBER_RIGHT_SOLENOID_RETRACT, Direction.RETRACTING);
 
         // Ramp
         public final Solenoid rampLifter        = Solenoids.doubleSolenoid(Properties.RAMP_SOLENOID_EXTEND, Properties.RAMP_SOLENOID_RETRACT, Direction.EXTENDING);
@@ -110,10 +111,13 @@ public class RobotBuilder {
         /*-------SOLENOIDS------*/
         private static final int RAMP_SOLENOID_EXTEND = 0;
         private static final int RAMP_SOLENOID_RETRACT = 1;
-        private static final int GRABBER_SOLENOID_EXTEND = 2;
-        private static final int GRABBER_SOLENOID_RETRACT = 3;
         private static final int GUARDRAIL_SOLENOID_EXTEND = 4;
         private static final int GUARDRAIL_SOLENOID_RETRACT = 5;
+        private static final int GRABBER_LEFT_SOLENOID_EXTEND = 2;
+        private static final int GRABBER_LEFT_SOLENOID_RETRACT = 3;
+
+        private static final int GRABBER_RIGHT_SOLENOID_EXTEND = 6;
+        private static final int GRABBER_RIGHT_SOLENOID_RETRACT = 7;
         
         /*-------DIO------*/
         private static final int GRABBER_LIFTER_HOME = 2;

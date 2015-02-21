@@ -14,12 +14,14 @@ import org.frc4931.robot.component.Solenoid;
  * 
  */
 public class CompositeGrabber implements org.frc4931.robot.system.Grabber {
-    MotorWithAngle motor;
-    Solenoid grabber;
+    private final MotorWithAngle motor;
+    private final Solenoid grabberL;
+    private final Solenoid grabberR;
     
-    public CompositeGrabber(MotorWithAngle motor, Solenoid grabber) {
+    public CompositeGrabber(MotorWithAngle motor, Solenoid grabberL, Solenoid grabberR) {
         this.motor = motor;
-        this.grabber = grabber;
+        this.grabberL = grabberL;
+        this.grabberR = grabberR;
     }
     
     @Override
@@ -34,27 +36,29 @@ public class CompositeGrabber implements org.frc4931.robot.system.Grabber {
 
     @Override
     public void close() {
-        grabber.extend();
+        grabberL.extend();
+        grabberR.extend();
     }
 
     @Override
     public boolean isClosed() {
-        return grabber.isExtending();
+        return grabberL.isExtending();
     }
 
     @Override
     public void open() {
-        grabber.retract();
+        grabberL.retract();
+        grabberR.retract();
     }
 
     @Override
     public boolean isOpen() {
-        return grabber.isRetracting();
+        return grabberL.isRetracting();
     }
     
     @Override
     public void home() {
-        motor.home(0.3 * 1);
+        motor.home(-0.1);
     }
 
 }
