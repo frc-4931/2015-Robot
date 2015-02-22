@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj.SerialPort;
  * 
  */
 public class RobotBuilder {
-    public RobotSystems buildRobot() {
+    public static RobotSystems buildRobot() {
         Componets componets = new Componets();
         
      // Build the power distro panel
