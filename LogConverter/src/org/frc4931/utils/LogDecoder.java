@@ -30,7 +30,7 @@ public class LogDecoder {
                     break;
                 default:
                     System.out.println("Usage: LogDecoder [-in INFILE] [-out OUTFILE]");
-                    System.exit(1);git reba
+                    System.exit(1);
             }
         }
 
