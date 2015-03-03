@@ -13,25 +13,9 @@ import org.frc4931.robot.component.MotorWithAngle;
  * @author Nathan Brown
  */
 public class MockMotorWithAngle implements MotorWithAngle {
-    private double speed;
     private double angle;
     private double tolerance;
     
-    @Override
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public short getSpeedAsShort() {
-        return 0;
-    }
-
     @Override
     public double getAngle() {
         return angle;
@@ -48,6 +32,11 @@ public class MockMotorWithAngle implements MotorWithAngle {
     }
 
     @Override
-    public void home(double speed) { }
+    public void home(double awaySpeed, double towardSpeed) {
+        angle = 0;
+    }
+
+    @Override
+    public void stop() { }
 
 }

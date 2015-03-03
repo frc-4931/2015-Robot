@@ -58,7 +58,7 @@ public class CompositeGrabber implements org.frc4931.robot.system.Grabber {
     
     @Override
     public void home() {
-        motor.home(-0.1);
+        motor.home(0.3, 0.1);
     }
 
 }

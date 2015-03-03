@@ -11,7 +11,6 @@ import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
@@ -210,22 +209,15 @@ public class Hardware {
         }
         
         /**
-         * Creates a motor controlled by a TalonSRX speed controller on a specified port.
-         * @param port
-         *          the port the motor controller is connected to
-         * @param home
-         *          the {@link Switch} that defines this motor's home
-         * @param tolerance
-         *          the tolerance in degrees
+         * Creates a motor controlled by a TalonSRX speed controller on the CAN bus.
+         * @param id
+         *          the CAN id of the talon
          * @param ppd
          *          the number of encoder pulses per degree of revolution of the final shaft
-         * @param maxCurrent
-         *          the maximum current in amps of this motor, any higher and the motor will
-         *          be stopped
          * @return a motor with a specified port
          */
-        public static MotorWithAngle talonSRX(int port, Switch home, double tolerance, double ppd, double maxCurrent){
-            return new HardwareTalonSRX(port, home, tolerance, ppd, maxCurrent);
+        public static HardwareTalonSRX talonSRX(int id, double ppd){
+            return new HardwareTalonSRX(id, ppd);
         }
     }
 

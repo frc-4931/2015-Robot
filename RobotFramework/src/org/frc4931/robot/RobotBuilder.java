@@ -24,6 +24,8 @@ import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
 import org.frc4931.robot.hardware.Hardware.Solenoids;
+import org.frc4931.robot.hardware.HardwareTalonSRX;
+import org.frc4931.robot.hardware.PIDMotorWithAngle;
 import org.frc4931.robot.subsystem.DriveSystem;
 import org.frc4931.robot.subsystem.Guardrail;
 import org.frc4931.robot.subsystem.Kicker;
@@ -136,7 +138,10 @@ public class RobotBuilder {
         Solenoid grabberClaw = Solenoids.doubleSolenoid(Properties.GRABBER_CLAW_EXTEND,
                                                         Properties.GRABBER_CLAW_RETRACT,
                                                         Solenoid.Direction.EXTENDING);
-        MotorWithAngle kickerMotor = Motors.talonSRX(Properties.KICKER_MOTOR, Switches.normallyClosed(Properties.KICKER_HOME), Properties.KICKER_TOLERANCE, Properties.KICKER_PPD, Properties.KICKER_MAX_CURRENT);
+        HardwareTalonSRX talon = Motors.talonSRX(Properties.KICKER_MOTOR, Properties.KICKER_PPD);
+        MotorWithAngle kickerMotor = new PIDMotorWithAngle(talon.getMotor(), talon.getCurrentSensor(), talon.getAngleSensor(),
+                                                           talon.getHomeSwitch(), Properties.KICKER_TOLERANCE, Properties.KICKER_MAX_CURRENT,
+                                                           1, 0, 0, 0.5, 0.5, 180);
         Switch canGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_CANGRAB);
         Switch didGrab = Switches.normallyClosed(Properties.GRABBER_SWITCH_DIDGRAB);
 
@@ -282,7 +287,7 @@ public class RobotBuilder {
         private static final int GUARDRAIL_OPEN_SWITCH = 8;
         private static final int GUARDRAIL_CLOSE_SWITCH = 9;
         
-        private static final int KICKER_MOTOR = 5;
+        private static final int KICKER_MOTOR = 0;
         private static final int KICKER_HOME = 6;
         
         /*-------VISION-------*/
