@@ -6,8 +6,6 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
@@ -21,6 +19,9 @@ import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.utils.Lifecycle;
+
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 public class Robot extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
@@ -51,7 +52,6 @@ public class Robot extends IterativeRobot {
         Logger.getInstance().register("Right drive motor speed", ()->components.rightDriveMotor().getSpeedAsShort());
         Logger.getInstance().register("Left drive motor speed", ()->components.leftDriveMotor().getSpeedAsShort());
         Logger.getInstance().register("Arm motor speed", ()->components.armLifterActuator().getSpeedAsShort());
-        Logger.getInstance().register("Kicker motor speed", () -> components.kickerMotor().getSpeedAsShort());
         Logger.getInstance().register("Guardrail motor speed", ()->components.guardRailActuator().getSpeedAsShort());
         Logger.getInstance().register("Channel 15 Current", () -> (short) (pdp.getCurrent(15) * 1000));
         Logger.getInstance().register("Channel 14 Current", () -> (short) (pdp.getCurrent(14) * 1000));
