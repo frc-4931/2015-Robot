@@ -25,14 +25,14 @@ import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
-import org.frc4931.robot.system.RobotBuilder;
 import org.frc4931.robot.system.Robot;
+import org.frc4931.robot.system.RobotBuilder;
 import org.frc4931.utils.Lifecycle;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class RobotManager extends IterativeRobot {
-    private static final long START_TIME = System.nanoTime();
+    private static final long START_TIME = System.currentTimeMillis();
     public static final int NUMBER_OF_ADC_BITS = 12;
     
     private static Robot robot;
@@ -124,7 +124,7 @@ public class RobotManager extends IterativeRobot {
     }
         
     public static long time() {
-        return System.nanoTime() - START_TIME;
+        return System.currentTimeMillis() - START_TIME;
     }
 
     @Deprecated
