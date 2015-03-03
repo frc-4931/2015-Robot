@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj.SerialPort;
  * 
  */
 public class RobotBuilder {
-    public static RobotSystems buildRobot() {
+    public static Robot buildRobot() {
         Componets componets = new Componets();
         
      // Build the power distro panel
@@ -83,7 +83,7 @@ public class RobotBuilder {
         
         OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK));
         
-        return new RobotSystems(drive, accel, structure, powerPanel, operator, componets);
+        return new Robot(drive, accel, structure, powerPanel, operator, componets);
     }
     
     public static final class Componets {

@@ -32,13 +32,13 @@ import static org.fest.assertions.Assertions.assertThat;
  * the {@link TestableRobotState}.
  */
 @Deprecated
-public class MockRobot implements Robot.Components {
+public class MockRobot implements RobotManager.Components {
     
     static {
         TestableRobotState.beginTeleopMode();   // must be done before anything else ...
     }
 
-    private final Robot.Systems systems;
+    private final RobotManager.Systems systems;
     private final MockRelay shifter = MockRelay.withOff();
     private final MockMotor leftDrive = MockMotor.stopped();
     // Right motor is physically oriented in the opposite direction...
@@ -62,7 +62,7 @@ public class MockRobot implements Robot.Components {
         systems = RobotBuilder.build(this);
     }
 
-    public Robot.Systems systems() {
+    public RobotManager.Systems systems() {
         return systems;
     }
 

@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot.command.group;
 
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.frc4931.robot.command.grabber.LowerGrabber;
 import org.frc4931.robot.command.grabber.OpenGrabber;
 import org.frc4931.robot.command.grabber.RaiseGrabber;

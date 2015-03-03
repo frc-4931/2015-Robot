@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot.command.grabber;
 
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 

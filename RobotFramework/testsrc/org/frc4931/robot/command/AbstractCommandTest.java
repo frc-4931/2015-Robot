@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WrappedCommand;
 import org.frc4931.robot.MockRobot;
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.junit.After;
 import org.junit.Before;
 

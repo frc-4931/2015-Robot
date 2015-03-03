@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot.command.group;
 
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.frc4931.robot.command.guardrail.CloseGuardrail;
 import org.frc4931.robot.command.guardrail.OpenGuardrail;
 import org.frc4931.robot.command.ramplifter.LowerRamp;

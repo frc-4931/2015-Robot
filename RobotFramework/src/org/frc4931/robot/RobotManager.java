@@ -26,18 +26,18 @@ import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
 import org.frc4931.robot.system.RobotBuilder;
-import org.frc4931.robot.system.RobotSystems;
+import org.frc4931.robot.system.Robot;
 import org.frc4931.utils.Lifecycle;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 
-public class Robot extends IterativeRobot {
+public class RobotManager extends IterativeRobot {
     private static final long START_TIME = System.nanoTime();
     public static final int NUMBER_OF_ADC_BITS = 12;
     
-    private static RobotSystems robot;
+    private static Robot robot;
 
-    public RobotSystems get() {
+    public Robot get() {
         return robot;
     }
 

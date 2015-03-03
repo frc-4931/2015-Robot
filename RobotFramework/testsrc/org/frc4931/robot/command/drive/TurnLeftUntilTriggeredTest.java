@@ -13,7 +13,7 @@
  */
 package org.frc4931.robot.command.drive;
 
-import org.frc4931.robot.Robot;
+import org.frc4931.robot.RobotManager;
 import org.frc4931.robot.command.AbstractDriveSystemStoppableCommandTest;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class TurnLeftUntilTriggeredTest extends AbstractDriveSystemStoppableCommandTest {
 
     @Override
-    protected Command createCommand(Robot.Systems systems) {
+    protected Command createCommand(RobotManager.Systems systems) {
         return new TurnLeftUntilTriggered(systems.drive, 0.5f, stopDrivingSwitch);
     }
 
