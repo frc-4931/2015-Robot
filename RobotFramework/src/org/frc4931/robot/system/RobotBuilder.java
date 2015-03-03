@@ -144,20 +144,20 @@ public class RobotBuilder {
         private static final int GRABBER_LIFTER_CURRENT = 2;
        
         /*-------SOLENOIDS------*/
-        private static final int RAMP_SOLENOID_EXTEND = 0;
-        private static final int RAMP_SOLENOID_RETRACT = 1;
-        private static final int GUARDRAIL_SOLENOID_EXTEND = 4;
-        private static final int GUARDRAIL_SOLENOID_RETRACT = 5;
-        private static final int GRABBER_LEFT_SOLENOID_EXTEND = 2;
-        private static final int GRABBER_LEFT_SOLENOID_RETRACT = 3;
+        private static final int RAMP_SOLENOID_EXTEND = 2;
+        private static final int RAMP_SOLENOID_RETRACT = 6;
+        private static final int GUARDRAIL_SOLENOID_EXTEND = 3;
+        private static final int GUARDRAIL_SOLENOID_RETRACT = 7;
+        private static final int GRABBER_LEFT_SOLENOID_EXTEND = 0;
+        private static final int GRABBER_LEFT_SOLENOID_RETRACT = 4;
 
-        private static final int GRABBER_RIGHT_SOLENOID_EXTEND = 6;
-        private static final int GRABBER_RIGHT_SOLENOID_RETRACT = 7;
+        private static final int GRABBER_RIGHT_SOLENOID_EXTEND = 1;
+        private static final int GRABBER_RIGHT_SOLENOID_RETRACT = 5;
         
         /*-------DIO------*/
         private static final int GRABBER_LIFTER_HOME = 2;
-        private static final int GRABBER_ENCODER_A = 3;
-        private static final int GRABBER_ENCODER_B = 4;
+        private static final int GRABBER_ENCODER_A = 0;
+        private static final int GRABBER_ENCODER_B = 1;
         private static final int CAN_GRAB = 5;
         private static final int KICKER_HOME = 6;
 
