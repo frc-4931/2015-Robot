@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class TurnRightUntilTriggeredTest extends AbstractDriveSystemStoppableCommandTest {
 
     @Override

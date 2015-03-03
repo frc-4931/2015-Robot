@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class DriveBackwardUntilTriggeredTest extends AbstractDriveSystemStoppableCommandTest {
 
     @Override

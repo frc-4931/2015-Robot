@@ -13,6 +13,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
  * Closes the grabber arm.
  * @see org.frc4931.robot.subsystem.LoaderArm
  */
+@Deprecated
 public class CloseGrabber extends OneShotCommand {
     private LoaderArm loaderArm;
 

@@ -11,6 +11,7 @@ import org.junit.Before;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+@Deprecated
 public abstract class AbstractDriveSystemCommandTest extends AbstractCommandTest {
 
     @Before

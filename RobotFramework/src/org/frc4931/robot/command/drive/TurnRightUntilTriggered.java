@@ -17,6 +17,7 @@ import org.frc4931.robot.subsystem.DriveSystem;
  * @see org.frc4931.robot.subsystem.DriveSystem
  * @see org.frc4931.robot.component.Switch
  */
+@Deprecated
 public class TurnRightUntilTriggered extends CommandWithSwitch {
     private final DriveSystem driveSystem;
     private final double speed;

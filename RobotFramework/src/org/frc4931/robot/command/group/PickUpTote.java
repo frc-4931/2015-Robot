@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  * Picks up a tote with the grabber and loads it in the bottom of the stack.
  */
+@Deprecated
 public class PickUpTote extends CommandGroup {
     public PickUpTote(Systems systems){
         addSequential(new RaiseGrabber(systems.grabber,0.4));

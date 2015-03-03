@@ -6,9 +6,6 @@
  */
 package org.frc4931.robot;
 
-import edu.wpi.first.wpilibj.TestableRobotState;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.mock.MockDataStream;
@@ -18,6 +15,10 @@ import org.frc4931.robot.mock.MockRelay;
 import org.frc4931.robot.mock.MockSolenoid;
 import org.frc4931.robot.mock.MockSwitch;
 import org.frc4931.robot.subsystem.Kicker.Position;
+
+import edu.wpi.first.wpilibj.TestableRobotState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -30,6 +31,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * This robot also sets up the necessary WPILib infrastructure, including the {@link Scheduler} and {@link Timer match timer}, via
  * the {@link TestableRobotState}.
  */
+@Deprecated
 public class MockRobot implements Robot.Components {
     
     static {

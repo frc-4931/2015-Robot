@@ -13,6 +13,7 @@ import org.frc4931.robot.subsystem.RampLifter;
  * Raises the ramp so it is perpendicular to the ground.
  * @see org.frc4931.robot.subsystem.Ramp
  */
+@Deprecated
 public class RaiseRamp extends OneShotCommand {
 
     private final RampLifter lifter;

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+@Deprecated
 public abstract class AbstractDriveSystemStoppableCommandTest extends AbstractDriveSystemCommandTest {
     protected MockSwitch stopDrivingSwitch;
 

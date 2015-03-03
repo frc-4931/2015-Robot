@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class RaiseRampTest extends AbstractCommandTest {
 
     @Override

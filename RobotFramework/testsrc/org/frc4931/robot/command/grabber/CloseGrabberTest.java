@@ -11,6 +11,7 @@ import org.frc4931.robot.Robot.Systems;
 import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
+@Deprecated
 public class CloseGrabberTest extends AbstractCommandTest {
 
     @Override

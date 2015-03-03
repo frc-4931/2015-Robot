@@ -92,6 +92,7 @@ public class Robot extends IterativeRobot {
         return System.nanoTime()-startTime;
     }
 
+    @Deprecated
     public static final class Systems implements Lifecycle {
         public final DriveSystem drive;
         public final LoaderArm grabber;
@@ -138,6 +139,7 @@ public class Robot extends IterativeRobot {
         }
     }
 
+    @Deprecated
     public static interface Components {
         Relay shifter();
 

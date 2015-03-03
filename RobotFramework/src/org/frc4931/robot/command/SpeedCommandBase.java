@@ -9,6 +9,7 @@ package org.frc4931.robot.command;
 /**
  * Abstract base class for command that require a speed.
  */
+@Deprecated
 public abstract class SpeedCommandBase extends CommandBase {
     protected final double speed;
 

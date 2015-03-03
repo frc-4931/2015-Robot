@@ -11,6 +11,7 @@ import org.frc4931.robot.component.Switch;
 /**
  * Base command that finishes itself when a switch is triggered.
  */
+@Deprecated
 public abstract class CommandWithSwitch extends CommandBase {
     private final Switch swtch;
 

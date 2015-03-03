@@ -13,6 +13,7 @@ import org.frc4931.robot.subsystem.Kicker.Position;
 /**
  * 
  */
+@Deprecated
 public class MoveKickerToToteStep extends CommandBase {
     private final Kicker kicker;
  

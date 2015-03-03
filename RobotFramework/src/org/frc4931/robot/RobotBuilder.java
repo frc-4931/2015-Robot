@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 /**
  * Instantiates all of the robot components and returns them in an aggregate class.
  */
+@Deprecated
 public class RobotBuilder {
     
     /**
