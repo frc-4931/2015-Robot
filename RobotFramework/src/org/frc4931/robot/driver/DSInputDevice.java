@@ -37,4 +37,9 @@ public class DSInputDevice implements InputDevice {
     public DirectionalAxis getDPad(int pad) {
         return () -> joystick.getPOV(pad);
     }
+
+    @Override
+    public void setOutput(int channel, boolean value) {
+        joystick.setOutput(channel, value);
+    }
 }

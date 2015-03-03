@@ -11,19 +11,21 @@ public class OperatorConsole extends DSInputDevice {
         super(port);
     }
 
-    public AnalogAxis getLeftFader() {
+    public AnalogAxis getFader1() {
         return () -> joystick.getRawAxis(0);
     }
 
-    public AnalogAxis getRightFader() {
+    public AnalogAxis getFader2() {
         return () -> joystick.getRawAxis(1);
     }
 
-    public AnalogAxis getLeftTrim() {
+    public AnalogAxis getTrim1() {
         return () -> joystick.getRawAxis(2);
     }
 
-    public AnalogAxis getRightTrim() {
+    public AnalogAxis getTrim2() {
         return () -> joystick.getRawAxis(3);
     }
+
+    public AnalogAxis getTrim3() { return () -> joystick.getRawAxis(4); }
 }
