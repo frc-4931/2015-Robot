@@ -29,6 +29,10 @@ public class Scheduler {
         add(command, 0);
     }
     
+    public void killAll() {
+        list.killAll();
+    }
+    
     public void add(Command command, long timeout) {
         if(command instanceof CommandGroup)
             command = ((CommandGroup) command).getRoot();
@@ -142,6 +146,17 @@ public class Scheduler {
         
         boolean isEmpty() {
             return pendingAddition.isEmpty() && beingExecuted.isEmpty();
+        }
+        
+        void killAll() {
+            while(!pendingAddition.isEmpty()) pendingAddition.poll();
+            int l = beingExecuted.size();
+            for(int i = 0; i < l; i++) {
+                CommandRunner c = beingExecuted.poll();
+                c.cancel();
+                c.step(0);
+            }
+            
         }
     }
     
