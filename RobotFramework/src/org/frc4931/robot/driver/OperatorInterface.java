@@ -26,22 +26,30 @@ public class OperatorInterface {
     public final Switch toggleLift;
     public final Switch toggleRamp;
     public final Switch toggleRails;
+    
+    public final Switch kickerToGround;
+    public final Switch kickerToTransfer;
+    public final Switch kickerToGuardrail;
 
     public final Switch writeData;
     public final Switch quickTurn;
 
     public OperatorInterface(FlightStick flightStick) {
-        throttle = flightStick.getPitch();
+        throttle = flightStick.getThrottle();
         wheel = flightStick.getYaw();
         quickTurn = flightStick.getButton(5);
 
         driveSpeed = flightStick.getPitch();
-        turnSpeed = flightStick.getRoll();
+        turnSpeed = flightStick.getYaw();
 
         toggleClaw = flightStick.getTrigger();
         toggleLift = flightStick.getThumb();
-        toggleRamp = flightStick.getButton(2);
+        toggleRamp = flightStick.getButton(4);
         toggleRails = flightStick.getButton(3);
+        
+        kickerToGround = flightStick.getButton(12);
+        kickerToTransfer = flightStick.getButton(10);
+        kickerToGuardrail = flightStick.getButton(8);
 
         writeData = flightStick.getButton(6);
     }
@@ -58,6 +66,10 @@ public class OperatorInterface {
         toggleLift = gamepad.getX();
         toggleRamp = gamepad.getY();
         toggleRails = gamepad.getB();
+        
+        kickerToGround = gamepad.getSelect();
+        kickerToTransfer = gamepad.getRightBumper();
+        kickerToGuardrail = gamepad.getLeftBumper();
 
         writeData = gamepad.getStart();
     }
