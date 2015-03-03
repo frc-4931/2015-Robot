@@ -47,6 +47,11 @@ public class SwitchListener{
     private void monitorSwitches() {
         while ( running ) {
             monitor();
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
     
