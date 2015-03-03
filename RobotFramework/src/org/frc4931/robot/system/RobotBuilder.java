@@ -17,6 +17,8 @@ import org.frc4931.robot.composites.CompositeGrabber;
 import org.frc4931.robot.composites.CompositeGuardrail;
 import org.frc4931.robot.composites.CompositeKicker;
 import org.frc4931.robot.composites.CompositeLifter;
+import org.frc4931.robot.driver.LogitechAttack3D;
+import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Accelerometers;
@@ -79,10 +81,12 @@ public class RobotBuilder {
         // Build the accelerometer
         Accelerometer accel = componets.builtInAccel;
         
-        return new RobotSystems(drive, accel, structure, powerPanel);
+        OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK));
+        
+        return new RobotSystems(drive, accel, structure, powerPanel, operator, componets);
     }
     
-    private static final class Componets {
+    public static final class Componets {
         public Componets() { }
 
         // Drive
