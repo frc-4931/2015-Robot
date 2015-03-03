@@ -15,5 +15,4 @@ public interface InputDevice {
     public AnalogAxis getAxis(int axis);
     public Switch getButton(int button);
     public DirectionalAxis getDPad(int pad);
-    public void setOutput(int channel, boolean value);
 }

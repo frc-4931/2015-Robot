@@ -7,6 +7,7 @@
 package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.component.SwitchWithIndicator;
 
 /**
  * Holds the state of the operator interface.
@@ -30,7 +31,11 @@ public class OperatorInterface {
     public final Switch writeData;
     public final Switch quickTurn;
 
-    public OperatorInterface(FlightStick flightStick) {
+    /* Console */
+    public final SwitchWithIndicator enable;
+    public final SwitchWithIndicator disable;
+
+    public OperatorInterface(FlightStick flightStick, OperatorConsole operatorConsole) {
         throttle = flightStick.getPitch();
         wheel = flightStick.getYaw();
         quickTurn = flightStick.getButton(5);
@@ -44,9 +49,12 @@ public class OperatorInterface {
         toggleRails = flightStick.getButton(3);
 
         writeData = flightStick.getButton(6);
+
+        enable = operatorConsole.getButton(0);
+        disable = operatorConsole.getButton(1);
     }
 
-    public OperatorInterface(Gamepad gamepad) {
+    public OperatorInterface(Gamepad gamepad, OperatorConsole operatorConsole) {
         throttle = gamepad.getLeftY();
         wheel = gamepad.getRightX();
         quickTurn = gamepad.getRightBumper();
@@ -60,5 +68,8 @@ public class OperatorInterface {
         toggleRails = gamepad.getB();
 
         writeData = gamepad.getStart();
+
+        enable = operatorConsole.getButton(0);
+        disable = operatorConsole.getButton(1);
     }
 }
