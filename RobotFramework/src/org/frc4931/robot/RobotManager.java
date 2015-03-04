@@ -68,8 +68,8 @@ public class RobotManager extends IterativeRobot {
         Logger.getInstance().register("Right Grabber Status", ()->robot.componets.grabberRightGrabber.isExtending() ? 1 : 0);
         Logger.getInstance().register("Ramp Lifter Status",   ()->robot.componets.rampLifter.isExtending() ? 1 : 0);
         
-        Logger.getInstance().register("Kicker Position", ()->(int)(robot.componets.kickerMotor.getAngleSensor().getAngle()*1000));
-        Logger.getInstance().register("Kicker Current",  ()->(int)(robot.componets.kickerMotor.getCurrentSensor().getCurrent()*1000));
+        Logger.getInstance().register("Kicker Position", ()->(int)(robot.componets.kickerEncoder.getAngle()*1000));
+        Logger.getInstance().register("Kicker Current",  ()->(int)(robot.componets.kickerCurrent.getCurrent()*1000));
         
         Logger.getInstance().register("Grabber Position", ()->(int)(robot.componets.grabberEncoder.getAngle()*1000));
         

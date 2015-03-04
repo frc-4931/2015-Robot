@@ -8,6 +8,7 @@ package org.frc4931.robot.system;
 
 import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.AngleSensor;
+import org.frc4931.robot.component.CurrentSensor;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Solenoid;
@@ -61,8 +62,8 @@ public class RobotBuilder {
                 
         // Build the Kicker
         Kicker kicker          = new CompositeKicker(new PIDMotorWithAngle(
-                                       componets.kickerMotor.getMotor(), componets.kickerMotor.getCurrentSensor(),
-                                       componets.kickerMotor.getAngleSensor(), componets.kickerMotor.getHomeSwitch(),
+                                       componets.kickerMotor, componets.kickerCurrent,
+                                       componets.kickerEncoder, componets.kickerHome,
                                        Properties.KICKER_TOLERANCE, Properties.KICKER_MAX_CURRENT,
                                        0.025, 0, 0,
                                        Properties.KICKER_MAX_LOWER_SPEED, Properties.KICKER_MAX_RAISE_SPEED,
@@ -107,9 +108,14 @@ public class RobotBuilder {
         public final Solenoid rampLifter        = Solenoids.doubleSolenoid(Properties.RAMP_SOLENOID_EXTEND, Properties.RAMP_SOLENOID_RETRACT, Direction.EXTENDING);
         public final Solenoid guardrailGrabber  = Solenoids.doubleSolenoid(Properties.GUARDRAIL_SOLENOID_EXTEND, Properties.GUARDRAIL_SOLENOID_RETRACT, Direction.RETRACTING);
         
-        public final HardwareTalonSRX kickerMotor  = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID,
+        private final HardwareTalonSRX kickerTalon  = Motors.talonSRX(Properties.KICKER_MOTOR_CAN_ID,
                                                                        Properties.KICKER_ENCODER_PPD);
-        public final Switch           kickerSwitch = Switches.normallyClosed(Properties.CAN_GRAB);
+        public final Motor         kickerMotor   = kickerTalon.getMotor();
+        public final Switch        kickerHome    = kickerTalon.getHomeSwitch();
+        public final CurrentSensor kickerCurrent = kickerTalon.getCurrentSensor();
+        public final AngleSensor   kickerEncoder = kickerTalon.getAngleSensor();
+        
+        public final Switch        kickerSwitch  = Switches.normallyClosed(Properties.CAN_GRAB);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
         
