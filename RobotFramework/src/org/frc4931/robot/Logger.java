@@ -231,7 +231,7 @@ public class Logger implements Lifecycle {
                 System.err.println("Insuffient space to write next all of next record, closing file");
                 writer.close();
             }
-            writer.writeInt((int)(RobotManager.time()/1e6));
+            writer.writeInt((int)(RobotManager.time()));
             suppliers.forEach((supplier)->writer.writeShort((short)supplier.getAsInt()));
         }
         
