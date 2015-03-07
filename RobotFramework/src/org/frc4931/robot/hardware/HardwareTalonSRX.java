@@ -19,72 +19,90 @@ import edu.wpi.first.wpilibj.CANTalon.ControlMode;
  * @author Nathan Brown
  */
 public class HardwareTalonSRX {
-    private final CANTalon motor;
+    private final CANTalon talon;
+    private final Motor motor;
+    private final AngleSensor encoder;
+    private final Switch homeSwitch;
+    private final CurrentSensor current;
+    
     private final double ppd;
     
     HardwareTalonSRX(int id, double pulsesPerDegree){
-        this.motor = new CANTalon(id);
+        this.talon = new CANTalon(id);
         this.ppd = pulsesPerDegree;
         
         // Set up hard limits
-        motor.enableLimitSwitch(false, true);
-        motor.ConfigRevLimitSwitchNormallyOpen(true);
+        talon.enableLimitSwitch(false, true);
+        talon.ConfigRevLimitSwitchNormallyOpen(true);
         
         // Disable soft limits, we are handling them in PIDMotorWithAngle
-        motor.enableForwardSoftLimit(false);
-        motor.enableReverseSoftLimit(false);
+        talon.enableForwardSoftLimit(false);
+        talon.enableReverseSoftLimit(false);
+        
+        motor = new TalonMotor();
+        encoder = new TalonEncoder();
+        
+        homeSwitch = talon::isRevLimitSwitchClosed;
+        current = talon::getOutputCurrent;
     }
     
     public Motor getMotor() {
-        return new Motor() {
-            @Override
-            public void setSpeed(double speed) {
-                motor.changeControlMode(ControlMode.PercentVbus);
-                motor.set(speed);
-            }
-            
-            @Override
-            public short getSpeedAsShort() {
-                return (short)(getSpeed() * 1000);
-            }
-            
-            @Override
-            public double getSpeed() {
-                motor.changeControlMode(ControlMode.PercentVbus);
-                return motor.get();
-            }
-            
-            @Override
-            public void stop() {
-                motor.enableBrakeMode(true);
-                motor.set(0);
-            }
-        };
+        return motor;
     }
     
     public AngleSensor getAngleSensor() {
-        return new AngleSensor() {
-            double zero;
-            
-            @Override
-            public double getAngle() {
-                return (motor.getEncPosition() / ppd) - zero;
-            }
-            
-            @Override
-            public void reset() {
-                motor.setPosition(0);
-                zero = motor.getEncPosition() * ppd;
-            }
-        };
+        return encoder;
     }
     
     public Switch getHomeSwitch() {
-        return motor::isRevLimitSwitchClosed;
+        return homeSwitch;
     }
     
     public CurrentSensor getCurrentSensor() {
-        return motor::getOutputCurrent;
+        return current;
     }
     
+    private class TalonMotor implements Motor {
+        public TalonMotor() {}
+
+        @Override
+        public void setSpeed(double speed) {
+            talon.changeControlMode(ControlMode.PercentVbus);
+            talon.set(speed);
+        }
+        
+        @Override
+        public short getSpeedAsShort() {
+            return (short)(getSpeed() * 1000);
+        }
+        
+        @Override
+        public double getSpeed() {
+            talon.changeControlMode(ControlMode.PercentVbus);
+            return talon.get();
+        }
+        
+        @Override
+        public void stop() {
+            talon.enableBrakeMode(true);
+            talon.set(0);
+        }
+    }
+    
+    private class TalonEncoder implements AngleSensor {
+        double zero;
+        
+        public TalonEncoder() {}
+        
+        @Override
+        public double getAngle() {
+            return (talon.getEncPosition() / ppd) - zero;
+        }
+        
+        @Override
+        public void reset() {
+            talon.setPosition(0);
+            zero = talon.getEncPosition() * ppd;
+        }
+    }
 }
