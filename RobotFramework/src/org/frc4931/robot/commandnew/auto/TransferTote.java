@@ -17,6 +17,8 @@ import org.frc4931.robot.commandnew.kicker.MoveKickerToGuardrail;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToTransfer;
 import org.frc4931.robot.system.Superstructure;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * 
@@ -24,6 +26,7 @@ import org.frc4931.robot.system.Superstructure;
 public class TransferTote extends CommandGroup {
     
     public TransferTote(Superstructure structure) {
+        SmartDashboard.putNumber("toteCount", (int)(SmartDashboard.getNumber("toteCount")+1));
         sequentially(
                     new MoveGrabberToTransfer(structure.grabber),
                     new MoveKickerToTransfer(structure.kickerSystem.kicker),

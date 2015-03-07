@@ -20,19 +20,11 @@ package org.frc4931.robot.component;
 public interface MotorWithAngle {
 
     /**
-     * gets the tolerance of this motor with position
-     * @return tolerance of the motor
-     */
-    public double getTolerance();
-
-    /**
      * 
      * @param angle angle to test
      * @return true if at angle is in target range; returns false for anything else
      */
-    public default boolean isAt(double angle) {
-        return Math.abs(getAngle() - angle) < getTolerance();
-    }
+    public boolean isAt(double angle);
     
     /**
      * sets the angle of this motor

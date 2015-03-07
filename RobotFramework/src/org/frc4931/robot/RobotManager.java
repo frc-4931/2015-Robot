@@ -25,11 +25,12 @@ import org.frc4931.robot.subsystem.LoaderArm;
 import org.frc4931.robot.subsystem.Ramp;
 import org.frc4931.robot.subsystem.StackIndicatorLight;
 import org.frc4931.robot.subsystem.VisionSystem;
-import org.frc4931.robot.system.Robot;
 import org.frc4931.robot.system.RobotBuilder;
+import org.frc4931.robot.system.Robot;
 import org.frc4931.utils.Lifecycle;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotManager extends IterativeRobot {
     private static final long START_TIME = System.currentTimeMillis();
@@ -44,7 +45,7 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
-        
+        SmartDashboard.putNumber("toteCount", 0);
         SwitchListener.getInstance().onTriggered(robot.operator.toggleLift, ()->Scheduler.getInstance().add(new ToggleGrabberLift(robot.structure.grabber)));
         SwitchListener.getInstance().onTriggered(robot.operator.toggleClaw, ()->Scheduler.getInstance().add(new ToggleGrabber(robot.structure.grabber)));
         SwitchListener.getInstance().onTriggered(robot.operator.toggleRails, ()->Scheduler.getInstance().add(new ToggleGuardrail(robot.structure.ramp.rail)));
@@ -78,6 +79,8 @@ public class RobotManager extends IterativeRobot {
         Logger.getInstance().register("Z Accel", ()->(int)(robot.componets.builtInAccel.getZacceleration()*1000));
         
         Logger.getInstance().startup();
+        
+        Executor.getInstance().start();
     }
     
     public void activePeriodic() {

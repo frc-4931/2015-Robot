@@ -27,16 +27,16 @@ public class MockMotorWithAngle implements MotorWithAngle {
     }
 
     @Override
-    public double getTolerance() {
-        return tolerance;
-    }
-
-    @Override
     public void home(double awaySpeed, double towardSpeed) {
         angle = 0;
     }
 
     @Override
     public void stop() { }
+
+    @Override
+    public boolean isAt(double angle) {
+        return this.angle == angle;
+    }
 
 }
