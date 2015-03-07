@@ -90,19 +90,18 @@ public class HardwareTalonSRX {
     }
     
     private class TalonEncoder implements AngleSensor {
-        double zero;
+        int zero;
         
         public TalonEncoder() {}
         
         @Override
         public double getAngle() {
-            return (talon.getEncPosition() / ppd) - zero;
+            return (talon.getEncPosition() - zero) / ppd;
         }
         
         @Override
         public void reset() {
-            talon.setPosition(0);
-            zero = talon.getEncPosition() * ppd;
+            zero = talon.getEncPosition();
         }
     }
 }
