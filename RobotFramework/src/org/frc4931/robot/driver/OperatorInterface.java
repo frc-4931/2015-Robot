@@ -30,6 +30,8 @@ public class OperatorInterface {
     public final Switch kickerToGround;
     public final Switch kickerToTransfer;
     public final Switch kickerToGuardrail;
+    
+    public final Switch transferTote;
 
     public final Switch writeData;
     public final Switch quickTurn;
@@ -43,13 +45,15 @@ public class OperatorInterface {
         turnSpeed = flightStick.getYaw();
 
         toggleClaw = flightStick.getTrigger();
-        toggleLift = flightStick.getThumb();
-        toggleRamp = flightStick.getButton(4);
-        toggleRails = flightStick.getButton(3);
+        toggleLift = flightStick.getButton(3);
+        toggleRamp = flightStick.getButton(5);
+        toggleRails = flightStick.getButton(4);
         
         kickerToGround = flightStick.getButton(12);
         kickerToTransfer = flightStick.getButton(10);
         kickerToGuardrail = flightStick.getButton(8);
+        
+        transferTote = flightStick.getThumb();
 
         writeData = flightStick.getButton(6);
     }
@@ -63,13 +67,15 @@ public class OperatorInterface {
         turnSpeed = gamepad.getLeftX();
 
         toggleClaw = gamepad.getA();
-        toggleLift = gamepad.getX();
+        toggleLift = null;
         toggleRamp = gamepad.getY();
         toggleRails = gamepad.getB();
         
         kickerToGround = gamepad.getSelect();
         kickerToTransfer = gamepad.getRightBumper();
         kickerToGuardrail = gamepad.getLeftBumper();
+        
+        transferTote = gamepad.getX();
 
         writeData = gamepad.getStart();
     }
