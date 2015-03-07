@@ -18,6 +18,11 @@ public final class Metronome {
     private long next;
     private long pauseTime;
     
+    /**
+     * Create a new metronome with a specified period.
+     * @param period the time of each interval; must be positive
+     * @param unit the time unit; may not be null
+     */
     public Metronome( long period, TimeUnit unit ) {
         assert period >= 0;
         periodInMillis = unit.toMillis(period);
