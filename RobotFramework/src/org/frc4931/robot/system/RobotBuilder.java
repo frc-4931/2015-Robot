@@ -66,7 +66,7 @@ public class RobotBuilder {
         Kicker kicker = new CompositeKicker(new PIDMotorWithAngle(
                            componets.kickerMotor, componets.kickerCurrent,
                            componets.kickerEncoder, componets.kickerHome,
-                           Properties.KICKER_TOLERANCE, Properties.KICKER_MAX_ANGLE_DEGREES,
+                           Properties.KICKER_MAX_CURRENT, Properties.KICKER_MAX_ANGLE_DEGREES,
                            new KickerControlProfile(Properties.KICKER_TOLERANCE, Properties.KICKER_MOVE_SPEEDS,
                                                 Properties.KICKER_HOLD_SPEEDS, ()->(int)SmartDashboard.getNumber("toteCount"))));
         
@@ -143,7 +143,7 @@ public class RobotBuilder {
         private static final double KICKER_MAX_ANGLE_DEGREES = 180;
         
         private static final double KICKER_ENCODER_PPD = 1.422;
-        private static final double KICKER_MAX_CURRENT = 200;
+        private static final double KICKER_MAX_CURRENT = 30;
         private static final double KICKER_TOLERANCE = 5;
         
         /*-------JOYSTICK------*/
