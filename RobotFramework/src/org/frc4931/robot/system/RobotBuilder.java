@@ -134,9 +134,9 @@ public class RobotBuilder {
         private static final double GRABBER_MAX_ANGLE_DEGREES = 90;
         
         private static final double[] KICKER_MOVE_SPEEDS =
-                new double[] {0.15, 0.26, 0.32, 0.430, 0, 0};
+                new double[] {0.2, 0.2441, 0.3701, 0.4173, 0.4516, 0.5478};
         private static final double[] KICKER_HOLD_SPEEDS =
-                new double[] {0.0, 0.070, 0.140, 0.190, 0.297, 0.320};
+                new double[] {0.0, 0.0787, 0.1575, 0.1732, 0.2283, 0.275};
         
         private static final double KICKER_MAX_RAISE_SPEED = 0.75;
         private static final double KICKER_MAX_LOWER_SPEED = 0.3;
