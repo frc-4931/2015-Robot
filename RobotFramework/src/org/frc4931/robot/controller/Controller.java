@@ -30,11 +30,11 @@ public class Controller implements Executable {
     
     @Override
     public void execute(long time) {
-        if(enabled) output.accept(profile.getOutput(setpoint - input.getAsDouble()));
+        if(enabled) output.accept(profile.getOutput(input.getAsDouble(), setpoint));
     }
     
     public boolean isAt(double angle) {
-        return profile.inTolerance(angle - input.getAsDouble());
+        return profile.inTolerance(input.getAsDouble(), angle);
     }
     
     public double getError() {
@@ -59,17 +59,19 @@ public class Controller implements Executable {
     public static interface Profile{
         
         /**
-         * Calculates the appropriate output value given the current error.
-         * @param error the current error of the system
+         * Calculates the appropriate output value given the current input and target.
+         * @param input the current input of the controller
+         * @param target the target of the controller
          * @return the output to correct that error
          */
-        public double getOutput(double error);
+        public double getOutput(double input, double target);
         
         /**
-         * Tests if the specified error is acceptable given the tolerance of this {@link Profile}.
-         * @param error the error to test
+         * Tests if the specified target is acceptable given the tolerance of this {@link Profile}.
+         * @param input the current input of the controller
+         * @param target the target of the controller
          * @return {@code true} if the error is acceptable; {@code false} otherwise
          */
-        public boolean inTolerance(double error);
+        public boolean inTolerance(double input, double target);
     }
 }

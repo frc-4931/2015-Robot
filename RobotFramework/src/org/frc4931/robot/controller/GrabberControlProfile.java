@@ -26,7 +26,8 @@ public class GrabberControlProfile implements Profile {
     }
     
     @Override
-    public double getOutput(double error) {
+    public double getOutput(double input, double target) {
+        double error = target - input;
         double output = p * error;
 
         output = Math.max(-maxLowerSpeed, output);
@@ -36,7 +37,8 @@ public class GrabberControlProfile implements Profile {
     }
 
     @Override
-    public boolean inTolerance(double error) {
+    public boolean inTolerance(double input, double target) {
+        double error = target - input;
         return Math.abs(error) < tolerance;
     }
 

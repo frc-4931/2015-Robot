@@ -30,10 +30,12 @@ public class KickerControlProfile implements Profile{
     }
     
     @Override
-    public double getOutput(double error) {
-        // error is how far we need to move in a direction to reach target, we want to know the displacement
-        // from the target
-        error = -1 * error;
+    public double getOutput(double input, double target) {
+        // If we are trying to move to zero
+        if(Math.abs(target) < tolerance)
+            return -moveSpeeds[0];
+        
+        double error = input - target;
         if(error < 0)
             return moveSpeeds[toteCount.getAsInt()];
         if(error > tolerance)
@@ -42,10 +44,10 @@ public class KickerControlProfile implements Profile{
     }
 
     @Override
-    public boolean inTolerance(double error) {
+    public boolean inTolerance(double input, double target) {
         // error is how far we need to move in a direction to reach target, we want to know the displacement
         // from the target
-        error = -1 * error;
+        double error = input - target;
         if(error < 0)
             return false;
         if(error > tolerance)
