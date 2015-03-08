@@ -19,7 +19,7 @@ public interface Kicker extends Requireable {
     public void home();
     
     public static enum Position {
-        DOWN(0),STEP(29.5),TOTE(65.1),TOTE_STEP(92.5), TRANSFER(45.0), GUARDRAIL(115.0);
+        DOWN(0),STEP(29.5),TOTE(65.1),TOTE_STEP(92.5), TRANSFER(45.0), GUARDRAIL(150.0);
         
         private final double angle;
         private Position(double angle){
