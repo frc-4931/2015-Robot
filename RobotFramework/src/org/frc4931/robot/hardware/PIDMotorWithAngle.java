@@ -8,14 +8,17 @@ package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.CurrentSensor;
+import org.frc4931.robot.component.MonostableSwitch;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.component.TimedMonostableSwitch;
 import org.frc4931.robot.controller.Controller;
 import org.frc4931.robot.controller.Controller.Profile;
 
 public class PIDMotorWithAngle implements MotorWithAngle {
     private final Motor motor;
+    private final MonostableSwitch fuse;
     private final CurrentSensor motorCurrent;
     private final AngleSensor angleSensor;
     private final Switch home;
@@ -42,6 +45,8 @@ public class PIDMotorWithAngle implements MotorWithAngle {
         this.home = home;
         this.softLimit = maxAngle;
         this.maxCurrent = maxCurrent;
+        // TODO ties PIDMotorWithAngle to Executor, should be refactored
+        this.fuse = TimedMonostableSwitch.getRegistered(5);
         this.controller = new Controller(angleSensor::getAngle, this::updateMotor, profile);
         
     }
@@ -78,11 +83,15 @@ public class PIDMotorWithAngle implements MotorWithAngle {
             speed = 0;
         }
         
-        // If we are stalled, stop
+        // If we are stalled, immediately stop the motor and trip the fuse
         if(motorCurrent.getCurrent() > maxCurrent) {
-            System.out.println("STALLED");
+            motor.stop();
             speed = 0;
+            fuse.trigger();
         }
+        
+        // If the fuse is tripped, dont try to move
+        if(fuse.isTriggered()) speed = 0;
         
         motor.setSpeed(speed);
     }
