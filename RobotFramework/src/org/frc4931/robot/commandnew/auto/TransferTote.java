@@ -31,12 +31,12 @@ public class TransferTote extends CommandGroup {
                     new MoveGrabberToTransfer(structure.grabber),
                     new MoveKickerToTransfer(structure.kickerSystem.kicker),
                     new OpenGuardrail(structure.ramp.rail),
-                    new Pause(1.5),
+                    new Pause(0.5),
                     simultaneously(
                         new OpenGrabber(structure.grabber),
                         new MoveKickerToGuardrail(structure.kickerSystem.kicker)),
                     new CloseGuardrail(structure.ramp.rail),
-                    new Pause(1.5),
+                    new Pause(1.0),
                     simultaneously(
                         new MoveGrabberToGround(structure.grabber),
                         new MoveKickerToGround(structure.kickerSystem.kicker)));
