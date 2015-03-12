@@ -63,23 +63,27 @@ public class RobotManager extends IterativeRobot {
         
         SwitchListener.getInstance().start();
 
-        Logger.getInstance().register("Drive Speed", ()->(int)(robot.operator.driveSpeed.read()*1000));
-        Logger.getInstance().register("Turn Speed",  ()->(int)(robot.operator.turnSpeed.read()*1000));
-        Logger.getInstance().register("Throttle",    ()->(int)(robot.operator.throttle.read()*1000));
+        Logger.getInstance().register("Drive Speed", ()->(short)(robot.operator.driveSpeed.read()*1000));
+        Logger.getInstance().register("Turn Speed",  ()->(short)(robot.operator.turnSpeed.read()*1000));
+        Logger.getInstance().register("Throttle",    ()->(short)(robot.operator.throttle.read()*1000));
         
         Logger.getInstance().register("Guardrail Status",     ()->robot.componets.guardrailGrabber.isExtending() ? 1 : 0);
         Logger.getInstance().register("Left Grabber Status",  ()->robot.componets.grabberLeftGrabber.isExtending() ? 1 : 0);
         Logger.getInstance().register("Right Grabber Status", ()->robot.componets.grabberRightGrabber.isExtending() ? 1 : 0);
         Logger.getInstance().register("Ramp Lifter Status",   ()->robot.componets.rampLifter.isExtending() ? 1 : 0);
         
-        Logger.getInstance().register("Kicker Position", ()->(int)(robot.componets.kickerEncoder.getAngle()*1000));
-        Logger.getInstance().register("Kicker Current",  ()->(int)(robot.componets.kickerCurrent.getCurrent()*1000));
+        Logger.getInstance().register("Kicker Position", ()->(short)(Math.round(robot.componets.kickerEncoder.getAngle()*100)));
+        Logger.getInstance().register("Kicker Current",  ()->(short)(robot.componets.kickerCurrent.getCurrent()*1000));
         
-        Logger.getInstance().register("Grabber Position", ()->(int)(robot.componets.grabberEncoder.getAngle()*1000));
+        Logger.getInstance().register("Kicker Speed", ()->(short)(robot.componets.kickerMotor.getSpeed()*1000));
         
-        Logger.getInstance().register("X Accel", ()->(int)(robot.componets.builtInAccel.getXacceleration()*1000));
-        Logger.getInstance().register("Y Accel", ()->(int)(robot.componets.builtInAccel.getYacceleration()*1000));
-        Logger.getInstance().register("Z Accel", ()->(int)(robot.componets.builtInAccel.getZacceleration()*1000));
+        Logger.getInstance().register("Totes", ()->(short)SmartDashboard.getNumber("toteCount"));
+        
+        Logger.getInstance().register("Grabber Position", ()->(short)(robot.componets.grabberEncoder.getAngle()*1000));
+        
+        Logger.getInstance().register("X Accel", ()->(short)(robot.componets.builtInAccel.getXacceleration()*1000));
+        Logger.getInstance().register("Y Accel", ()->(short)(robot.componets.builtInAccel.getYacceleration()*1000));
+        Logger.getInstance().register("Z Accel", ()->(short)(robot.componets.builtInAccel.getZacceleration()*1000));
         
         Logger.getInstance().startup();
         
