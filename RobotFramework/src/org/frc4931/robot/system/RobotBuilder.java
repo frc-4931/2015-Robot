@@ -134,17 +134,18 @@ public class RobotBuilder {
         private static final double GRABBER_MAX_ANGLE_DEGREES = 90;
         
         private static final double[] KICKER_MOVE_SPEEDS =
-                new double[] {0.2, 0.2441, 0.3701, 0.4173, 0.4516, 0.5478};
+                new double[] {0.5, 0.6, 0.75, 0.8, 0.85, 0.9};
+                //new double[] {0.2, 0.2441, 0.3701, 0.4173, 0.4516, 0.5478};
         private static final double[] KICKER_HOLD_SPEEDS =
-                new double[] {0.0, 0.0787, 0.1575, 0.1732, 0.2283, 0.275};
+                new double[] {0.0, 0.3, 0.35, 0.65, 0.8, 0.85};
         
         private static final double KICKER_MAX_RAISE_SPEED = 0.75;
         private static final double KICKER_MAX_LOWER_SPEED = 0.3;
-        private static final double KICKER_MAX_ANGLE_DEGREES = 180;
+        private static final double KICKER_MAX_ANGLE_DEGREES = 160;
         
         private static final double KICKER_ENCODER_PPD = 1.422;
-        private static final double KICKER_MAX_CURRENT = 30;
-        private static final double KICKER_TOLERANCE = 5;
+        private static final double KICKER_MAX_CURRENT = 40;
+        private static final double KICKER_TOLERANCE = 30;
         
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;

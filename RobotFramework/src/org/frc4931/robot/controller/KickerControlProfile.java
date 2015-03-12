@@ -9,12 +9,15 @@ package org.frc4931.robot.controller;
 import java.util.function.IntSupplier;
 
 import org.frc4931.robot.controller.Controller.Profile;
+import org.frc4931.robot.system.Kicker.Position;
 
 /**
  * Control profile for the motor driving the kicker. Runs at a constant speed depending on the number of
  * totes held.
  */
 public class KickerControlProfile implements Profile{
+    // How close to a Kicker.Position to be considered that position
+    private static final double POSITION_TOLERANCE = 5;
     private final double   tolerance;
     private final double[] holdSpeeds;
     private final double[] moveSpeeds;
@@ -30,16 +33,36 @@ public class KickerControlProfile implements Profile{
     }
     
     @Override
+    //TODO Very application specific, not necessarily a bad thing
     public double getOutput(double input, double target) {
-        // If we are trying to move to zero
-        if(Math.abs(target) < tolerance)
+        //TODO if limit switch fails kicker will have a bad day
+        // Target is ground
+        if(Math.abs(target) < POSITION_TOLERANCE)
             return -moveSpeeds[0];
         
         double error = input - target;
-        if(error < 0)
+        
+        // Below target
+        if(error < 0) {
+            // Target is transfer
+            if(Math.abs(target-Position.TRANSFER.getAngle()) < POSITION_TOLERANCE)
+                return moveSpeeds[0];
+            
+            // Target is guardrail
             return moveSpeeds[toteCount.getAsInt()];
+        }
+        
+        // Above target
         if(error > tolerance)
             return -moveSpeeds[0];
+        
+        // On target
+        assert 0 < error && error < tolerance;
+        // Target is transfer (not supporting totes)
+        if(Math.abs(target-Position.TRANSFER.getAngle()) < POSITION_TOLERANCE)
+            return holdSpeeds[0];
+        
+        // Target is guardrail (supporting totes)
         return holdSpeeds[toteCount.getAsInt()];
     }
 
