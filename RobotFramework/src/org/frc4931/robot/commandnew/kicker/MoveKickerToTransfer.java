@@ -17,7 +17,7 @@ public class MoveKickerToTransfer extends Command {
     private final Kicker kicker;
 
     public MoveKickerToTransfer(Kicker kicker) {
-        requires(kicker);
+        super(kicker);
         this.kicker = kicker;
     }
     

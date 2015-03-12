@@ -17,7 +17,7 @@ public class MoveKickerToGround extends Command {
     private final Kicker kicker;
     
     public MoveKickerToGround(Kicker kicker) {
-        requires(kicker);
+        super(kicker);
         this.kicker = kicker;
     }
     

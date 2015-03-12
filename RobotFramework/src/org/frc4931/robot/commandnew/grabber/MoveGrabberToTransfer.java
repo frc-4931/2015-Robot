@@ -17,7 +17,7 @@ public class MoveGrabberToTransfer extends Command {
     private final Grabber grabber;
     
     public MoveGrabberToTransfer(Grabber grabber) {
-        requires(grabber);
+        super(grabber);
         this.grabber = grabber;
     }
     

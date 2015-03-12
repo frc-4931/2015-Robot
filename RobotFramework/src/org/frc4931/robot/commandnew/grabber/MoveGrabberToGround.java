@@ -17,7 +17,7 @@ public class MoveGrabberToGround extends Command{
     private final Grabber grabber;
     
     public MoveGrabberToGround(Grabber grabber) {
-        requires(grabber);
+        super(grabber);
         this.grabber = grabber;
     }
 

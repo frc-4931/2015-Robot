@@ -21,24 +21,19 @@ public class Scheduler {
     
     private final Commands list = new Commands();
     
+    public void killAll() {
+        list.killAll();
+    }
+    
     /**
      * Schedule a {@link Command} to be added to the {@link Scheduler}.
      * @param command the {@link Command} to be added
      */
     public void add(Command command) {
-        add(command, 0);
-    }
-    
-    public void killAll() {
-        list.killAll();
-    }
-    
-    public void add(Command command, long timeout) {
         if(command instanceof CommandGroup)
             command = ((CommandGroup) command).getRoot();
         
         CommandRunner runner = buildCR(command, null);
-        runner.setTimeout(timeout);
         list.add(runner);
     }
     
@@ -109,7 +104,7 @@ public class Scheduler {
             for(int i = 0; i < initialSize; i++) {
                 CommandRunner runner= beingExecuted.poll();
                 if(runner.step(time))
-                    remove(runner, time);
+                    remove(runner);
                 else
                     beingExecuted.offer(runner);
             }
@@ -139,9 +134,9 @@ public class Scheduler {
             return true;
         }
         
-        private void remove(CommandRunner runner, long time) {
+        private void remove(CommandRunner runner) {
             for(Requireable required : runner.getRequired()) inUse.remove(required);
-            runner.after(this, time);
+            runner.after(this);
         }
         
         boolean isEmpty() {

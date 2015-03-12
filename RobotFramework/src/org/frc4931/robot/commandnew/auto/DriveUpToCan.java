@@ -19,7 +19,7 @@ public class DriveUpToCan extends Command {
     private final Switch swtch;
     
     public DriveUpToCan(DriveInterpreter drive, Switch swtch) {
-        requires(drive);
+        super(drive);
         this.drive = drive;
         this.swtch = swtch;
     }

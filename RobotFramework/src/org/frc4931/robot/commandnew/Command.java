@@ -12,8 +12,23 @@ import org.frc4931.robot.commandnew.Scheduler.Requireable;
  * 
  */
 public abstract class Command {
-    private Requireable[] requirements = new Requireable[0];
+    private final double timeout;
+    private final Requireable[] requirements;
     private boolean interruptible = true;
+    
+    /**
+     * @param timeout how long this command executes before terminating, zero is forever
+     * @param requirements the {@link Requireable}s this {@link Command} requires
+     */
+    public Command(double timeout, Requireable... requirements) {
+        this.timeout = timeout;
+        this.requirements = requirements;
+    }
+    
+    public Command(Requireable... requirements) {
+        this(0, requirements);
+    }
+    
     /**
      * Set up this {@link Command}. No physical hardware should be manipulated.
      */
@@ -31,17 +46,12 @@ public abstract class Command {
      */
     public void end() { }
     
-    /**
-     * Sets the requirements of this {@link Command}. If a command cannot obtain its
-     * requirements, it will not be executed.
-     * @param requirements the {@link Requireable}s this {@link Command} requires
-     */
-    public final void requires(Requireable... requirements) {
-        this.requirements = requirements;
-    }
-    
     final Requireable[] getRequirements(){
         return requirements;
+    }
+    
+    final double getTimeout() {
+        return timeout;
     }
     
     /**

@@ -6,28 +6,18 @@
  */
 package org.frc4931.robot.commandnew.auto;
 
-import org.frc4931.robot.RobotManager;
 import org.frc4931.robot.commandnew.Command;
 
 /**
  * 
  */
 public class Pause extends Command {
-    private final long t;
-    private long endTime;
-    
     public Pause(double time) {
-        t = (long) (time*1000);
-    }
-    
-    @Override
-    public void initialize() {
-        endTime = RobotManager.time() + t;
-    }
-    
-    @Override
-    public boolean execute() {
-        return RobotManager.time() > endTime;
+        super(time);
     }
 
+    @Override
+    public boolean execute() {
+        return false;
+    }
 }

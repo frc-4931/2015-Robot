@@ -17,7 +17,7 @@ public class MoveKickerToGuardrail extends Command {
     private final Kicker kicker;
 
     public MoveKickerToGuardrail(Kicker kicker) {
-        requires(kicker);
+        super(kicker);
         this.kicker = kicker;
     }
     

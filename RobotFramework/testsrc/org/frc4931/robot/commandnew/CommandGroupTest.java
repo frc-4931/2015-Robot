@@ -35,14 +35,14 @@ public class CommandGroupTest {
         DelayCommand.reset();
         d = new Command[10];
         for(int i = 0; i < d.length; i++)
-            d[i] = new DelayCommand(list);
+            d[i] = new DelayCommand(list, i);
     }
     
     @Test
     public void shouldCancelTimedOutCommand() {
         scheduler.add(c[0]);
         scheduler.add(c[1]);
-        scheduler.add(d[0], 10);
+        scheduler.add(d[1]);
         
         assertThat(list).isEmpty();
         
@@ -51,22 +51,22 @@ public class CommandGroupTest {
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "C0 init", "C0 exe", "C0 fin",
                 "C1 init", "C1 exe", "C1 fin",
-                "D0 init", "D0 exe"}));
+                "D1 init", "D1 exe"}));
         list.clear();
         
         scheduler.step(1);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
-                "D0 exe"}));
+                "D1 exe"}));
         list.clear();
         
         scheduler.step(2);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
-                "D0 exe"}));
+                "D1 exe"}));
         list.clear();
         
-        scheduler.step(100);
+        scheduler.step(1000);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
-                "D0 fin"}));
+                "D1 fin"}));
         list.clear();
     }
     
@@ -125,7 +125,7 @@ public class CommandGroupTest {
     
     @Test
     public void shouldTimeoutDiagramFromBoard(){
-        scheduler.add(new DiagramFromBoard(), 3);
+        scheduler.add(new DiagramFromBoard());
         // Nothing has executed yet
         assertThat(list).isEmpty();
         
@@ -406,8 +406,10 @@ public class CommandGroupTest {
         private final int id;
         /**
          * @param list the list to log to
+         * @param length how long to delay
          */
-        public DelayCommand(Queue<String> list) {
+        public DelayCommand(Queue<String> list, double length) {
+            super(length);
             this.list = list;
             id = commandID;
             commandID++;
@@ -440,10 +442,10 @@ public class CommandGroupTest {
         private final int number;
         
         public CommandWithRequirement(Requireable required, int number, Queue<String> list, boolean interruptible) {
+            super(required);
             this.list = list;
             this.number = number;
             if(!interruptible) setNotInterruptible();
-            requires(required);
         }
     
         @Override

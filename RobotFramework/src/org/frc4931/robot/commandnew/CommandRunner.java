@@ -17,8 +17,9 @@ import org.frc4931.robot.commandnew.Scheduler.Requireable;
  * Manages all of the state information for a {@link Command}.
  */
 class CommandRunner {
+    private boolean timed = false;
     private long timeout;
-    private long startTime;
+    private long endTime;
     private Command command;
     private CommandRunner[] children = null;
     private CommandRunner next;
@@ -33,6 +34,7 @@ class CommandRunner {
         // A command and a next is a node
         this.command = command;
         this.next = next;
+        this.timeout = (long)(command.getTimeout()*1000);
     }
     
     public CommandRunner(CommandRunner next, CommandRunner... commands) {
@@ -48,9 +50,15 @@ class CommandRunner {
      * {@code false} otherwise
      */
     public boolean step(long time) {
-        if(timeout != 0 && startTime == 0)
-            startTime = time;
-        if(startTime != 0 && time - startTime >= timeout) state = State.INTERUPTED;
+        // if we have a timeout
+        if(timeout != 0) {
+            endTime = time + timeout;
+            timed = true;
+            timeout = 0;
+        }
+        if(timed && time >= endTime) {
+            state = State.INTERUPTED;
+        }
         
         // If we don't have children or a command, we are a fork and must be done
         if(children == null && command == null) return true;
@@ -91,16 +99,13 @@ class CommandRunner {
         return false;
     }
     
-    public void after(Commands commandList, long time) {
+    public void after(Commands commandList) {
         // Add our own next (if we have one) and the nexts of our children (if we have them)
         if(next != null) {
-            // Set the timeout of the next command to the time left from this one
-            next.setTimeout(time - startTime);
-            
             commandList.add(next);
         }
         if(children != null) {
-            for(CommandRunner command : children) command.after(commandList, time);
+            for(CommandRunner command : children) command.after(commandList);
         }
     }
     
@@ -129,10 +134,6 @@ class CommandRunner {
         }
         
         return "FORK<" + next.toString() +">";
-    }
-    
-    public void setTimeout(long timeout) {
-        this.timeout = timeout;
     }
     
     public boolean isInterruptible() {

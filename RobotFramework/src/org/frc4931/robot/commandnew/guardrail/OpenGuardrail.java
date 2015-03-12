@@ -16,7 +16,7 @@ public class OpenGuardrail extends Command {
     private final Guardrail rail;
     
     public OpenGuardrail(Guardrail rail) {
-        requires(rail);
+        super(rail);
         this.rail = rail;
     }
 

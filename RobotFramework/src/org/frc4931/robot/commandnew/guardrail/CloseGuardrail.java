@@ -16,7 +16,7 @@ public class CloseGuardrail extends Command {
     private final Guardrail rail;
     
     public CloseGuardrail(Guardrail rail) {
-        requires(rail);
+        super(rail);
         this.rail = rail;
     }
     

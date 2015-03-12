@@ -19,7 +19,7 @@ public class TurnToTote extends Command {
     private final Camera eyes;
     
     public TurnToTote(DriveInterpreter drive, Camera eyes) {
-        requires(drive);
+        super(drive);
         this.drive = drive;
         this.eyes = eyes;
     }

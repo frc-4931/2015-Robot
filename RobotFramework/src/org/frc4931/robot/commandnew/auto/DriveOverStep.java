@@ -25,9 +25,9 @@ public class DriveOverStep extends Command {
     private int numPulses = 0;
     
     public DriveOverStep(DriveInterpreter drive, Accelerometer accel) {
+        super(drive);
         this.drive = drive;
         this.accel = accel;
-        requires(drive);
     }
  
     @Override

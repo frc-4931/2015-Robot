@@ -17,7 +17,7 @@ public class MoveKickerToStep extends Command {
     private final Kicker kicker;
 
     public MoveKickerToStep(Kicker kicker) {
-        requires(kicker);
+        super(kicker);
         this.kicker = kicker;
     }
     

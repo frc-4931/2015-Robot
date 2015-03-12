@@ -16,7 +16,7 @@ public class LowerRamp extends Command{
     private final Lifter lifter;
 
     public LowerRamp(Lifter lifter) {
-        requires(lifter);
+        super(lifter);
         this.lifter = lifter;
     }
     

@@ -16,7 +16,7 @@ public class CloseGrabber extends Command {
     private final Grabber grabber;
     
     public CloseGrabber(Grabber grabber) {
-        requires(grabber);
+        super(grabber);
         this.grabber = grabber;
     }
     
