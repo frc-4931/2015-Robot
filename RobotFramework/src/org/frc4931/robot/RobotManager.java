@@ -47,21 +47,22 @@ public class RobotManager extends IterativeRobot {
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
         SmartDashboard.putNumber("toteCount", 0);
-        SwitchListener.getInstance().onTriggered(robot.operator.toggleLift, ()->Scheduler.getInstance().add(new ToggleGrabberLift(robot.structure.grabber)));
-        SwitchListener.getInstance().onTriggered(robot.operator.toggleClaw, ()->Scheduler.getInstance().add(new ToggleGrabber(robot.structure.grabber)));
-        SwitchListener.getInstance().onTriggered(robot.operator.toggleRails, ()->Scheduler.getInstance().add(new ToggleGuardrail(robot.structure.ramp.rail)));
-        SwitchListener.getInstance().onTriggered(robot.operator.toggleRamp, ()->Scheduler.getInstance().add(new ToggleRamp(robot.structure.ramp.lifter)));
+        SwitchListener listener = new SwitchListener();
+        listener.onTriggered(robot.operator.toggleLift, ()->Scheduler.getInstance().add(new ToggleGrabberLift(robot.structure.grabber)));
+        listener.onTriggered(robot.operator.toggleClaw, ()->Scheduler.getInstance().add(new ToggleGrabber(robot.structure.grabber)));
+        listener.onTriggered(robot.operator.toggleRails, ()->Scheduler.getInstance().add(new ToggleGuardrail(robot.structure.ramp.rail)));
+        listener.onTriggered(robot.operator.toggleRamp, ()->Scheduler.getInstance().add(new ToggleRamp(robot.structure.ramp.lifter)));
         
-        SwitchListener.getInstance().onTriggered(robot.operator.kickerToGround, ()->Scheduler.getInstance().add(new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
-        SwitchListener.getInstance().onTriggered(robot.operator.kickerToTransfer, ()->Scheduler.getInstance().add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
-        SwitchListener.getInstance().onTriggered(robot.operator.kickerToGuardrail, ()->Scheduler.getInstance().add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToGround, ()->Scheduler.getInstance().add(new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToTransfer, ()->Scheduler.getInstance().add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToGuardrail, ()->Scheduler.getInstance().add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
         
-        SwitchListener.getInstance().onTriggered(robot.operator.transferTote, ()->Scheduler.getInstance().add(new TransferTote(robot.structure)));
+        listener.onTriggered(robot.operator.transferTote, ()->Scheduler.getInstance().add(new TransferTote(robot.structure)));
        
-        SwitchListener.getInstance().onTriggered(robot.operator.writeData, Logger.getInstance()::shutdown);
-        SwitchListener.getInstance().onTriggered(robot.operator.writeData, ()->System.out.println("DATA SAVED"));
+        listener.onTriggered(robot.operator.writeData, Logger.getInstance()::shutdown);
+        listener.onTriggered(robot.operator.writeData, ()->System.out.println("DATA SAVED"));
         
-        SwitchListener.getInstance().start();
+        Executor.getInstance().register(listener);
 
         Logger.getInstance().register("Drive Speed", ()->(short)(robot.operator.driveSpeed.read()*1000));
         Logger.getInstance().register("Turn Speed",  ()->(short)(robot.operator.turnSpeed.read()*1000));

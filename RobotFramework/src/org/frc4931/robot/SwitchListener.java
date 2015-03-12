@@ -9,59 +9,23 @@ package org.frc4931.robot;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.frc4931.robot.Executor.Executable;
 import org.frc4931.robot.component.Switch;
 
 /**
  * A class that allows {@link ListenerFunction}s to be registered with {@link Switch}es
  * to execute on a certain change of state.
  */
-public class SwitchListener{
-    private static final SwitchListener INSTANCE = new SwitchListener();
-    private final ConcurrentMap<Switch, Container> listeners;
-    private volatile boolean running;
-    private Thread monitorThread;
+public class SwitchListener implements Executable {
+    private final ConcurrentMap<Switch, Container> listeners = new ConcurrentHashMap<>();
 
-    public static SwitchListener getInstance() {
-        return INSTANCE;
-    }
+    SwitchListener() {}
     
-    private SwitchListener() {
-        listeners = new ConcurrentHashMap<>();
-        running = false;
-    }
-    
-    private void monitor(){
+    @Override
+    public void execute(long time){
         listeners.forEach((swtch, container)->container.update(swtch));
     }
 
-    /**
-     * Starts monitoring the registered listeners in a new thread.
-     */
-    public void start(){
-        if(running) return;
-        running = true;
-        monitorThread = new Thread(this::monitorSwitches,"switchMonitor");
-        monitorThread.start();
-    }
-    
-    private void monitorSwitches() {
-        while ( running ) {
-            monitor();
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    /**
-     * Stops monitoring the register listeners.
-     */
-    public void stop(){
-        running = false;
-    }
-    
     /**
      * Register a {@link ListenerFunction} to be called the moment when the specified
      * {@link Switch} is triggered.
