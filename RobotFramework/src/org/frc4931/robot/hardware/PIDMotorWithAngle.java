@@ -67,13 +67,15 @@ public class PIDMotorWithAngle implements MotorWithAngle {
     
     // Catches the output from the PIDController
     private void updateMotor(double speed) {
-        // If we are stalled against limit switch and trying to move past it, stop
-        if(home.isTriggered() && speed < 0) speed = 0;
-        
-        // If we are against the soft limit and trying to move past it, stop and update home
-        if(getAngle() >= softLimit && speed > 0) {
+        // If we are stalled against limit switch and trying to move past it, stop and update home
+        if(home.isTriggered() && speed < 0) {
             speed = 0;
             angleSensor.reset();
+        }
+        
+        // If we are against the soft limit and trying to move past it stop
+        if(getAngle() >= softLimit && speed > 0) {
+            speed = 0;
         }
         
         // If we are stalled, stop
