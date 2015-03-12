@@ -64,12 +64,12 @@ class CommandRunner {
         if(children == null && command == null) return true;
         
         // If we have children, but no command, we are a branch
-        if(children != null) {
+        if(children != null && command == null) {
             assert command == null;
-            
             // We are done as long as none of our children are not
-            for(CommandRunner command : children) if(!command.step(time)) return false;
-            return true;
+            boolean childrenDone = true;
+            for(CommandRunner command : children) if(!command.step(time)) childrenDone = false;
+            return childrenDone;
         }
         
         // If we have a command, but no children, manage our command
@@ -94,8 +94,9 @@ class CommandRunner {
         if(state == State.FINISHED || state == State.INTERUPTED) {
             command.end();
             state = State.FINALIZED;
-            return true;
         }
+        
+        if(state==State.FINALIZED) return true;
         return false;
     }
     
