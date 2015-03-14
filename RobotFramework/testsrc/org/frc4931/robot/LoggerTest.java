@@ -8,6 +8,7 @@ package org.frc4931.robot;
 
 import org.frc4931.robot.Logger.Mode;
 import org.frc4931.robot.mock.MockSwitch;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -16,6 +17,13 @@ import static org.fest.assertions.Assertions.assertThat;
  * 
  */
 public class LoggerTest {
+    private Logger logger;
+    
+    @Before
+    public void beforeEach() {
+        logger = new Logger();
+    }
+    
     @Test
     public void shouldCombineAllTruesToAllOnes(){
         boolean[] values = new boolean[15];
@@ -52,28 +60,26 @@ public class LoggerTest {
     
     @Test
     public void shouldRegisterSeveralSwitchesToLog() throws InterruptedException {
-        Logger.getInstance().setMode(Mode.LOCAL_FILE);
+        logger.setMode(Mode.LOCAL_FILE);
         MockSwitch dummy1 = MockSwitch.createNotTriggeredSwitch();
         MockSwitch dummy2 = MockSwitch.createNotTriggeredSwitch();
         MockSwitch dummy3 = MockSwitch.createNotTriggeredSwitch();
-        Logger.getInstance().registerSwitch("Dummy1", dummy1);
-        Logger.getInstance().registerSwitch("Dummy2", dummy2);
-        Logger.getInstance().registerSwitch("Dummy3", dummy3);
-        Logger.getInstance().startup();
-
-        Thread.sleep(10);
+        logger.registerSwitch("Dummy1", dummy1);
+        logger.registerSwitch("Dummy2", dummy2);
+        logger.registerSwitch("Dummy3", dummy3);
+        
+        logger.startup();
+        
+        logger.execute(0);
         dummy1.setTriggered();
         
-        Thread.sleep(10);
+        logger.execute(1);
         dummy2.setTriggered();
         
-        Thread.sleep(10);
+        logger.execute(2);
         dummy3.setTriggered();
         
-        Thread.sleep(10);
-        Logger.getInstance().shutdown();
-        
-        Thread.sleep(1000);
-        
+        logger.execute(3);
+        logger.shutdown();
     }
 }

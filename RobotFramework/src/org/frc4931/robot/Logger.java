@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.IntSupplier;
 
+import org.frc4931.robot.Executor.Executable;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.utils.Lifecycle;
-import org.frc4931.utils.Metronome;
 
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,10 +24,7 @@ import edu.wpi.first.wpilibj.tables.ITable;
 /**
  * 
  */
-public class Logger implements Lifecycle {
-    private static final Logger INSTANCE = new Logger();
-    public static Logger getInstance(){ return INSTANCE; }
-    
+public class Logger implements Lifecycle, Executable {
     public static final int WRITE_FREQUENCY = (int) (1000.0/30.0); // milliseconds per writes
     public static final int RUNNING_TIME = 200;
     
@@ -38,13 +34,8 @@ public class Logger implements Lifecycle {
     private Mode mode = Mode.LOCAL_FILE;
     
     private volatile boolean running = false;
-    private Thread loggerThread;
     private LogWriter logger;
     
-    /**
-     * Starts logging data using the current mode.  Will not do anything if {@link Logger}
-     * is already running.
-     */
     @Override
     public void startup() {
         if(running) return;
@@ -59,23 +50,14 @@ public class Logger implements Lifecycle {
                 logger = new RemoteLogWriter(names, suppliers);
                 break;
         }
-        
-         // Initialize the thread that does the actual output
-        loggerThread = new Thread(this::logData);
-        loggerThread.setName("writer");
-        loggerThread.start();
     }
     
-    private void logData() {
-        Metronome timer = new Metronome(WRITE_FREQUENCY, TimeUnit.MILLISECONDS);
-        try {
-            while(running) {
-                logger.write();
-                timer.pause();
-            }
-        } finally {
+    @Override
+    public void execute(long time) {
+        if(running)
+            logger.write(time);
+        else
             logger.close();
-        }
     }
     
     /**
@@ -163,10 +145,12 @@ public class Logger implements Lifecycle {
     }
     
     public static interface LogWriter extends AutoCloseable {
+        
         /**
          * Writes the current status of the robot to a log.
+         * @param time the current time in milliseconds
          */
-        public void write();
+        public void write(long time);
         
         /**
          * Frees the resources used by this {@link LogWriter}.
@@ -226,12 +210,12 @@ public class Logger implements Lifecycle {
         }
         
         @Override
-        public void write() {
+        public void write(long time) {
             if(writer.getRemaining()<recordLength){
                 System.err.println("Insuffient space to write next all of next record, closing file");
                 writer.close();
             }
-            writer.writeInt((int)(RobotManager.time()));
+            writer.writeInt((int)time);
             suppliers.forEach((supplier)->writer.writeShort((short)supplier.getAsInt()));
         }
         
@@ -253,7 +237,7 @@ public class Logger implements Lifecycle {
         }
 
         @Override
-        public void write() {
+        public void write(long time) {
             SmartDashboard.putData("Logger", this);
         }
         
@@ -281,7 +265,7 @@ public class Logger implements Lifecycle {
 
         @Override
         public String getSmartDashboardType() {
-            return "DataLupdate();ogger";
+            return "DataLogger";
         }
         
         @Override
