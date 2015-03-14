@@ -86,7 +86,7 @@ public class RobotManager extends IterativeRobot {
         
         Logger.getInstance().register("Totes", ()->(short)SmartDashboard.getNumber("toteCount"));
         
-        Logger.getInstance().register("Grabber Position", ()->(short)(robot.componets.grabberEncoder.getAngle()*1000));
+        Logger.getInstance().register("Grabber Position", ()->(short)Math.round(robot.componets.grabberEncoder.getAngle()*100));
         
         Logger.getInstance().register("X Accel", ()->(short)(robot.componets.builtInAccel.getXacceleration()*1000));
         Logger.getInstance().register("Y Accel", ()->(short)(robot.componets.builtInAccel.getYacceleration()*1000));
