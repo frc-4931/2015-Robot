@@ -38,7 +38,9 @@ public class RobotManager extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
     
     private static Robot robot;
-
+    
+    private Scheduler scheduler;
+    
     public Robot get() {
         return robot;
     }
@@ -47,17 +49,21 @@ public class RobotManager extends IterativeRobot {
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
         SmartDashboard.putNumber("toteCount", 0);
+        
+        scheduler = new Scheduler();
+        Executor.getInstance().register(scheduler);
+        
         SwitchListener listener = new SwitchListener();
-        listener.onTriggered(robot.operator.toggleLift, ()->Scheduler.getInstance().add(new ToggleGrabberLift(robot.structure.grabber)));
-        listener.onTriggered(robot.operator.toggleClaw, ()->Scheduler.getInstance().add(new ToggleGrabber(robot.structure.grabber)));
-        listener.onTriggered(robot.operator.toggleRails, ()->Scheduler.getInstance().add(new ToggleGuardrail(robot.structure.ramp.rail)));
-        listener.onTriggered(robot.operator.toggleRamp, ()->Scheduler.getInstance().add(new ToggleRamp(robot.structure.ramp.lifter)));
+        listener.onTriggered(robot.operator.toggleLift, ()->scheduler.add(new ToggleGrabberLift(robot.structure.grabber)));
+        listener.onTriggered(robot.operator.toggleClaw, ()->scheduler.add(new ToggleGrabber(robot.structure.grabber)));
+        listener.onTriggered(robot.operator.toggleRails, ()->scheduler.add(new ToggleGuardrail(robot.structure.ramp.rail)));
+        listener.onTriggered(robot.operator.toggleRamp, ()->scheduler.add(new ToggleRamp(robot.structure.ramp.lifter)));
         
-        listener.onTriggered(robot.operator.kickerToGround, ()->Scheduler.getInstance().add(new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
-        listener.onTriggered(robot.operator.kickerToTransfer, ()->Scheduler.getInstance().add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
-        listener.onTriggered(robot.operator.kickerToGuardrail, ()->Scheduler.getInstance().add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToGround, ()->scheduler.add(new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToTransfer, ()->scheduler.add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToGuardrail, ()->scheduler.add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
         
-        listener.onTriggered(robot.operator.transferTote, ()->Scheduler.getInstance().add(new TransferTote(robot.structure)));
+        listener.onTriggered(robot.operator.transferTote, ()->scheduler.add(new TransferTote(robot.structure)));
        
         listener.onTriggered(robot.operator.writeData, Logger.getInstance()::shutdown);
         listener.onTriggered(robot.operator.writeData, ()->System.out.println("DATA SAVED"));
@@ -92,12 +98,11 @@ public class RobotManager extends IterativeRobot {
     }
     
     public void activePeriodic() {
-        Scheduler.getInstance().step(time());
     }
     
     @Override
     public void disabledInit() {
-        Scheduler.getInstance().killAll();
+        scheduler.killAll();
     }
     
     // Active code starts here

@@ -12,13 +12,12 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.frc4931.robot.Executor.Executable;
+
 /**
  * 
  */
-public class Scheduler {
-    private static final Scheduler INSTANCE = new Scheduler();
-    public static Scheduler getInstance() { return INSTANCE; }
-    
+public class Scheduler implements Executable{
     private final Commands list = new Commands();
     
     public void killAll() {
@@ -67,7 +66,8 @@ public class Scheduler {
      * Steps once though all of the {@link Command}s in the {@link Scheduler}.
      * @param time the current system time in millis
      */
-    public void step(long time) {
+    @Override
+    public void execute(long time) {
         list.step(time);
     }
     

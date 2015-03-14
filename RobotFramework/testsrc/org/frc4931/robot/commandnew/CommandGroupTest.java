@@ -26,7 +26,7 @@ public class CommandGroupTest {
     
     @Before
     public void beforeEach() {
-        scheduler = Scheduler.getInstance();
+        scheduler = new Scheduler();
         list = new LinkedList<>();
         TestCommand.reset();
         c = new Command[10];
@@ -46,7 +46,7 @@ public class CommandGroupTest {
         
         assertThat(list).isEmpty();
         
-        scheduler.step(0);
+        scheduler.execute(0);
         
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "C0 init", "C0 exe", "C0 fin",
@@ -54,17 +54,17 @@ public class CommandGroupTest {
                 "D1 init", "D1 exe"}));
         list.clear();
         
-        scheduler.step(1);
+        scheduler.execute(1);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "D1 exe"}));
         list.clear();
         
-        scheduler.step(2);
+        scheduler.execute(2);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "D1 exe"}));
         list.clear();
         
-        scheduler.step(1000);
+        scheduler.execute(1000);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "D1 fin"}));
         list.clear();
@@ -81,7 +81,7 @@ public class CommandGroupTest {
         scheduler.add(r1);
         scheduler.add(r2);
         
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "R0 end", "R1 init", "R1 exe", "R1 end"}));
         list.clear();
@@ -102,18 +102,18 @@ public class CommandGroupTest {
         CommandWithRequirement r3 = new CommandWithRequirement(required, 3, list, false);
         scheduler.add(g);
         
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "R0 init", "R0 exe", "R0 end"}));
         list.clear();
         
         scheduler.add(r3);
-        scheduler.step(1);
+        scheduler.execute(1);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
                 "R1 end", "R3 init", "R3 exe", "R3 end"}));
         list.clear();
         
-        scheduler.step(2);
+        scheduler.execute(2);
         assertThat(list).isEmpty();
     }
     
@@ -130,17 +130,17 @@ public class CommandGroupTest {
         assertThat(list).isEmpty();
         
         // First step should execute 0
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin"}));
         list.clear();
         
         // Second step is a branch, nothing was executed, fork was primed
-        scheduler.step(1);
+        scheduler.execute(1);
         assertThat(list).isEmpty();
         
         // Third step should execute 1 and 2 (parallelized) and 3 (just forked)
-        scheduler.step(2);
+        scheduler.execute(2);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C1 init", "C1 exe", "C1 fin",
             "C2 init", "C2 exe", "C2 fin",
@@ -148,25 +148,25 @@ public class CommandGroupTest {
         list.clear();
         
         // Fourth step should execute 5 (main) and 4 (on fork)
-        scheduler.step(3);
+        scheduler.execute(3);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C5 init", "C5 exe", "C5 fin",
             "C4 init", "C4 exe", "C4 fin"}));
         list.clear();
         
         // Fifth step is a branch, nothing was executed fork is dead, another fork was primed
-        scheduler.step(4);
+        scheduler.execute(4);
         assertThat(list).isEmpty();
         
         // Sixth step should execute 6 (main) and 7 (just forked)
-        scheduler.step(5);
+        scheduler.execute(5);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C6 init", "C6 exe", "C6 fin",
             "C7 init", "C7 exe", "C7 fin"}));
         list.clear();
         
         // Seventh step scheduler is empty, nothing executes
-        scheduler.step(6);
+        scheduler.execute(6);
         assertThat(list).isEmpty();
     }
     
@@ -176,18 +176,18 @@ public class CommandGroupTest {
         scheduler.add(c);
         assertThat(list).isEmpty();
         // First step, C0 should have been added, run, and finished
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin"}));
         
         // Second step, C1 should have been added, run, and finished
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin",
             "C1 init", "C1 exe", "C1 fin"}));
         
         // Third step, C2 should have been added, run, and finished
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin",
             "C1 init", "C1 exe", "C1 fin",
@@ -205,7 +205,7 @@ public class CommandGroupTest {
     public void shouldExecuteCommandsTogether() {
         Command c = new SimulCommandGroup();
         scheduler.add(c);
-        scheduler.step(0);
+        scheduler.execute(0);
         // After one step, all three should have run
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin",
@@ -225,14 +225,14 @@ public class CommandGroupTest {
         Command c = new TwoOneGroup();
         scheduler.add(c);
         // After one step, first two should have run
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin",
             "C1 init", "C1 exe", "C1 fin"}));
         list.clear();
         
         // After two steps, all three should have run
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C2 init", "C2 exe", "C2 fin"}));
     }
@@ -252,17 +252,17 @@ public class CommandGroupTest {
         assertThat(list).isEmpty();
         
         // First step should execute 0
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin"}));
         list.clear();
         
         // Second step is a branch, nothing was executed, fork was primed
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEmpty();
         
         // Third step should execute 1 and 2 (parallelized) and 3 (just forked)
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C1 init", "C1 exe", "C1 fin",
             "C2 init", "C2 exe", "C2 fin",
@@ -270,25 +270,25 @@ public class CommandGroupTest {
         list.clear();
         
         // Fourth step should execute 5 (main) and 4 (on fork)
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C5 init", "C5 exe", "C5 fin",
             "C4 init", "C4 exe", "C4 fin"}));
         list.clear();
         
         // Fifth step is a branch, nothing was executed fork is dead, another fork was primed
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEmpty();
         
         // Sixth step should execute 6 (main) and 7 (just forked)
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C6 init", "C6 exe", "C6 fin",
             "C7 init", "C7 exe", "C7 fin"}));
         list.clear();
         
         // Seventh step scheduler is empty, nothing executes
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEmpty();
     }
     
@@ -314,17 +314,17 @@ public class CommandGroupTest {
         assertThat(list).isEmpty();
         
         // First step should execute 0
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C0 init", "C0 exe", "C0 fin"}));
         list.clear();
         
         // Second step is a branch, nothing executes, fork is primed
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEmpty();
         
         // Third step should execute 3 (main) and 1 and 2 (just forked parallelized)
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C3 init", "C3 exe", "C3 fin",
             "C1 init", "C1 exe", "C1 fin",
@@ -332,20 +332,20 @@ public class CommandGroupTest {
         list.clear();
         
         // Fourth step should execute 4 and 5 (parallelized) fork is dead
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C4 init", "C4 exe", "C4 fin",
             "C5 init", "C5 exe", "C5 fin"}));
         list.clear();
         
         // Fifth step should execute 6
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEqualTo(Arrays.asList(new String[]{
             "C6 init", "C6 exe", "C6 fin"}));
         list.clear();
         
         // Sixth step scheduler is empty, nothing executed
-        scheduler.step(0);
+        scheduler.execute(0);
         assertThat(list).isEmpty();
         
     }
