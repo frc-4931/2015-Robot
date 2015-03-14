@@ -19,14 +19,17 @@ public class Robot {
     public final Superstructure structure;
     public final PowerPanel powerPanel;
     public final OperatorInterface operator;
+    public final Compressor compressor;
     public final Componets componets;
     
-    public Robot(DriveInterpreter drive, Accelerometer accelerometer, Superstructure structure, PowerPanel powerPanel, OperatorInterface operator, Componets componets) {
+    public Robot(DriveInterpreter drive, Accelerometer accelerometer, Superstructure structure, PowerPanel powerPanel, OperatorInterface operator, Compressor compressor, Componets componets) {
         this.drive = drive;
         this.accelerometer = accelerometer;
         this.structure = structure;
         this.powerPanel = powerPanel;
         this.operator = operator;
+        this.compressor = compressor;
         this.componets = componets;
+        
     }
 }

@@ -11,9 +11,11 @@ import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.CurrentSensor;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Motor;
+import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Solenoid.Direction;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.composites.CompositeCompressor;
 import org.frc4931.robot.composites.CompositeGrabber;
 import org.frc4931.robot.composites.CompositeGuardrail;
 import org.frc4931.robot.composites.CompositeKicker;
@@ -22,6 +24,7 @@ import org.frc4931.robot.controller.GrabberControlProfile;
 import org.frc4931.robot.controller.KickerControlProfile;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
+import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Accelerometers;
@@ -83,9 +86,11 @@ public class RobotBuilder {
         // Build the accelerometer
         Accelerometer accel = componets.builtInAccel;
         
+        Compressor compressor = new CompositeCompressor(componets.compressorRelay, componets.pressureSwitch);
+        
         OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK));
         
-        return new Robot(drive, accel, structure, powerPanel, operator, componets);
+        return new Robot(drive, accel, structure, powerPanel, operator, compressor, componets);
     }
     
     public static final class Componets {
@@ -117,6 +122,9 @@ public class RobotBuilder {
         public final AngleSensor   kickerEncoder = kickerTalon.getAngleSensor();
         
         public final Switch        kickerSwitch  = Switches.normallyClosed(Properties.CAN_GRAB);
+        
+        public final Switch pressureSwitch = Switches.normallyClosed(Properties.PRESSURE_SWITCH);
+        public final Relay compressorRelay = Hardware.relay(Properties.COMPRESSOR_RELAY);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
         
@@ -150,12 +158,13 @@ public class RobotBuilder {
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;
 
-        /*-------MOTORS------*/
+        /*-------PWM------*/
         private static final int LEFT_FRONT_DRIVE = 0;
         private static final int LEFT_REAR_DRIVE = 1;
         private static final int RIGHT_FRONT_DRIVE = 2;
         private static final int RIGHT_REAR_DRIVE = 3;
         private static final int GRABBER_LIFTER_MOTOR = 4;
+        private static final int COMPRESSOR_RELAY = 5;
         
         /*-------POWER PANEL------*/
         private static final int GRABBER_LIFTER_CURRENT = 2;
@@ -177,6 +186,7 @@ public class RobotBuilder {
         private static final int GRABBER_ENCODER_B = 1;
         private static final int CAN_GRAB = 5;
         private static final int KICKER_HOME = 6;
+        private static final int PRESSURE_SWITCH = 6;
 
         /*-------CAN------*/
         private static final int KICKER_MOTOR_CAN_ID = 0;
