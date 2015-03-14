@@ -70,6 +70,9 @@ public class RobotManager extends IterativeRobot {
         listener.onTriggered(robot.operator.writeData, logger::shutdown);
         listener.onTriggered(robot.operator.writeData, ()->System.out.println("DATA SAVED"));
         
+        listener.whileUntriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.activate());
+        listener.whileTriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.deactivate());
+        
         Executor.getInstance().register(listener);
 
         logger.register("Drive Speed", ()->(short)(robot.operator.driveSpeed.read()*1000));
