@@ -48,7 +48,6 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
-        SmartDashboard.putNumber("toteCount", 0);
         
         scheduler = new Scheduler();
         Executor.getInstance().register(scheduler);
@@ -65,7 +64,7 @@ public class RobotManager extends IterativeRobot {
         listener.onTriggered(robot.operator.kickerToTransfer, ()->scheduler.add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
         listener.onTriggered(robot.operator.kickerToGuardrail, ()->scheduler.add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
         
-        listener.onTriggered(robot.operator.transferTote, ()->scheduler.add(new TransferTote(robot.structure)));
+        listener.onTriggered(robot.operator.transferTote, ()->scheduler.add(new TransferTote(robot)));
        
         listener.onTriggered(robot.operator.writeData, logger::shutdown);
         listener.onTriggered(robot.operator.writeData, ()->System.out.println("DATA SAVED"));
@@ -73,8 +72,8 @@ public class RobotManager extends IterativeRobot {
         listener.whileUntriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.activate());
         listener.whileTriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.deactivate());
         
-        listener.onTriggered(robot.operator.resetCounter, ()->SmartDashboard.putNumber("toteCount", 0));
-        listener.onTriggered(robot.operator.increaseCounter, ()->SmartDashboard.putNumber("toteCount", SmartDashboard.getNumber("toteCount") + 1));
+        listener.onTriggered(robot.operator.resetCounter, robot.toteCounter::reset);
+        listener.onTriggered(robot.operator.increaseCounter, robot.toteCounter::increase);
         
         Executor.getInstance().register(listener);
 
@@ -92,7 +91,7 @@ public class RobotManager extends IterativeRobot {
         
         logger.register("Kicker Speed", ()->(short)(robot.componets.kickerMotor.getSpeed()*1000));
         
-        logger.register("Totes", ()->(short)SmartDashboard.getNumber("toteCount"));
+        logger.register("Totes", ()->(short)robot.toteCounter.get());
         
         logger.register("Grabber Position", ()->(short)Math.round(robot.componets.grabberEncoder.getAngle()*100));
         
@@ -106,11 +105,13 @@ public class RobotManager extends IterativeRobot {
     }
     
     public void activePeriodic() {
+        SmartDashboard.putNumber("Tote Count", robot.toteCounter.get());
     }
     
     @Override
     public void disabledInit() {
         scheduler.killAll();
+        robot.toteCounter.reset();
     }
     
     // Active code starts here
@@ -126,6 +127,7 @@ public class RobotManager extends IterativeRobot {
     
     @Override
     public void teleopInit() {
+        scheduler.killAll();
         robot.structure.ramp.lifter.lower();
         robot.structure.ramp.rail.open();
         robot.structure.grabber.open();

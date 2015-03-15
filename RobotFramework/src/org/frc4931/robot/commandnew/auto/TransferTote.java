@@ -15,9 +15,7 @@ import org.frc4931.robot.commandnew.guardrail.OpenGuardrail;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToGround;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToGuardrail;
 import org.frc4931.robot.commandnew.kicker.MoveKickerToTransfer;
-import org.frc4931.robot.system.Superstructure;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc4931.robot.system.Robot;
 
 
 /**
@@ -25,21 +23,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TransferTote extends CommandGroup {
     
-    public TransferTote(Superstructure structure) {
-        SmartDashboard.putNumber("toteCount", (int)(SmartDashboard.getNumber("toteCount")+1));
+    public TransferTote(Robot robot) {
+        robot.toteCounter.increase();
         sequentially(
-                    new MoveGrabberToTransfer(structure.grabber),
-                    new MoveKickerToTransfer(structure.kickerSystem.kicker),
-                    new OpenGuardrail(structure.ramp.rail),
+                    new MoveGrabberToTransfer(robot.structure.grabber),
+                    new MoveKickerToTransfer(robot.structure.kickerSystem.kicker),
+                    new OpenGuardrail(robot.structure.ramp.rail),
                     new Pause(0.5),
                     simultaneously(
-                        new OpenGrabber(structure.grabber),
-                        new MoveKickerToGuardrail(structure.kickerSystem.kicker)),
-                    new CloseGuardrail(structure.ramp.rail),
+                        new OpenGrabber(robot.structure.grabber),
+                        new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)),
+                    new CloseGuardrail(robot.structure.ramp.rail),
                     new Pause(1.0),
                     simultaneously(
-                        new MoveGrabberToGround(structure.grabber),
-                        new MoveKickerToGround(structure.kickerSystem.kicker)));
+                        new MoveGrabberToGround(robot.structure.grabber),
+                        new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
     }
 
 }

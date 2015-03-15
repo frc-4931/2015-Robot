@@ -8,6 +8,7 @@ package org.frc4931.robot.system;
 
 import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.AngleSensor;
+import org.frc4931.robot.component.Counter;
 import org.frc4931.robot.component.CurrentSensor;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Motor;
@@ -35,7 +36,6 @@ import org.frc4931.robot.hardware.HardwareTalonSRX;
 import org.frc4931.robot.hardware.PIDMotorWithAngle;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
@@ -66,13 +66,15 @@ public class RobotBuilder {
                                                        0.1, Properties.GRABBER_TOLERANCE)),
                              componets.grabberLeftGrabber, componets.grabberRightGrabber);
                 
+        Counter toteCounter = new Counter(5);
+        
         // Build the Kicker
         Kicker kicker = new CompositeKicker(new PIDMotorWithAngle(
                            componets.kickerMotor, componets.kickerCurrent,
                            componets.kickerEncoder, componets.kickerHome,
                            Properties.KICKER_MAX_CURRENT, Properties.KICKER_MAX_ANGLE_DEGREES,
                            new KickerControlProfile(Properties.KICKER_TOLERANCE, Properties.KICKER_MOVE_SPEEDS,
-                                                Properties.KICKER_HOLD_SPEEDS, ()->(int)SmartDashboard.getNumber("toteCount"))));
+                                                Properties.KICKER_HOLD_SPEEDS, toteCounter::get)));
         
         Switch canCapture      = componets.kickerSwitch;
         KickerSwitchSystem kss = new KickerSwitchSystem(kicker, canCapture);
@@ -91,7 +93,8 @@ public class RobotBuilder {
         
         OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK), new LogitechAttack3(Properties.CODRIVER));
         
-        return new Robot(drive, accel, structure, powerPanel, operator, compressor, componets);
+        
+        return new Robot(drive, accel, structure, powerPanel, operator, compressor, toteCounter, componets);
     }
     
     public static final class Componets {
