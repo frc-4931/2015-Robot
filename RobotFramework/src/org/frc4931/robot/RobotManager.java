@@ -106,6 +106,7 @@ public class RobotManager extends IterativeRobot {
     
     public void activePeriodic() {
         SmartDashboard.putNumber("Tote Count", robot.toteCounter.get());
+        SmartDashboard.putNumber("Front Distance", robot.frontDistance.getDistance() - 6);
     }
     
     @Override

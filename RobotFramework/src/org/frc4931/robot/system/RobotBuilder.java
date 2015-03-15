@@ -10,6 +10,7 @@ import org.frc4931.robot.component.Accelerometer;
 import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.Counter;
 import org.frc4931.robot.component.CurrentSensor;
+import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.DriveTrain;
 import org.frc4931.robot.component.Motor;
 import org.frc4931.robot.component.Relay;
@@ -93,8 +94,9 @@ public class RobotBuilder {
         
         OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK), new LogitechAttack3(Properties.CODRIVER));
         
+        DistanceSensor frontDistance = componets.frontDistance;
         
-        return new Robot(drive, accel, structure, powerPanel, operator, compressor, toteCounter, componets);
+        return new Robot(drive, accel, structure, powerPanel, operator, compressor, toteCounter, frontDistance, componets);
     }
     
     public static final class Componets {
@@ -131,6 +133,8 @@ public class RobotBuilder {
         public final Relay compressorRelay = Hardware.relay(Properties.COMPRESSOR_RELAY);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
+        
+        public final DistanceSensor frontDistance = Sensors.Distance.analogUltrasonic(Properties.FRONT_ULTRASONIC);
         
         public final PowerPanel powerPanel = Sensors.powerPanel();
     }
@@ -175,6 +179,9 @@ public class RobotBuilder {
         
         /*-------POWER PANEL------*/
         private static final int GRABBER_LIFTER_CURRENT = 2;
+        
+        /*-------ANALOG------*/
+        private static final int FRONT_ULTRASONIC = 0;
        
         /*-------SOLENOIDS------*/
         private static final int RAMP_SOLENOID_EXTEND = 2;
