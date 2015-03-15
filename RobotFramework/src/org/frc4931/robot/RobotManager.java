@@ -145,7 +145,7 @@ public class RobotManager extends IterativeRobot {
         double turnSpeed = robot.operator.turnSpeed.read()*-1;
 
         // Map throttle from [-1.0, 1.0] to [0.0, 1.0]
-        double throttle = (robot.operator.throttle.read() - 1)/2.0;
+        double throttle = (robot.operator.throttle.read() - 1)/1.5;
 
         robot.drive.arcade(driveSpeed * throttle, turnSpeed * throttle);
     }
