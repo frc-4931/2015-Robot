@@ -73,6 +73,9 @@ public class RobotManager extends IterativeRobot {
         listener.whileUntriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.activate());
         listener.whileTriggered(()->robot.compressor.isPressurized(), ()->robot.compressor.deactivate());
         
+        listener.onTriggered(robot.operator.resetCounter, ()->SmartDashboard.putNumber("toteCount", 0));
+        listener.onTriggered(robot.operator.increaseCounter, ()->SmartDashboard.putNumber("toteCount", SmartDashboard.getNumber("toteCount") + 1));
+        
         Executor.getInstance().register(listener);
 
         logger.register("Drive Speed", ()->(short)(robot.operator.driveSpeed.read()*1000));

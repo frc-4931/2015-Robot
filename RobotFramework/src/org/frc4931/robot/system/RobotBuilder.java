@@ -22,6 +22,7 @@ import org.frc4931.robot.composites.CompositeKicker;
 import org.frc4931.robot.composites.CompositeLifter;
 import org.frc4931.robot.controller.GrabberControlProfile;
 import org.frc4931.robot.controller.KickerControlProfile;
+import org.frc4931.robot.driver.LogitechAttack3;
 import org.frc4931.robot.driver.LogitechAttack3D;
 import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
@@ -88,7 +89,7 @@ public class RobotBuilder {
         
         Compressor compressor = new CompositeCompressor(componets.compressorRelay, componets.pressureSwitch);
         
-        OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK));
+        OperatorInterface operator = new OperatorInterface(new LogitechAttack3D(Properties.JOYSTICK), new LogitechAttack3(Properties.CODRIVER));
         
         return new Robot(drive, accel, structure, powerPanel, operator, compressor, componets);
     }
@@ -157,6 +158,7 @@ public class RobotBuilder {
         
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;
+        private static final int CODRIVER = 1;
 
         /*-------PWM------*/
         private static final int LEFT_FRONT_DRIVE = 0;

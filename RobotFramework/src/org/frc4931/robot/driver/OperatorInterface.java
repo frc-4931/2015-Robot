@@ -35,8 +35,11 @@ public class OperatorInterface {
 
     public final Switch writeData;
     public final Switch quickTurn;
+    
+    public final Switch increaseCounter;
+    public final Switch resetCounter;
 
-    public OperatorInterface(FlightStick flightStick) {
+    public OperatorInterface(FlightStick flightStick, LogitechAttack3 codriver) {
         throttle = flightStick.getThrottle();
         wheel = flightStick.getYaw();
         quickTurn = flightStick.getButton(5);
@@ -46,37 +49,18 @@ public class OperatorInterface {
 
         toggleClaw = flightStick.getTrigger();
         toggleLift = flightStick.getButton(3);
-        toggleRamp = flightStick.getButton(5);
         toggleRails = flightStick.getButton(4);
+        
+        toggleRamp = codriver.getButton(1);
         
         kickerToGround = flightStick.getButton(12);
         kickerToTransfer = flightStick.getButton(10);
         kickerToGuardrail = flightStick.getButton(8);
         
         transferTote = flightStick.getThumb();
-
         writeData = flightStick.getButton(6);
-    }
-
-    public OperatorInterface(Gamepad gamepad) {
-        throttle = gamepad.getLeftY();
-        wheel = gamepad.getRightX();
-        quickTurn = gamepad.getRightBumper();
-
-        driveSpeed = gamepad.getLeftY();
-        turnSpeed = gamepad.getLeftX();
-
-        toggleClaw = gamepad.getA();
-        toggleLift = null;
-        toggleRamp = gamepad.getY();
-        toggleRails = gamepad.getB();
         
-        kickerToGround = gamepad.getSelect();
-        kickerToTransfer = gamepad.getRightBumper();
-        kickerToGuardrail = gamepad.getLeftBumper();
-        
-        transferTote = gamepad.getX();
-
-        writeData = gamepad.getStart();
+        resetCounter = codriver.getButton(2);
+        increaseCounter = codriver.getButton(3);
     }
 }

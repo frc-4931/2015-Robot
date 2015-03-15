@@ -17,9 +17,6 @@ import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.SerialDataStream;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
-import org.frc4931.robot.driver.Gamepad;
-import org.frc4931.robot.driver.LogitechGamepadF310;
-import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
 import org.frc4931.robot.hardware.Hardware.Sensors.Switches;
@@ -112,10 +109,10 @@ public class RobotBuilder {
      * Get the operator interface that will be used for the robot.
      * @return the default operator interface; never null
      */
-    public static OperatorInterface operatorInterface() {
-        Gamepad gamepad = new LogitechGamepadF310(Properties.JOYSTICK);
-        return new OperatorInterface(gamepad);
-    }
+//    public static OperatorInterface operatorInterface() {
+//        Gamepad gamepad = new LogitechGamepadF310(Properties.JOYSTICK);
+//        return new OperatorInterface(gamepad);
+//    }
 
     /**
      * Get the robot components for the actual hardware.
