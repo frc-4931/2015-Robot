@@ -164,7 +164,9 @@ public class RobotBuilder {
         private static final int RIGHT_FRONT_DRIVE = 2;
         private static final int RIGHT_REAR_DRIVE = 3;
         private static final int GRABBER_LIFTER_MOTOR = 4;
-        private static final int COMPRESSOR_RELAY = 5;
+        
+        /*-------RELAY------*/
+        private static final int COMPRESSOR_RELAY = 0;
         
         /*-------POWER PANEL------*/
         private static final int GRABBER_LIFTER_CURRENT = 2;
@@ -181,12 +183,11 @@ public class RobotBuilder {
         private static final int GRABBER_RIGHT_SOLENOID_RETRACT = 5;
         
         /*-------DIO------*/
-        private static final int GRABBER_LIFTER_HOME = 2;
         private static final int GRABBER_ENCODER_A = 0;
         private static final int GRABBER_ENCODER_B = 1;
+        private static final int GRABBER_LIFTER_HOME = 2;
+        private static final int PRESSURE_SWITCH = 3;
         private static final int CAN_GRAB = 5;
-        private static final int KICKER_HOME = 6;
-        private static final int PRESSURE_SWITCH = 6;
 
         /*-------CAN------*/
         private static final int KICKER_MOTOR_CAN_ID = 0;
