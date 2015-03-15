@@ -123,7 +123,7 @@ public class RobotBuilder {
         
         public final Switch        kickerSwitch  = Switches.normallyClosed(Properties.CAN_GRAB);
         
-        public final Switch pressureSwitch = Switches.normallyClosed(Properties.PRESSURE_SWITCH);
+        public final Switch pressureSwitch = Switches.normallyOpen(Properties.PRESSURE_SWITCH);
         public final Relay compressorRelay = Hardware.relay(Properties.COMPRESSOR_RELAY);
         
         public final Accelerometer builtInAccel = Accelerometers.builtIn();
