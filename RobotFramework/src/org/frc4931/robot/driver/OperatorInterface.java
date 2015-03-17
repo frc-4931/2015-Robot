@@ -28,12 +28,16 @@ public class OperatorInterface {
     public final Switch toggleRamp;
     public final Switch toggleRails;
 
+    public final SwitchWithIndicator ocGrabberFull;
+    public final SwitchWithIndicator ocGrabberHalf;
+    public final SwitchWithIndicator ocKickerFull;
+    public final SwitchWithIndicator ocKickerTransfer;
+    public final SwitchWithIndicator ocRampToggle;
+    public final SwitchWithIndicator ocCounterUp;
+    public final SwitchWithIndicator ocCounterReset;
+
     public final Switch writeData;
     public final Switch quickTurn;
-
-    /* Console */
-    public final SwitchWithIndicator enable;
-    public final SwitchWithIndicator disable;
 
     public OperatorInterface(FlightStick flightStick, OperatorConsole operatorConsole) {
         throttle = flightStick.getPitch();
@@ -48,10 +52,15 @@ public class OperatorInterface {
         toggleRamp = flightStick.getButton(2);
         toggleRails = flightStick.getButton(3);
 
-        writeData = flightStick.getButton(6);
+        ocGrabberFull = operatorConsole.getGrabberToFull();
+        ocGrabberHalf = operatorConsole.getGrabberToHalf();
+        ocKickerFull = operatorConsole.getKickerToFull();
+        ocKickerTransfer = operatorConsole.getKickerToTransfer();
+        ocRampToggle = operatorConsole.getRampToggle();
+        ocCounterUp = operatorConsole.getCounterUp();
+        ocCounterReset = operatorConsole.getCounterReset();
 
-        enable = operatorConsole.getButton(0);
-        disable = operatorConsole.getButton(1);
+        writeData = flightStick.getButton(6);
     }
 
     public OperatorInterface(Gamepad gamepad, OperatorConsole operatorConsole) {
@@ -67,9 +76,14 @@ public class OperatorInterface {
         toggleRamp = gamepad.getY();
         toggleRails = gamepad.getB();
 
-        writeData = gamepad.getStart();
+        ocGrabberFull = operatorConsole.getGrabberToFull();
+        ocGrabberHalf = operatorConsole.getGrabberToHalf();
+        ocKickerFull = operatorConsole.getKickerToFull();
+        ocKickerTransfer = operatorConsole.getKickerToTransfer();
+        ocRampToggle = operatorConsole.getRampToggle();
+        ocCounterUp = operatorConsole.getCounterUp();
+        ocCounterReset = operatorConsole.getCounterReset();
 
-        enable = operatorConsole.getButton(0);
-        disable = operatorConsole.getButton(1);
+        writeData = gamepad.getStart();
     }
 }

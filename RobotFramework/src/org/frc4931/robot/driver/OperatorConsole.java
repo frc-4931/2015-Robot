@@ -28,32 +28,46 @@ public class OperatorConsole extends DSInputDevice {
         };
     }
 
+    public SwitchWithIndicator getButton(int button, int indicator) {
+        return new SwitchWithIndicator() {
+            @Override
+            public void setIndicator(boolean value) {
+                joystick.setOutput(indicator, value);
+            }
+
+            @Override
+            public boolean isTriggered() {
+                return joystick.getRawButton(button);
+            }
+        };
+    }
+
     public SwitchWithIndicator getGrabberToFull() {
-        return getButton(3);
+        return getButton(3, 3);
     }
 
     public SwitchWithIndicator getGrabberToHalf() {
-        return getButton(5);
+        return getButton(5, 9);
     }
 
     public SwitchWithIndicator getKickerToFull() {
-        return getButton(4);
+        return getButton(4, 4);
     }
 
     public SwitchWithIndicator getKickerToTransfer() {
-        return getButton(6);
+        return getButton(6, 10);
     }
 
     public SwitchWithIndicator getRampToggle() {
-        return getButton(2);
+        return getButton(2, 1);
     }
 
     public SwitchWithIndicator getCounterUp() {
-        return getButton(1);
+        return getButton(1, 7);
     }
 
     public SwitchWithIndicator getCounterReset() {
-        return getButton(9);
+        return getButton(9, 8);
     }
 
     public AnalogAxis getTopFader() {
