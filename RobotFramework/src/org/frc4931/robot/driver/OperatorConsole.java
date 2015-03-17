@@ -28,21 +28,49 @@ public class OperatorConsole extends DSInputDevice {
         };
     }
 
-    public AnalogAxis getFader1() {
-        return () -> joystick.getRawAxis(0);
+    public SwitchWithIndicator getGrabberToFull() {
+        return getButton(3);
     }
 
-    public AnalogAxis getFader2() {
+    public SwitchWithIndicator getGrabberToHalf() {
+        return getButton(5);
+    }
+
+    public SwitchWithIndicator getKickerToFull() {
+        return getButton(4);
+    }
+
+    public SwitchWithIndicator getKickerToTransfer() {
+        return getButton(6);
+    }
+
+    public SwitchWithIndicator getRampToggle() {
+        return getButton(2);
+    }
+
+    public SwitchWithIndicator getCounterUp() {
+        return getButton(1);
+    }
+
+    public SwitchWithIndicator getCounterReset() {
+        return getButton(9);
+    }
+
+    public AnalogAxis getTopFader() {
         return () -> joystick.getRawAxis(1);
     }
 
-    public AnalogAxis getTrim1() {
+    public AnalogAxis getBottomFader() {
+        return () -> joystick.getRawAxis(0);
+    }
+
+    public AnalogAxis getLeftTrim() {
         return () -> joystick.getRawAxis(2);
     }
 
-    public AnalogAxis getTrim2() {
+    public AnalogAxis getMiddleTrim() {
         return () -> joystick.getRawAxis(3);
     }
 
-    public AnalogAxis getTrim3() { return () -> joystick.getRawAxis(4); }
+    public AnalogAxis getRightTrim() { return () -> joystick.getRawAxis(4); }
 }
