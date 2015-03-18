@@ -43,31 +43,31 @@ public class OperatorConsole extends DSInputDevice {
     }
 
     public SwitchWithIndicator getGrabberToFull() {
-        return getButton(3, 3);
-    }
-
-    public SwitchWithIndicator getGrabberToHalf() {
-        return getButton(5, 9);
-    }
-
-    public SwitchWithIndicator getKickerToFull() {
         return getButton(4, 4);
     }
 
-    public SwitchWithIndicator getKickerToTransfer() {
+    public SwitchWithIndicator getGrabberToHalf() {
         return getButton(6, 10);
     }
 
+    public SwitchWithIndicator getKickerToFull() {
+        return getButton(5, 5);
+    }
+
+    public SwitchWithIndicator getKickerToTransfer() {
+        return getButton(7, 11);
+    }
+
     public SwitchWithIndicator getRampToggle() {
-        return getButton(2, 1);
+        return getButton(3, 2);
     }
 
     public SwitchWithIndicator getCounterUp() {
-        return getButton(1, 7);
+        return getButton(2, 8);
     }
 
     public SwitchWithIndicator getCounterReset() {
-        return getButton(9, 8);
+        return getButton(10, 9);
     }
 
     public AnalogAxis getTopFader() {
