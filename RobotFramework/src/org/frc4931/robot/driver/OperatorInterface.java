@@ -23,7 +23,6 @@ public class OperatorInterface {
     public final AnalogAxis turnSpeed;
 
     public final Switch toggleClaw;
-    public final Switch toggleLift;
     public final Switch toggleRamp;
     public final Switch toggleRails;
     
@@ -37,6 +36,9 @@ public class OperatorInterface {
     
     public final Switch increaseCounter;
     public final Switch resetCounter;
+    
+    public final Switch grabberToStep;
+    public final Switch grabberToTransfer;
 
     public OperatorInterface(FlightStick flightStick, LogitechAttack3 codriver) {
         throttle = flightStick.getThrottle();
@@ -47,7 +49,6 @@ public class OperatorInterface {
         turnSpeed = flightStick.getYaw();
 
         toggleClaw = flightStick.getTrigger();
-        toggleLift = flightStick.getButton(3);
         toggleRails = flightStick.getButton(4);
         
         toggleRamp = codriver.getButton(1);
@@ -57,6 +58,9 @@ public class OperatorInterface {
         
         resetCounter = codriver.getButton(2);
         increaseCounter = codriver.getButton(3);
+        
+        grabberToStep = codriver.getButton(7);
+        grabberToTransfer = codriver.getButton(6);
         
         kickerToTransfer = codriver.getButton(10);
         kickerToGuardrail = codriver.getButton(11);
