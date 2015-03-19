@@ -22,7 +22,7 @@ public class LogitechAttack3D extends DSInputDevice implements FlightStick {
 
     @Override
     public AnalogAxis getPitch() {
-        return () -> joystick.getY() * -1;
+        return () -> joystick.getY();
     }
 
     @Override

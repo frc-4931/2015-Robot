@@ -24,7 +24,7 @@ public class Drive extends Command {
 
     @Override
     public boolean execute() {
-        drive.arcade(-speed, 0);
+        drive.arcade(speed, 0);
         return false;
     }
 
