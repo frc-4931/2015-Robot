@@ -11,9 +11,8 @@ import org.frc4931.robot.commandnew.auto.TransferTote;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabber;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabberLift;
 import org.frc4931.robot.commandnew.guardrail.ToggleGuardrail;
-import org.frc4931.robot.commandnew.kicker.MoveKickerToGround;
-import org.frc4931.robot.commandnew.kicker.MoveKickerToGuardrail;
-import org.frc4931.robot.commandnew.kicker.MoveKickerToTransfer;
+import org.frc4931.robot.commandnew.kicker.ToggleKickerGuardrail;
+import org.frc4931.robot.commandnew.kicker.ToggleKickerTransfer;
 import org.frc4931.robot.commandnew.ramplifter.ToggleRamp;
 import org.frc4931.robot.component.DataStream;
 import org.frc4931.robot.component.Motor;
@@ -60,10 +59,6 @@ public class RobotManager extends IterativeRobot {
         listener.onTriggered(robot.operator.toggleRails, ()->scheduler.add(new ToggleGuardrail(robot.structure.ramp.rail)));
         listener.onTriggered(robot.operator.toggleRamp, ()->scheduler.add(new ToggleRamp(robot.structure.ramp.lifter)));
         
-        listener.onTriggered(robot.operator.kickerToGround, ()->scheduler.add(new MoveKickerToGround(robot.structure.kickerSystem.kicker)));
-        listener.onTriggered(robot.operator.kickerToTransfer, ()->scheduler.add(new MoveKickerToTransfer(robot.structure.kickerSystem.kicker)));
-        listener.onTriggered(robot.operator.kickerToGuardrail, ()->scheduler.add(new MoveKickerToGuardrail(robot.structure.kickerSystem.kicker)));
-        
         listener.onTriggered(robot.operator.transferTote, ()->scheduler.add(new TransferTote(robot)));
        
         listener.onTriggered(robot.operator.writeData, logger::shutdown);
@@ -74,6 +69,9 @@ public class RobotManager extends IterativeRobot {
         
         listener.onTriggered(robot.operator.resetCounter, robot.toteCounter::reset);
         listener.onTriggered(robot.operator.increaseCounter, robot.toteCounter::increase);
+        
+        listener.onTriggered(robot.operator.kickerToTransfer, ()->scheduler.add(new ToggleKickerTransfer(robot.structure.kickerSystem.kicker)));
+        listener.onTriggered(robot.operator.kickerToGuardrail, ()->scheduler.add(new ToggleKickerGuardrail(robot.structure.kickerSystem.kicker)));
         
         Executor.getInstance().register(listener);
 

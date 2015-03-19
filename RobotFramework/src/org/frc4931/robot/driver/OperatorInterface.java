@@ -27,7 +27,6 @@ public class OperatorInterface {
     public final Switch toggleRamp;
     public final Switch toggleRails;
     
-    public final Switch kickerToGround;
     public final Switch kickerToTransfer;
     public final Switch kickerToGuardrail;
     
@@ -53,14 +52,13 @@ public class OperatorInterface {
         
         toggleRamp = codriver.getButton(1);
         
-        kickerToGround = flightStick.getButton(12);
-        kickerToTransfer = flightStick.getButton(10);
-        kickerToGuardrail = flightStick.getButton(8);
-        
         transferTote = flightStick.getThumb();
         writeData = flightStick.getButton(6);
         
         resetCounter = codriver.getButton(2);
         increaseCounter = codriver.getButton(3);
+        
+        kickerToTransfer = codriver.getButton(10);
+        kickerToGuardrail = codriver.getButton(11);
     }
 }
