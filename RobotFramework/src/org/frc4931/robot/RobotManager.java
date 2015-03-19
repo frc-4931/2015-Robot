@@ -35,6 +35,7 @@ import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.FlipAxis;
 import com.ni.vision.NIVision.Image;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -127,6 +128,7 @@ public class RobotManager extends IterativeRobot {
         NIVision.IMAQdxGrab(session, raw, 1);
         NIVision.imaqFlip(raw, raw, FlipAxis.HORIZONTAL_AXIS);
         NIVision.imaqFlip(toCamera, raw, FlipAxis.VERTICAL_AXIS);
+        CameraServer.getInstance().setImage(toCamera);
     }
     
     public void activePeriodic() {
