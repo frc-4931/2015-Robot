@@ -40,6 +40,7 @@ public class RobotManager extends IterativeRobot {
     
     private static Robot robot;
     
+    private boolean home = false;
     
     private Scheduler scheduler;
     
@@ -134,9 +135,11 @@ public class RobotManager extends IterativeRobot {
         robot.structure.ramp.rail.open();
         robot.structure.grabber.open();
         
-        robot.structure.kickerSystem.kicker.home();
-        robot.structure.grabber.home();
-        
+        if(!home) {
+            robot.structure.kickerSystem.kicker.home();
+            robot.structure.grabber.home();
+            home = true;
+        }
         scheduler.add(new GrabAndGoAuto(robot.drive, robot.structure));
     }
     
@@ -148,6 +151,11 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void teleopInit() {
         scheduler.killAll();
+        if(!home) {
+            robot.structure.kickerSystem.kicker.home();
+            robot.structure.grabber.home();
+            home = true;
+        }
     }
 
     @Override
