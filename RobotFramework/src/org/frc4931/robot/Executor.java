@@ -32,12 +32,17 @@ public class Executor {
     
     private void update() {
         while(running) {
-            if(!queue.isEmpty()) {
-                Executable u = queue.poll();
-                u.execute(RobotManager.time());
-                queue.offer(u);
-            }
-            met.pause();
+                if(!queue.isEmpty()) {
+                    Executable u = queue.poll();
+                    try {
+                        u.execute(RobotManager.time());
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    queue.offer(u);
+                }
+                met.pause();
+            
         }
     }
     
