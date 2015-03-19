@@ -83,8 +83,8 @@ public class OperatorConsole extends DSInputDevice {
     }
 
     public AnalogAxis getMiddleTrim() {
-        return () -> joystick.getRawAxis(3);
+        return () -> joystick.getRawAxis(7);
     }
 
-    public AnalogAxis getRightTrim() { return () -> joystick.getRawAxis(4); }
+    public AnalogAxis getRightTrim() { return () -> joystick.getRawAxis(3); }
 }
