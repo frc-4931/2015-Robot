@@ -20,6 +20,7 @@ import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
 import org.frc4931.robot.driver.Gamepad;
 import org.frc4931.robot.driver.LogitechGamepadF310;
+import org.frc4931.robot.driver.OperatorConsole;
 import org.frc4931.robot.driver.OperatorInterface;
 import org.frc4931.robot.hardware.Hardware;
 import org.frc4931.robot.hardware.Hardware.Motors;
@@ -111,7 +112,8 @@ public class RobotBuilder {
      */
     public static OperatorInterface operatorInterface() {
         Gamepad gamepad = new LogitechGamepadF310(Properties.JOYSTICK);
-        return new OperatorInterface(gamepad);
+        OperatorConsole console = new OperatorConsole(Properties.CONSOLE);
+        return new OperatorInterface(gamepad, console);
     }
 
     /**
@@ -248,6 +250,7 @@ public class RobotBuilder {
         
         /*-------JOYSTICK------*/
         private static final int JOYSTICK = 0;
+        private static final int CONSOLE = 2;
 
         /*-------DRIVE SYSTEM------*/
         private static final int LEFT_FRONT_DRIVE = 0;
