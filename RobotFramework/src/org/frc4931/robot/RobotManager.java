@@ -31,11 +31,6 @@ import org.frc4931.robot.system.Robot;
 import org.frc4931.robot.system.RobotBuilder;
 import org.frc4931.utils.Lifecycle;
 
-import com.ni.vision.NIVision;
-import com.ni.vision.NIVision.FlipAxis;
-import com.ni.vision.NIVision.Image;
-
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -45,10 +40,6 @@ public class RobotManager extends IterativeRobot {
     
     private static Robot robot;
     
-    private int session;
-    
-    private Image raw;
-    private Image toCamera;
     
     private Scheduler scheduler;
     
@@ -59,13 +50,6 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
-        
-        session = NIVision.IMAQdxOpenCamera("cam0",
-                                            NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        NIVision.IMAQdxConfigureGrab(session);
-        
-        raw = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-        toCamera = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
         
         scheduler = new Scheduler();
         Executor.getInstance().register(scheduler);
@@ -121,14 +105,9 @@ public class RobotManager extends IterativeRobot {
         logger.startup();
         
         Executor.getInstance().start();
-        NIVision.IMAQdxStartAcquisition(session);
     }
     
     public void robotPeriodic() {
-        NIVision.IMAQdxGrab(session, raw, 1);
-        NIVision.imaqFlip(raw, raw, FlipAxis.HORIZONTAL_AXIS);
-        NIVision.imaqFlip(toCamera, raw, FlipAxis.VERTICAL_AXIS);
-        CameraServer.getInstance().setImage(toCamera);
     }
     
     public void activePeriodic() {
