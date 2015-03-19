@@ -12,25 +12,19 @@ import org.frc4931.robot.system.DriveInterpreter;
 /**
  * 
  */
-public class Drive extends Command {
-    private final double speed;
+public class Turn extends Command{
     private final DriveInterpreter drive;
+    private final double speed;
     
-    public Drive(DriveInterpreter drive, double speed, double time) {
+    public Turn(DriveInterpreter drive, double speed, double time) {
         super(time, drive);
-        this.drive = drive;
         this.speed = speed;
+        this.drive = drive;
     }
-
+    
     @Override
     public boolean execute() {
-        drive.arcade(-speed, 0);
+        drive.arcade(0, speed);
         return false;
     }
-
-    @Override
-    public void end() {
-        drive.stop();
-    }
-
 }
