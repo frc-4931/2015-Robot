@@ -13,10 +13,10 @@ import org.frc4931.robot.system.Grabber.Position;
 /**
  * 
  */
-public class ToggleGrabberLift extends CommandGroup {
-    public ToggleGrabberLift(Grabber grabber) {
-        if(!grabber.is(Position.TRANSFER)) {
-            sequentially(new MoveGrabberToTransfer(grabber));
+public class ToggleGrabberStep extends CommandGroup {
+    public ToggleGrabberStep(Grabber grabber) {
+        if(!grabber.is(Position.STEP)) {
+            sequentially(new MoveGrabberToStep(grabber));
         } else {
             sequentially(new MoveGrabberToGround(grabber));
         }

@@ -52,7 +52,7 @@ public interface Grabber extends Requireable{
     public void home();
 
     public static enum Position {
-        DOWN(0),TRANSFER(45);
+        DOWN(0),TRANSFER(45), STEP(25);
         
         private final double angle;
         private Position(double angle){

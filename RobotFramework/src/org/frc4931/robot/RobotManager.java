@@ -10,6 +10,7 @@ import org.frc4931.robot.commandnew.Scheduler;
 import org.frc4931.robot.commandnew.auto.TransferTote;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabber;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabberLift;
+import org.frc4931.robot.commandnew.grabber.ToggleGrabberStep;
 import org.frc4931.robot.commandnew.guardrail.ToggleGuardrail;
 import org.frc4931.robot.commandnew.kicker.ToggleKickerGuardrail;
 import org.frc4931.robot.commandnew.kicker.ToggleKickerTransfer;
@@ -54,7 +55,6 @@ public class RobotManager extends IterativeRobot {
         SwitchListener listener = new SwitchListener();
         Logger logger = new Logger();
         
-        listener.onTriggered(robot.operator.toggleLift, ()->scheduler.add(new ToggleGrabberLift(robot.structure.grabber)));
         listener.onTriggered(robot.operator.toggleClaw, ()->scheduler.add(new ToggleGrabber(robot.structure.grabber)));
         listener.onTriggered(robot.operator.toggleRails, ()->scheduler.add(new ToggleGuardrail(robot.structure.ramp.rail)));
         listener.onTriggered(robot.operator.toggleRamp, ()->scheduler.add(new ToggleRamp(robot.structure.ramp.lifter)));
@@ -70,6 +70,9 @@ public class RobotManager extends IterativeRobot {
         listener.onTriggered(robot.operator.resetCounter, robot.toteCounter::reset);
         listener.onTriggered(robot.operator.increaseCounter, robot.toteCounter::increase);
         
+        listener.onTriggered(robot.operator.grabberToStep, ()->scheduler.add(new ToggleGrabberStep(robot.structure.grabber)));
+        listener.onTriggered(robot.operator.grabberToTransfer, ()->scheduler.add(new ToggleGrabberLift(robot.structure.grabber)));
+
         listener.onTriggered(robot.operator.kickerToTransfer, ()->scheduler.add(new ToggleKickerTransfer(robot.structure.kickerSystem.kicker)));
         listener.onTriggered(robot.operator.kickerToGuardrail, ()->scheduler.add(new ToggleKickerGuardrail(robot.structure.kickerSystem.kicker)));
         
