@@ -7,6 +7,7 @@
 package org.frc4931.robot;
 
 import org.frc4931.robot.commandnew.Scheduler;
+import org.frc4931.robot.commandnew.auto.GrabAndGoAuto;
 import org.frc4931.robot.commandnew.auto.TransferTote;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabber;
 import org.frc4931.robot.commandnew.grabber.ToggleGrabberLift;
@@ -30,6 +31,10 @@ import org.frc4931.robot.system.Robot;
 import org.frc4931.robot.system.RobotBuilder;
 import org.frc4931.utils.Lifecycle;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.FlipAxis;
+import com.ni.vision.NIVision.Image;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,6 +43,11 @@ public class RobotManager extends IterativeRobot {
     public static final int NUMBER_OF_ADC_BITS = 12;
     
     private static Robot robot;
+    
+    private int session;
+    
+    private Image raw;
+    private Image toCamera;
     
     private Scheduler scheduler;
     
@@ -48,6 +58,13 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void robotInit() {
         robot = RobotBuilder.buildRobot();
+        
+        session = NIVision.IMAQdxOpenCamera("cam0",
+                                            NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+        NIVision.IMAQdxConfigureGrab(session);
+        
+        raw = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+        toCamera = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
         
         scheduler = new Scheduler();
         Executor.getInstance().register(scheduler);
@@ -103,9 +120,17 @@ public class RobotManager extends IterativeRobot {
         logger.startup();
         
         Executor.getInstance().start();
+        NIVision.IMAQdxStartAcquisition(session);
+    }
+    
+    public void robotPeriodic() {
+        NIVision.IMAQdxGrab(session, raw, 1);
+        NIVision.imaqFlip(raw, raw, FlipAxis.HORIZONTAL_AXIS);
+        NIVision.imaqFlip(toCamera, raw, FlipAxis.VERTICAL_AXIS);
     }
     
     public void activePeriodic() {
+        robotPeriodic();
         SmartDashboard.putNumber("Tote Count", robot.toteCounter.get());
         SmartDashboard.putNumber("Front Distance", robot.frontDistance.getDistance() - 6);
     }
@@ -116,10 +141,22 @@ public class RobotManager extends IterativeRobot {
         robot.toteCounter.reset();
     }
     
+    @Override
+    public void disabledPeriodic() {
+        robotPeriodic();
+    }
+    
     // Active code starts here
     @Override
     public void autonomousInit() {
+        robot.structure.ramp.lifter.raise();
+        robot.structure.ramp.rail.open();
+        robot.structure.grabber.open();
         
+        robot.structure.kickerSystem.kicker.home();
+        robot.structure.grabber.home();
+        
+        scheduler.add(new GrabAndGoAuto(robot.drive, robot.structure));
     }
     
     @Override
@@ -130,12 +167,6 @@ public class RobotManager extends IterativeRobot {
     @Override
     public void teleopInit() {
         scheduler.killAll();
-        robot.structure.ramp.lifter.lower();
-        robot.structure.ramp.rail.open();
-        robot.structure.grabber.open();
-        
-        robot.structure.kickerSystem.kicker.home();
-        robot.structure.grabber.home();
     }
 
     @Override
