@@ -24,8 +24,8 @@ public class GrabAndGoAuto extends CommandGroup{
                      new MoveGrabberToStep(structure.grabber),
                      new LowerRamp(structure.ramp.lifter),
                      new Pause(1.5),
-                     new Drive(drive, -0.6, 3.5),
-                     new Turn(drive, 1, 1.75),
+                     new Drive(drive, -0.6, 3),
+                     new Turn(drive, 0.6, 1.75),
                      new Drive(drive, 0, 0.1));
     }
 
