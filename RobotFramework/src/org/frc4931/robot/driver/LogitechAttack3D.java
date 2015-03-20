@@ -27,7 +27,7 @@ public class LogitechAttack3D extends DSInputDevice implements FlightStick {
 
     @Override
     public AnalogAxis getYaw() {
-        return joystick::getTwist;
+        return ()-> joystick.getTwist() * -1;
     }
 
     @Override
