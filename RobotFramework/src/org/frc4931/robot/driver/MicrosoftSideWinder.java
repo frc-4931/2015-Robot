@@ -43,9 +43,4 @@ public class MicrosoftSideWinder extends DSInputDevice implements FlightStick {
     public Switch getThumb() {
         return () -> joystick.getRawButton(1);
     }
-
-    @Override
-    public Switch getButton(int button) {
-        return () -> joystick.getRawButton(button);
-    }
 }

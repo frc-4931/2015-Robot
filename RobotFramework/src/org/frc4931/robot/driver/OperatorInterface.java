@@ -7,6 +7,7 @@
 package org.frc4931.robot.driver;
 
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.component.SwitchWithIndicator;
 
 /**
  * Holds the state of the operator interface.
@@ -27,10 +28,18 @@ public class OperatorInterface {
     public final Switch toggleRamp;
     public final Switch toggleRails;
 
+    public final SwitchWithIndicator ocGrabberFull;
+    public final SwitchWithIndicator ocGrabberHalf;
+    public final SwitchWithIndicator ocKickerFull;
+    public final SwitchWithIndicator ocKickerTransfer;
+    public final SwitchWithIndicator ocRampToggle;
+    public final SwitchWithIndicator ocCounterUp;
+    public final SwitchWithIndicator ocCounterReset;
+
     public final Switch writeData;
     public final Switch quickTurn;
 
-    public OperatorInterface(FlightStick flightStick) {
+    public OperatorInterface(FlightStick flightStick, OperatorConsole operatorConsole) {
         throttle = flightStick.getPitch();
         wheel = flightStick.getYaw();
         quickTurn = flightStick.getButton(5);
@@ -43,10 +52,18 @@ public class OperatorInterface {
         toggleRamp = flightStick.getButton(2);
         toggleRails = flightStick.getButton(3);
 
+        ocGrabberFull = operatorConsole.getGrabberToFull();
+        ocGrabberHalf = operatorConsole.getGrabberToHalf();
+        ocKickerFull = operatorConsole.getKickerToFull();
+        ocKickerTransfer = operatorConsole.getKickerToTransfer();
+        ocRampToggle = operatorConsole.getRampToggle();
+        ocCounterUp = operatorConsole.getCounterUp();
+        ocCounterReset = operatorConsole.getCounterReset();
+
         writeData = flightStick.getButton(6);
     }
 
-    public OperatorInterface(Gamepad gamepad) {
+    public OperatorInterface(Gamepad gamepad, OperatorConsole operatorConsole) {
         throttle = gamepad.getLeftY();
         wheel = gamepad.getRightX();
         quickTurn = gamepad.getRightBumper();
@@ -58,6 +75,14 @@ public class OperatorInterface {
         toggleLift = gamepad.getX();
         toggleRamp = gamepad.getY();
         toggleRails = gamepad.getB();
+
+        ocGrabberFull = operatorConsole.getGrabberToFull();
+        ocGrabberHalf = operatorConsole.getGrabberToHalf();
+        ocKickerFull = operatorConsole.getKickerToFull();
+        ocKickerTransfer = operatorConsole.getKickerToTransfer();
+        ocRampToggle = operatorConsole.getRampToggle();
+        ocCounterUp = operatorConsole.getCounterUp();
+        ocCounterReset = operatorConsole.getCounterReset();
 
         writeData = gamepad.getStart();
     }
