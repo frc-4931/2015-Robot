@@ -13,6 +13,7 @@ import org.frc4931.robot.subsystem.Guardrail;
  * Opens the guardrail.
  * @see org.frc4931.robot.subsystem.Ramp
  */
+@Deprecated
 public class OpenGuardrail extends CommandBase {
     private Guardrail rail;
     public OpenGuardrail(Guardrail rail){

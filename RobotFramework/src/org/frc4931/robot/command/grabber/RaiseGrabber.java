@@ -13,6 +13,7 @@ import org.frc4931.robot.subsystem.LoaderArm;
  * Raise the grabber arm to tote/ground level.
  * @see org.frc4931.robot.subsystem.LoaderArm
  */
+@Deprecated
 public class RaiseGrabber extends SpeedCommandBase {
 
     private final LoaderArm arm;

@@ -1,11 +1,12 @@
 package org.frc4931.robot.command.grabber;
 
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.frc4931.robot.command.AbstractCommandTest;
 import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class LowerGrabberTest extends AbstractCommandTest {
 
     @Override

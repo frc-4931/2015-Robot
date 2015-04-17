@@ -7,13 +7,14 @@
 package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.Accelerometer;
+import org.frc4931.robot.component.AngleSensor;
 import org.frc4931.robot.component.DistanceSensor;
 import org.frc4931.robot.component.Gyroscope;
 import org.frc4931.robot.component.Motor;
-import org.frc4931.robot.component.MotorWithAngle;
 import org.frc4931.robot.component.Relay;
 import org.frc4931.robot.component.Solenoid;
 import org.frc4931.robot.component.Switch;
+import org.frc4931.robot.system.PowerPanel;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -32,6 +33,14 @@ import edu.wpi.first.wpilibj.Victor;
 public class Hardware {
     public static final class Sensors {
         /**
+         * Gets the {@link PowerPanel} of the robot.
+         * 
+         * @return the {@link PowerPanel} of the robot
+         */
+        public static PowerPanel powerPanel() {
+            return new HardwarePowerPanel();
+        }
+        /**
          * Create a {@link HardwareGyroscope} on the specified channel.
          * 
          * @param channel
@@ -40,6 +49,19 @@ public class Hardware {
          */
         public static Gyroscope gyroscope(int channel) {
             return new HardwareGyroscope(channel);
+        }
+        
+        /**
+         * Creates a new {@link HardwareEncoder} using the specified channels with the
+         * specified distance per pulse.
+         * @param aChannel the a channel of the encoder
+         * @param bChannel the b channel of the encoder
+         * @param distancePerPulse the distance the end shaft spins per pulse
+         * @return an {@link AngleSensor}
+         */
+        public static AngleSensor encoder(int aChannel, int bChannel,
+                                          double distancePerPulse) {
+            return new HardwareEncoder(aChannel, bChannel, distancePerPulse);
         }
         
         public static final class Accelerometers {
@@ -73,6 +95,10 @@ public class Hardware {
             */
             public static Accelerometer accelerometer16G() {
                 return new HardwareAccelerometer(16);
+            }
+            
+            public static Accelerometer builtIn() {
+                return new HardwareBuiltInAccel();
             }
         }
         
@@ -183,13 +209,15 @@ public class Hardware {
         }
         
         /**
-         * Creates a motor controlled by a TalonSRX speed controller on a specified port.
-         * @param port
-         *          the port the motor controller is connected to
+         * Creates a motor controlled by a TalonSRX speed controller on the CAN bus.
+         * @param id
+         *          the CAN id of the talon
+         * @param ppd
+         *          the number of encoder pulses per degree of revolution of the final shaft
          * @return a motor with a specified port
          */
-        public static MotorWithAngle talonSRX(int port){
-            return new HardwareTalonSRX(port);
+        public static HardwareTalonSRX talonSRX(int id, double ppd){
+            return new HardwareTalonSRX(id, ppd);
         }
     }
 

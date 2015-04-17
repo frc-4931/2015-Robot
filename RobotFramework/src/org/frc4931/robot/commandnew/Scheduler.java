@@ -12,29 +12,27 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.frc4931.robot.Executor.Executable;
+
 /**
  * 
  */
-public class Scheduler {
-    private static final Scheduler INSTANCE = new Scheduler();
-    public static Scheduler getInstance() { return INSTANCE; }
-    
+public class Scheduler implements Executable{
     private final Commands list = new Commands();
+    
+    public void killAll() {
+        list.killAll();
+    }
     
     /**
      * Schedule a {@link Command} to be added to the {@link Scheduler}.
      * @param command the {@link Command} to be added
      */
     public void add(Command command) {
-        add(command, 0);
-    }
-    
-    public void add(Command command, long timeout) {
         if(command instanceof CommandGroup)
             command = ((CommandGroup) command).getRoot();
         
         CommandRunner runner = buildCR(command, null);
-        runner.setTimeout(timeout);
         list.add(runner);
     }
     
@@ -68,8 +66,19 @@ public class Scheduler {
      * Steps once though all of the {@link Command}s in the {@link Scheduler}.
      * @param time the current system time in millis
      */
-    public void step(long time) {
+    @Override
+    public void execute(long time) {
         list.step(time);
+    }
+    
+    /**
+     * Tests if there are any {@link Command}s currently executing or pending execution.
+     * 
+     * @return {@code true} if there are no {@link Command}s executing or pending;
+     *          {@code false} otherwise
+     */
+    public boolean isEmpty() {
+        return list.isEmpty();
     }
     
     final static class Commands {
@@ -95,7 +104,7 @@ public class Scheduler {
             for(int i = 0; i < initialSize; i++) {
                 CommandRunner runner= beingExecuted.poll();
                 if(runner.step(time))
-                    remove(runner, time);
+                    remove(runner);
                 else
                     beingExecuted.offer(runner);
             }
@@ -125,9 +134,24 @@ public class Scheduler {
             return true;
         }
         
-        private void remove(CommandRunner runner, long time) {
+        private void remove(CommandRunner runner) {
             for(Requireable required : runner.getRequired()) inUse.remove(required);
-            runner.after(this, time);
+            runner.after(this);
+        }
+        
+        boolean isEmpty() {
+            return pendingAddition.isEmpty() && beingExecuted.isEmpty();
+        }
+        
+        void killAll() {
+            while(!pendingAddition.isEmpty()) pendingAddition.poll();
+            int l = beingExecuted.size();
+            for(int i = 0; i < l; i++) {
+                CommandRunner c = beingExecuted.poll();
+                c.cancel();
+                c.step(0);
+            }
+            
         }
     }
     

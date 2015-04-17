@@ -6,7 +6,7 @@
  */
 package org.frc4931.robot.component;
 
-import org.frc4931.robot.Robot;
+import org.frc4931.robot.RobotManager;
 
 /**
  * A distance sensor is a sensor capable of sensing distance. The unit is
@@ -25,6 +25,6 @@ public interface DistanceSensor {
     public double getDistance();
     
     public default short getAsShort(){
-        return (short)(getDistance()*Math.pow(2, Robot.NUMBER_OF_ADC_BITS));
+        return (short)(getDistance()*Math.pow(2, RobotManager.NUMBER_OF_ADC_BITS));
     }
 }

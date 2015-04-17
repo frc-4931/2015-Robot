@@ -12,21 +12,27 @@ import org.frc4931.robot.commandnew.Scheduler.Requireable;
  * 
  */
 public abstract class Command {
-    private Requireable[] requirements = new Requireable[0];
+    private final double timeout;
+    private final Requireable[] requirements;
     private boolean interruptible = true;
+    
+    /**
+     * @param timeout how long this command executes before terminating, zero is forever
+     * @param requirements the {@link Requireable}s this {@link Command} requires
+     */
+    public Command(double timeout, Requireable... requirements) {
+        this.timeout = timeout;
+        this.requirements = requirements;
+    }
+    
+    public Command(Requireable... requirements) {
+        this(0, requirements);
+    }
+    
     /**
      * Set up this {@link Command}. No physical hardware should be manipulated.
      */
-    public abstract void initialize();
-    
-    /**
-     * Executed once after this {@link Command} is initialized, should return {@code true}
-     * if this {@link Command} is complete. Defers to {@link #execute()} by default.
-     * @return {@code true} if this {@link Command} is complete; {@code false} otherwise
-     */
-    public boolean firstExecute() {
-        return execute();
-    }
+    public void initialize() { }
     
     /**
      * Executed repeatedly after this {@link Command} is initialized until it
@@ -38,19 +44,14 @@ public abstract class Command {
     /**
      * Cleans up the resources used by this command and puts the robot in a safe state.
      */
-    public abstract void end();
-    
-    /**
-     * Sets the requirements of this {@link Command}. If a command cannot obtain its
-     * requirements, it will not be executed.
-     * @param requirements the {@link Requireable}s this {@link Command} requires
-     */
-    public final void requires(Requireable... requirements) {
-        this.requirements = requirements;
-    }
+    public void end() { }
     
     final Requireable[] getRequirements(){
         return requirements;
+    }
+    
+    final double getTimeout() {
+        return timeout;
     }
     
     /**

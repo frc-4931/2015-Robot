@@ -32,7 +32,7 @@ final class HardwareRelay implements Relay {
 
     @Override
     public void on() {
-        relay.set(Value.kOn);
+        relay.set(Value.kForward);
         state = State.ON;
     }
 

@@ -12,6 +12,7 @@ import junit.framework.AssertionFailedError;
 /**
  * A command that wraps another command and monitors what was called on it.
  */
+@Deprecated
 public class WrappedCommand extends Command {
 
     private final Command delegate;

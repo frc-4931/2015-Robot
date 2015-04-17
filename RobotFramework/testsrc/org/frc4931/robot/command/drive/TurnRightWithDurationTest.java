@@ -20,16 +20,17 @@
  */
 package org.frc4931.robot.command.drive;
 
-import org.frc4931.robot.Robot;
+import org.frc4931.robot.RobotManager;
 import org.frc4931.robot.command.AbstractDriveSystemCommandTest;
 import org.junit.Test;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+@Deprecated
 public class TurnRightWithDurationTest extends AbstractDriveSystemCommandTest {
 
     @Override
-    protected Command createCommand(Robot.Systems systems) {
+    protected Command createCommand(RobotManager.Systems systems) {
         return new TurnRightWithDuration(systems.drive, -0.5, 0.05);
     }
 

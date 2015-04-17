@@ -11,6 +11,7 @@ package org.frc4931.robot.command;
  * Command helper class that automatically overrides {@link #isFinished()} to return {@code true}.
  * Override this class for commands that only execute once.
  */
+@Deprecated
 public abstract class OneShotCommand extends CommandBase {
     protected OneShotCommand() {
     }

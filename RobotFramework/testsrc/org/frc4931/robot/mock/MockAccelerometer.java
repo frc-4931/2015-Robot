@@ -7,7 +7,6 @@
 package org.frc4931.robot.mock;
 
 import org.frc4931.robot.component.Accelerometer;
-import org.frc4931.utils.Triple;
 
 /**
  * A test implementation of {@link Accelerometer} that does not
@@ -20,44 +19,24 @@ public final class MockAccelerometer implements Accelerometer{
     private double yAccel;
     private double zAccel;
     
-    private double xVel;
-    private double yVel;
-    private double zVel;
-    
-    private double xDisp;
-    private double yDisp;
-    private double zDisp;
-    
     public void setAcceleration(double x, double y, double z){
         xAccel = x;
         yAccel = y;
         zAccel = z;
     }
-    public void setVelocity(double x, double y, double z){
-        xVel = x;
-        yVel = y;
-        zVel = z;
-    }
-    public void setDisplacement(double x, double y, double z){
-        xDisp = x;
-        yDisp = y;
-        zDisp = z;
-    }
+    
     @Override
-    public Triple getAcceleration() {
-        return new Triple(xAccel, yAccel, zAccel);
+    public double getXacceleration() {
+        return xAccel;
     }
-
+    
     @Override
-    public Triple getVelocity() {
-        return new Triple(xVel, yVel, zVel);
+    public double getYacceleration() {
+        return yAccel;
     }
-
+    
     @Override
-    public Triple getDisplacement() {
-        return new Triple(xDisp, yDisp, zDisp);
+    public double getZacceleration() {
+        return zAccel;
     }
-
-    @Override
-    public void update() { }
 }

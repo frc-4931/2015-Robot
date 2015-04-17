@@ -111,13 +111,7 @@ public class CommandGroup extends Command{
     }
     
     @Override
-    public final void initialize() {}
-
-    @Override
     public final boolean execute() { return false; }
-
-    @Override
-    public final void end() {}
 
     static enum Type {
         SEQUENTIAL, PARRALLEL, FORK;

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.WrappedCommand;
 import org.frc4931.robot.MockRobot;
-import org.frc4931.robot.Robot.Systems;
+import org.frc4931.robot.RobotManager.Systems;
 import org.junit.After;
 import org.junit.Before;
 
@@ -22,6 +22,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * start with preconditions to move the robot into a different state and then {@link #runCommandAnd create and run a command} to
  * verify that the robot has responded correctly.
  */
+@Deprecated
 public abstract class AbstractCommandTest {
 
     // The subsystems will be registered automatically with the Scheduler ...

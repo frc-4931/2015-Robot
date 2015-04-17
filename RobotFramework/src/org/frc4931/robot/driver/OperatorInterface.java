@@ -23,42 +23,46 @@ public class OperatorInterface {
     public final AnalogAxis turnSpeed;
 
     public final Switch toggleClaw;
-    public final Switch toggleLift;
     public final Switch toggleRamp;
     public final Switch toggleRails;
+    
+    public final Switch kickerToTransfer;
+    public final Switch kickerToGuardrail;
+    
+    public final Switch transferTote;
 
     public final Switch writeData;
     public final Switch quickTurn;
+    
+    public final Switch increaseCounter;
+    public final Switch resetCounter;
+    
+    public final Switch grabberToStep;
+    public final Switch grabberToTransfer;
 
-    public OperatorInterface(FlightStick flightStick) {
-        throttle = flightStick.getPitch();
+    public OperatorInterface(FlightStick flightStick, LogitechAttack3 codriver) {
+        throttle = flightStick.getThrottle();
         wheel = flightStick.getYaw();
         quickTurn = flightStick.getButton(5);
 
         driveSpeed = flightStick.getPitch();
-        turnSpeed = flightStick.getRoll();
+        turnSpeed = flightStick.getYaw();
 
         toggleClaw = flightStick.getTrigger();
-        toggleLift = flightStick.getThumb();
-        toggleRamp = flightStick.getButton(2);
-        toggleRails = flightStick.getButton(3);
-
+        toggleRails = flightStick.getButton(4);
+        
+        toggleRamp = codriver.getButton(1);
+        
+        transferTote = flightStick.getThumb();
         writeData = flightStick.getButton(6);
-    }
-
-    public OperatorInterface(Gamepad gamepad) {
-        throttle = gamepad.getLeftY();
-        wheel = gamepad.getRightX();
-        quickTurn = gamepad.getRightBumper();
-
-        driveSpeed = gamepad.getLeftY();
-        turnSpeed = gamepad.getLeftX();
-
-        toggleClaw = gamepad.getA();
-        toggleLift = gamepad.getX();
-        toggleRamp = gamepad.getY();
-        toggleRails = gamepad.getB();
-
-        writeData = gamepad.getStart();
+        
+        resetCounter = codriver.getButton(2);
+        increaseCounter = codriver.getButton(3);
+        
+        grabberToStep = codriver.getButton(7);
+        grabberToTransfer = codriver.getButton(6);
+        
+        kickerToTransfer = codriver.getButton(10);
+        kickerToGuardrail = codriver.getButton(11);
     }
 }

@@ -15,6 +15,7 @@ import org.frc4931.robot.subsystem.DriveSystem;
  * @author Adam Gausmann
  * @see org.frc4931.robot.subsystem.DriveSystem
  */
+@Deprecated
 public class DriveBackwardWithDuration extends TimedCommand {
     private final DriveSystem driveSystem;
     private final double driveSpeed;

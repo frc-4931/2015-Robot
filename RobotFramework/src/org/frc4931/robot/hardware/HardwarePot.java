@@ -8,6 +8,7 @@ package org.frc4931.robot.hardware;
 
 import org.frc4931.robot.component.AngleSensor;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
@@ -23,6 +24,11 @@ public class HardwarePot implements AngleSensor {
     @Override
     public double getAngle() {
         return pot.getAverageVoltage()*VOLTS_PER_DEGREE;
+    }
+    
+    @Override
+    public void reset() {
+        throw new NotImplementedException();
     }
 
 }

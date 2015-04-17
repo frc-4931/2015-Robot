@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Command helper class that automatically overrides {@link #interrupted()} to call {@link #end()}.
  */
+@Deprecated
 public abstract class CommandBase extends Command {
     private boolean hasExecuted = false;
     protected CommandBase() {
