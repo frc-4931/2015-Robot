@@ -16,12 +16,35 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class LogDecoder {
-    // TODO Use terminal arguments for in and out file
     public static void main(String[] args) {
+        String inFile = null;
+        String outFile = null;
+
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "-in":
+                    inFile = args[++i];
+                    break;
+                case "-out":
+                    outFile = args[++i];
+                    break;
+                default:
+                    System.out.println("Usage: LogDecoder [-in INFILE] [-out OUTFILE]");
+                    System.exit(1);
+            }
+        }
+
+        if (inFile == null) {
+            inFile = "robot.log";
+        }
+        if (outFile == null) {
+            outFile = inFile.split("\\.", 2)[0] + ".csv";
+        }
+
         try {
-            File file = new File("robot.log");
+            File file = new File(inFile);
             DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-            File out = new File("robot.csv");
+            File out = new File(outFile);
             BufferedWriter writer = new BufferedWriter(new FileWriter(out));
             
             // Verify Header
